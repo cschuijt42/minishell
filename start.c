@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "h_colors.h"
 #include <stdio.h>
 #include <readline/history.h>
 
@@ -17,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
 
-	input = readline("FROGGYSHELL:");
-	printf("input = %s\n",input);
+	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m");
+	printf("input = %s\n", input);
 	return (0);
 }

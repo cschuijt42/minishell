@@ -10,3 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+"lexing.h"
+
+t_lexnode	lexer(char *input)
+{
+	int	i;
+	int	token_start;
+
+	i = skip_whitespace(input);
+	token_start = 0;
+	while(input[i])
+	{
+		if(token_found(&input[i]))
+
+	}
+}

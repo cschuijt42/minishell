@@ -10,10 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef LEXING_H
+# define LEXING_H
+
 typedef struct lexnode
 {
 	int		token_type;
 	char	*value;
 	lexnode	*next;
-	lexnode	*prev;
 }	t_lexnode;
+
+#endif
