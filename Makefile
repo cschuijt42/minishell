@@ -1,18 +1,26 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: mde-cloe <mde-cloe@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2023/02/17 16:22:14 by mde-cloe      #+#    #+#                  #
-#    Updated: 2023/02/17 16:22:14 by mde-cloe      ########   odam.nl          #
-#                                                                              #
-# **************************************************************************** #
+OBJFILES := 
+HEADER   := 
+FLAGS    := -Werror -Wall -Wextra -g -I lib
+LIBFT_A  := lib/libft/libft.a
+NAME     := minishell
 
-#include lexing.h
+$(NAME) : $(OBJFILES) $(LIBFT_A) $(HEADER)
+	$(CC) $(FLAGS) -o $(NAME) $(OBJFILES) $(LIBFT_A)
 
-t_lexnode	lexing(char *input)
-{
+all : $(NAME)
 
-}
+re : fclean all
+
+clean :
+	rm -f $(OBJFILES)
+
+fclean :
+	rm -f $(NAME) $(OBJFILES)
+
+$(LIBFT_A) :
+	make -C lib/libft
+
+%.o : %.c $(HEADER)
+	$(CC) -c $(FLAGS) -o $@ $<
+
+.PHONY : clean fclean re
