@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   start.c                                            :+:    :+:            */
+/*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
+/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/16 18:03:57 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2023/02/16 18:03:57 by mde-cloe      ########   odam.nl         */
+/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2022/03/09 14:05:48 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "h_colors.h"
-#include <stdio.h>
-#include <readline/history.h>
+#include "libft.h"
 
-int	main(int argc, char **argv, char **envp)
+size_t	ft_strlen(const char *str)
 {
-	char	*input;
+	size_t	c;
 
-	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m");
-	printf("input = %s\n", input);
-	return (0);
+	c = 0;
+	while (str[c])
+	{
+		c++;
+	}
+	return (c);
 }
