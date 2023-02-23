@@ -1,11 +1,12 @@
-OBJFILES := 
+OBJFILES := start.o
 HEADER   := 
 FLAGS    := -Werror -Wall -Wextra -g -I lib
+RL_FLAGS := -lreadline
 LIBFT_A  := lib/libft/libft.a
 NAME     := minishell
 
-$(NAME) : $(OBJFILES) $(LIBFT_A) $(HEADER)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJFILES) $(LIBFT_A)
+$(NAME) : $(OBJFILES) $(LIBFT_A) $(HEADER) 
+	$(CC) $(FLAGS) -o $(NAME) $(OBJFILES) $(LIBFT_A) $(RL_FLAGS)
 
 all : $(NAME)
 
