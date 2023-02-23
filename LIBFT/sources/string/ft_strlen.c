@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexing.c                                           :+:    :+:            */
+/*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
+/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/16 19:43:04 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2023/02/16 19:43:04 by mde-cloe      ########   odam.nl         */
+/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2022/03/09 14:05:48 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-"lexing.h"
+#include "libft.h"
 
-t_lexnode	lexer(char *input)
+size_t	ft_strlen(const char *str)
 {
-	int	i;
-	int	token_start;
+	size_t	c;
 
-	i = skip_whitespace(input);
-	token_start = 0;
-	while(input[i])
+	c = 0;
+	while (str[c])
 	{
-		if(token_found(&input[i]))
-
+		c++;
 	}
+	return (c);
 }

@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   start.c                                            :+:    :+:            */
+/*   ft_strrev.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/16 18:03:57 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2023/02/16 18:03:57 by mde-cloe      ########   odam.nl         */
+/*   Created: 2022/05/26 19:31:20 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2022/06/09 18:56:48 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "h_colors.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "libft.h"
 
-int	main(int argc, char **argv, char **envp)
+void	str_reverse(char *str)
 {
-	char	*input;
+	size_t	i;
+	size_t	len;
+	char	temp;
 
-	(void) argc;
-	(void) argv;
-	(void) envp;
-	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m");
-	printf("input = %s\n", input);
-	free(input);
-	return (0);
+	i = 0;
+	len = ft_strlen(str) - 1;
+	while (i < len)
+	{
+		temp = str[len];
+		str[len] = str[i];
+		str[i] = temp;
+		i++;
+		len--;
+	}
 }
