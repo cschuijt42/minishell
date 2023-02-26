@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexing.c                                           :+:    :+:            */
+/*   ft_strrev.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/16 19:43:04 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2023/02/16 19:43:04 by mde-cloe      ########   odam.nl         */
+/*   Created: 2022/05/26 19:31:20 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2022/06/09 18:56:48 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-"lexing.h"
+#include "libft.h"
 
-t_lexnode	lexer(char *input)
+void	str_reverse(char *str)
 {
-	int	i;
-	int	token_start;
+	size_t	i;
+	size_t	len;
+	char	temp;
 
-	i = skip_whitespace(input);
-	token_start = 0;
-	while(input[i])
+	i = 0;
+	len = ft_strlen(str) - 1;
+	while (i < len)
 	{
-		if(token_found(&input[i]))
-
+		temp = str[len];
+		str[len] = str[i];
+		str[i] = temp;
+		i++;
+		len--;
 	}
 }

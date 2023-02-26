@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexing.h                                           :+:    :+:            */
+/*   ft_lstlast_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
+/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/16 19:43:14 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2023/02/16 19:43:14 by mde-cloe      ########   odam.nl         */
+/*   Created: 2021/12/14 22:22:32 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2021/12/15 16:00:03 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXING_H
-# define LEXING_H
+#include "libft.h"
 
-typedef struct lexnode
+t_list	*ft_lstlast(t_list *lst)
 {
-	int		token_type;
-	char	*value;
-	lexnode	*next;
-}	t_lexnode;
-
-#endif
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
