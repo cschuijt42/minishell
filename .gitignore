@@ -7,3 +7,4 @@ minishell
 *.a
 *.exe
 *.dSYM
+shell-experiments/*
