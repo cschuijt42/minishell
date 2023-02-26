@@ -28,6 +28,6 @@ char	*stralloc(size_t space);
 char	*read_till_nl(char *buff, char *line, int fd);
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 500
 # endif
 #endif

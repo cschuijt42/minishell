@@ -18,8 +18,8 @@
 */
 bool	ft_strrcmp(char *str1, char *str2, size_t n)
 {
-	size_t	i;
-	size_t	j;
+	long	i;
+	long	j;
 
 	if (!str1 || !str2 || !n)
 		return (false);
