@@ -22,7 +22,7 @@ LIBFT_A :=  ./LIBFT/libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(SRCS) $(LIBFT_A)
+$(NAME): $(LIBFT_A) $(OBJS)
 	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
 	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(LIBFT_A) -g -lreadline
 	@printf "$(COMP_DONE)"
