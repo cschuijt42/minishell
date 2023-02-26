@@ -23,13 +23,14 @@ LIBFT_A :=  ./LIBFT/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(SRCS) $(LIBFT_A)
-	@printf "$(C_GREEN)compiling! $(C_ORANGE)$@\n"
+	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
 	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(LIBFT_A) -g -lreadline
-	@printf "\n **$(C_BOLD)$(C_CYAN)all done <3$(C_ORANGE)**\n$(C_RESET)"
+	@printf "$(COMP_DONE)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
-	@printf "$(C_GREEN)Compiling $(C_CYAN)$(notdir $<) \n$(C_RESET)"
-	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $< -g
+	@printf "$(COMP_HEADER)$(notdir $<)$(COMP_AFTER)"
+	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $^ -g
+	@printf "$(COMP_DONE)"
 
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
@@ -47,8 +48,11 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME)
-	./swaggyshell
+# Fancy shmancy
+
+COMP_HEADER = $(C_ORANGE)Compiling: $(C_CYAN)$(C_BOLD)
+COMP_AFTER  = $(C_RESET)$(C_ORANGE)... $(C_RESET)
+COMP_DONE   = $(C_GREEN)(Done!)$(C_RESET)\n
 
 C_RED		  = \e[38;2;255;0;0m
 C_LRED		= \e[38;2;255;128;128m
