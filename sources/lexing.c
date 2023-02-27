@@ -45,7 +45,7 @@ t_lexnode	*single_quotes(char **str)
 	node = malloc(sizeof(t_lexnode));
 	if (!node)
 		temp_error("malloc fail");
-	node->token_type = plain_text;
+	node->token_type = token_plain_text;
 	node->value = ft_substr(*str, 0, i);
 	if (!node->value)
 		temp_error("malloc fail");
@@ -76,11 +76,7 @@ bool	is_token(char c)
 	['>'] = 1, ['<'] = 1, ['|'] = 1, \
 	[' '] = 1, ['\''] = 1, ['"'] = 1
 	};
-
-//bzero instead of static??
-	if (c > 127 || c < 0 || table[(int)c] == 0)
-		return (false);
-	return (true);
+	return (c <= 127 && c >= 0 && table[(int)c]);
 }
 
 t_lexnode	*lexer(char *input)
