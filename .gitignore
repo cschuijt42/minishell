@@ -1,0 +1,10 @@
+.DS_Store
+*.o
+test
+*.out*
+.vscode/*
+minishell
+*.a
+*.exe
+*.dSYM
+shell-experiments/*

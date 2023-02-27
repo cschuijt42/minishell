@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strrchr.c                                       :+:    :+:            */
+/*   exit_message.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
+/*   By: cschuijt <cschuijt@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2022/10/14 22:56:47 by mde-cloe      ########   odam.nl         */
+/*   Created: 2023/01/03 00:45:15 by cschuijt      #+#    #+#                 */
+/*   Updated: 2023/01/03 00:45:15 by cschuijt      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strrchr(const char	*s, int c)
+// @brief Prints "Error\n" on stderr, followed by a message, then exits the
+// program with code 1.
+void	exit_message(char *msg)
 {
-	long	i;
-
-	i = ft_strlen(s);
-	while (i >= 0)
-	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
-		i--;
-	}
-	return (NULL);
+	ft_putstr_fd("Error\n", 2);
+	ft_putendl_fd(msg, 2);
+	exit(1);
 }

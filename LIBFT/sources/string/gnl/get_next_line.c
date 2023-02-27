@@ -17,7 +17,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	buff[BUFFER_SIZE + 1];
 
-	if (fd < 0 || fd > OPEN_MAX || read(fd, 0, 0) == -1 || BUFFER_SIZE < 1)
+	if (fd < 0 || read(fd, 0, 0) == -1 || BUFFER_SIZE < 1)
 		return (NULL);
 	line = stralloc(1);
 	if (!line)

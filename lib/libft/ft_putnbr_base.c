@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strrchr.c                                       :+:    :+:            */
+/*   ft_putnbr_base.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
+/*   By: cschuijt <cschuijt@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2022/10/14 22:56:47 by mde-cloe      ########   odam.nl         */
+/*   Created: 2022/10/24 17:02:59 by cschuijt      #+#    #+#                 */
+/*   Updated: 2022/10/24 17:49:52 by cschuijt      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 
-char	*ft_strrchr(const char	*s, int c)
+int	ft_put_nbr_base(size_t n, char *base)
 {
-	long	i;
+	size_t	bl;
+	int		i;
 
-	i = ft_strlen(s);
-	while (i >= 0)
+	bl = ft_strlen(base);
+	if (n > bl)
+		ft_put_nbr_base(n / bl, base);
+	write(1, &base[n % bl], 1);
+	i = 0;
+	while (n)
 	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
-		i--;
+		n /= bl;
+		i++;
 	}
-	return (NULL);
+	return (i);
 }

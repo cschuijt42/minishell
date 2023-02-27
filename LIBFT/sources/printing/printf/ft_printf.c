@@ -21,7 +21,7 @@ int	flag_checker(char c, va_list *ap)
 	['x'] = &print_x, ['X'] = &print_upper_x
 	};
 
-	if (c > 127 || c < 0 || table[(int)c] == NULL)
+	if (table[(int)c] == NULL)
 		return (0);
 	return ((*table[(int)c])(ap));
 }

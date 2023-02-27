@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strrchr.c                                       :+:    :+:            */
+/*   ft_digitcount.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
+/*   By: cschuijt <cschuijt@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2022/10/14 22:56:47 by mde-cloe      ########   odam.nl         */
+/*   Created: 2022/12/27 17:07:56 by cschuijt      #+#    #+#                 */
+/*   Updated: 2022/12/27 17:07:56 by cschuijt      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stddef.h>
 
-char	*ft_strrchr(const char	*s, int c)
+size_t	ft_digitcount(size_t num)
 {
-	long	i;
+	size_t	digits;
 
-	i = ft_strlen(s);
-	while (i >= 0)
+	digits = 1;
+	num /= 10;
+	while (num)
 	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
-		i--;
+		digits++;
+		num /= 10;
 	}
-	return (NULL);
+	return (digits);
 }
