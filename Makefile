@@ -9,7 +9,8 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 #sources and objects -------------
 
 SOURCEFILES	:=	main.c \
-				lexing.c \
+								lexing.c \
+								parsing.c \
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	./sources/

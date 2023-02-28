@@ -41,4 +41,6 @@ typedef struct s_redirect {
 	struct s_redirect	*next;
 }	t_redirect;
 
+t_command	*build_command_tree(t_lexnode *input);
+
 #endif

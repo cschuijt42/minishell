@@ -10,32 +10,51 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <lexing.h>
-#include <parsing.h>
+#include "lexing.h"
+#include "parsing.h"
 #include "libft.h"
 
+t_command	*build_command_node(t_lexnode **input);
+void		add_command_node_to_tree(t_command *new_command, t_command **tree);
+void		add_argument_to_command_node(t_lexnode *lexnode, \
+											t_command *command);
+void		add_redirect_to_command_node(t_lexnode **lexnode, \
+											t_command *command);
+
+// Walks through the lexer output, constructing the
+// command tree as it goes. If a command node is added
+// without any contents, a pipe error should be thrown.
+// Place to add error management later on!
 t_command	*build_command_tree(t_lexnode *input)
 {
 	t_command	*command_tree;
 	t_command	*current_node;
 	t_lexnode	*current_lexed;
 
+	command_tree = NULL;
 	current_lexed = input;
+	if (current_lexed->token_type == token_pipe)
+		temp_error("Loose pipe at start of command");
 	while (current_lexed)
 	{
+		if (current_lexed->token_type == token_pipe)
+			current_lexed = current_lexed->next;
 		current_node = build_command_node(&current_lexed);
 		add_command_node_to_tree(current_node, &command_tree);
+		if (!(current_node->arguments) && !(current_node->target) && \
+			!(current_node->redirects))
+			temp_error("Empty node in command tree (loose pipe?)");
 	}
 	return (command_tree);
 }
 
+// Builds a single command node, with all its redirects and arguments,
+// moving the lexnode pointer to the pipe or end of the lexer output.
 t_command	*build_command_node(t_lexnode **input)
 {
 	t_command	*command_node;
 	int			loose_text_nodes;
 
-	if (!(*input))
-		temp_error("No more tokens after pipe");
 	command_node = ft_calloc(1, sizeof(t_command));
 	loose_text_nodes = 0;
 	while (*input && (*input)->token_type != token_pipe)
@@ -55,6 +74,9 @@ t_command	*build_command_node(t_lexnode **input)
 	return (command_node);
 }
 
+// Adds a command node to the end of the tree, connecting the
+// doubly linked list for pipe construction in the executor.
+// Does not move the lexer pointer.
 void	add_command_node_to_tree(t_command *new_command, t_command **tree)
 {
 	t_command	*last_command;
@@ -71,6 +93,8 @@ void	add_command_node_to_tree(t_command *new_command, t_command **tree)
 	}
 }
 
+// Adds an argument to the given command node, duplicating the contents of
+// the lexer node. Does not move the lexer pointer.
 void	add_argument_to_command_node(t_lexnode *lexnode, t_command *command)
 {
 	t_argument	*last_arg;
@@ -89,6 +113,10 @@ void	add_argument_to_command_node(t_lexnode *lexnode, t_command *command)
 	}
 }
 
+// Adds a redirect to the list of redirects of the given command node,
+// duplicating the contents of the next (text) node in the lexer chain.
+// If the next node is not text, an error is thrown
+// TODO: clean up tree on error
 void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command)
 {
 	t_redirect	*last_redirect;
@@ -98,7 +126,7 @@ void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command)
 	// the tree should be easy enough from here
 	if (!(*lexnode)->next || (*lexnode)->next->token_type != token_plain_text)
 		temp_error("No text token after redirect");
-	new_redirect = ft_calloc(1, sizeof(t_argument));
+	new_redirect = ft_calloc(1, sizeof(t_redirect));
 	new_redirect->type = (*lexnode)->token_type;
 	new_redirect->target = (*lexnode)->next->value;
 	if (command->redirects == NULL)
