@@ -74,21 +74,21 @@ void	print_command_tree(t_command *command_tree)
 	}
 }
 
-// int	main(void)
-// {
-// 	char		*input;
-// 	t_lexnode	*token_list;
-// 	t_command	*command_tree;
+int	main(void)
+{
+	char		*input;
+	t_lexnode	*token_list;
+	t_command	*command_tree;
 
-// 	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m");
-// 	if (!input)
-// 		temp_error("readline fail");
-// 	token_list = lexer(input);
-// 	print_tokens(token_list);
-// 	command_tree = build_command_tree(token_list);
-// 	print_command_tree(command_tree);
-// 	return (0);
-// }
+	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m ");
+	if (!input)
+		temp_error("readline fail");
+	token_list = lexer(input);
+	print_tokens(token_list);
+	command_tree = build_command_tree(token_list);
+	print_command_tree(command_tree);
+	return (0);
+}
 
 void	add_token(t_lexnode **tokens, int type, char *content)
 {

@@ -8,7 +8,7 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 
 #sources and objects -------------
 
-SOURCEFILES	:=	main.c \
+SOURCEFILES	:=	actual_main.c \
 								lexing.c \
 								parsing.c \
 
