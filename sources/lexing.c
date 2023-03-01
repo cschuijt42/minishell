@@ -69,9 +69,13 @@ void	add_token(int token_type, t_lexnode **token_list)
 
 int	quote_mode(char *str, char c, t_lexnode **token_list)
 {
+	int	i;
+
+	i = 0;
 	while (str[i] && str[i] != c)
 	{
-
+		if (str[i] == '$' && c == '"')
+			insert_var();
 	}
 
 }
