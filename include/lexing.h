@@ -19,23 +19,23 @@ typedef enum tokentypes
 	token_redirect_right_append,
 	token_redirect_left,
 	token_wait_for_delimiter,
-	token_pipe, //dutch 4 pipe :)
-	token_flag,
-	token_plain_text
+	token_pipe,
+	token_plain_text,
+	token_quoted_var
 }		t_token;
 
-
-typedef struct lexnode
+typedef struct s_lexnode
 {
-	t_token			token_type;
-	char			*value;
-	struct lexnode	*next;
+	t_token				token_type;
+	char				*value;
+	struct s_lexnode	*next;
+	struct s_lexnode	*tree_next;
 }	t_lexnode;
 
 typedef union frog
 {
-	int	nbr;
-	char *swag;
+	int		nbr;
+	char	*swag;
 }	t_frog;
 t_lexnode	*lexer(char *input);
 void		temp_error(char *str);
