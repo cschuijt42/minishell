@@ -74,21 +74,21 @@ void	print_command_tree(t_command *command_tree)
 	}
 }
 
-int	main(void)
-{
-	char		*input;
-	t_lexnode	*token_list;
-	t_command	*command_tree;
+// int	main(void)
+// {
+// 	char		*input;
+// 	t_lexnode	*token_list;
+// 	t_command	*command_tree;
 
-	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m ");
-	if (!input)
-		temp_error("readline fail");
-	token_list = lexer(input);
-	print_tokens(token_list);
-	command_tree = build_command_tree(token_list);
-	print_command_tree(command_tree);
-	return (0);
-}
+// 	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m ");
+// 	if (!input)
+// 		temp_error("readline fail");
+// 	token_list = lexer(input);
+// 	print_tokens(token_list);
+// 	command_tree = build_command_tree(token_list);
+// 	print_command_tree(command_tree);
+// 	return (0);
+// }
 
 void	add_token(t_lexnode **tokens, int type, char *content)
 {
@@ -116,18 +116,17 @@ int	main(void)
 	t_command	*command_tree;
 
 	tokens = NULL;
-	add_token(&tokens, token_redirect_left, NULL);
-	add_token(&tokens, token_plain_text, "hewwo");
-	add_token(&tokens, token_plain_text, "sdfsdf");
-	add_token(&tokens, token_pipe, NULL);
-	add_token(&tokens, token_plain_text, "hello");
-	add_token(&tokens, token_plain_text, "123");
-	add_token(&tokens, token_redirect_right_append, NULL);
-	add_token(&tokens, token_plain_text, "xd");
-	add_token(&tokens, token_redirect_right_append, NULL);
 	add_token(&tokens, token_plain_text, "hoi");
-	add_token(&tokens, token_plain_text, "456");
-	
+	add_token(&tokens, token_redirect_right, NULL);
+	add_token(&tokens, token_plain_text, "asdf");
+	add_token(&tokens, token_redirect_right, NULL);
+	add_token(&tokens, token_plain_text, "asdf2");
+	add_token(&tokens, token_redirect_right, NULL);
+	add_token(&tokens, token_plain_text, "asdf3");
+	add_token(&tokens, token_redirect_right, NULL);
+	add_token(&tokens, token_plain_text, "asdf4");
+	add_token(&tokens, token_redirect_right, NULL);
+	add_token(&tokens, token_plain_text, "asdf5");
 	command_tree = build_command_tree(tokens);
 	print_command_tree(command_tree);
 	return (0);

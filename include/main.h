@@ -59,8 +59,6 @@ typedef struct s_redirect {
 	struct s_redirect	*next;
 }	t_redirect;
 
-int	g_return_value = 0;
-
 # define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m "
 
 #endif

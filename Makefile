@@ -8,7 +8,7 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 
 #sources and objects -------------
 
-SOURCEFILES	:=	actual_main.c \
+SOURCEFILES	:=	main.c \
 								lexing.c \
 								parsing.c \
 
@@ -33,7 +33,7 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
 	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $^ -g
 	@printf "$(COMP_DONE)"
 
-$(OBJ_DIR):
+objects :
 	@mkdir $(OBJ_DIR)
 
 $(LIBFT_A) :
@@ -48,6 +48,8 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+.phony : clean fclean all re
 
 # Fancy shmancy
 
