@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "lexing.h"
+#include "h_colors.h"
 #include <stdbool.h>
 
 void	temp_error(char *str)
@@ -19,12 +20,27 @@ void	temp_error(char *str)
 	exit(1);
 }
 
-static int	skip_whitespace(char *str)
+int	is_text_mode_change(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '|' || \
+		c == '>' || c == '<' || c == '\0')
+	{
+		return (1);
+	}
+	else if (c == '\'' || c == '"')
+		return (2);
+	else if (c == '$')
+		return (3);
+	else
+		return (0);
+}
+
+int	skip_whitespace(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] == ' ')
+	while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
 		i++;
 	return (i);
 }
@@ -48,63 +64,4 @@ t_lexnode	*single_quotes(char **str)
 		temp_error("malloc fail");
 	*str += i;
 	return (node);
-}
-
-bool	is_token(char c)
-{
-	static int	table[128] = \
-	{
-	['>'] = 1, ['<'] = 1, ['|'] = 1, \
-	[' '] = 1, ['\''] = 1, ['"'] = 1
-	};
-
-	return (c <= 127 && c >= 0 && table[(int)c]);
-}
-
-t_lexnode	*lexer(char *input)
-{
-	t_lexnode	*head;
-	t_lexnode	*node;
-
-	input += skip_whitespace(input);
-	head = NULL;
-	while (*input)
-	{
-		if (is_token(*input))
-		{
-			head = token_checker(&input);
-			break ;
-		}
-		input++;
-	}
-	if (!head)
-		temp_error("no tokens found (or malloc error)");
-	//eww doing it this way w double loops is ugly we can do better.. how tho?
-	node = head;
-	while (*input)
-	{
-		if (is_token(*input))
-		{
-			node->next = token_checker(&input);
-			if (!node->next)
-				temp_error("malloc fail");
-			node = node->next;
-		}
-	}
-	return (head);
-}
-
-t_lexnode	*token_checker(char *str, int *i)
-{
-	static t_lexnode	*(*table[128])(char **) = \
-	{
-	['>'] = NULL, ['<'] = NULL, ['|'] = NULL, \
-	};
-	char				*str_after;
-
-	str_after = *str + 1;
-	//(&(*str +1)) didnt work :s
-	if (*str > 127 || *str < 0 || table[*str] == NULL)
-		return (NULL);
-	return ((*table[(int)*str])(&str_after));
 }

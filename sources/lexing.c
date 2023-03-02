@@ -17,37 +17,37 @@
 #include <stdio.h>
 
 
-int	easy_node(char *input, int i, t_lexnode **token_list)
+int	pipe_or_redirect_token(char *input, int i, t_lexnode **token_list)
 {
 	if (input[i] == '|')
 	{
-		add_token(token_pipe, token_list);
+		add_token_to_lexer_output(token_pipe, token_list);
 		return (i + 1);
 	}
 	else if (input[i] == '>')
 	{
 		if (input[i + 1] == input[i])
 		{
-			add_token(token_redirect_right_append, token_list);
+			add_token_to_lexer_output(token_redirect_right_append, token_list);
 			return (i + 2);
 		}
-		add_token(token_redirect_right, token_list);
+		add_token_to_lexer_output(token_redirect_right, token_list);
 		return (i + 1);
 	}
 	else
 	{
 		if (input[i + 1] == input[i])
 		{
-			add_token(token_wait_for_delimiter, token_list);
+			add_token_to_lexer_output(token_wait_for_delimiter, token_list);
 			return (i + 2);
 		}
-		add_token(token_redirect_left, token_list);
+		add_token_to_lexer_output(token_redirect_left, token_list);
 		return (i + 1);
 	}
 }
 //funtion is fine but my brain goes nooo it can be cleaner
 
-void	add_token(int token_type, t_lexnode **token_list)
+void	add_token_to_lexer_output(int token_type, t_lexnode **token_list)
 {
 	t_lexnode	*token;
 	t_lexnode	*list_current;
@@ -67,7 +67,7 @@ void	add_token(int token_type, t_lexnode **token_list)
 	}
 }
 
-int	quote_mode(char *str, char c, t_lexnode **token_list)
+int	read_quote_mode(char *str, char c, t_lexnode **token_list)
 {
 	int	i;
 
@@ -80,16 +80,26 @@ int	quote_mode(char *str, char c, t_lexnode **token_list)
 
 }
 
-int	text_reading(char *str, int i, t_lexnode **token_list)
+int	read_text_mode(char *str, int i, t_lexnode **token_list, int nested)
 {
-	int		start_pos;
+	int			start;
+	t_lexnode	*new_node;
 
-	start_pos = i;
-
-	while (str[i] != is_delim(str[i]))
+	start = i;
+	new_node = ft_calloc(1, sizeof(t_lexnode));
+	while (!is_text_mode_change(str[i]))
 		i++;
-	if (str[i] == '\'' || str[i] == '"')
-		i = quote_mode(str, str[i + 1], token_list);
+	new_node->value = ft_substr(str, start, i - start);
+	new_node->token_type = token_plain_text;
+	if (nested)
+		add_nested_node_to_lexer_output(new_node, token_list);
+	else
+		add_new_node_to_lexer_output(new_node, token_list);
+	if (is_text_mode_change(str[i]) == 1)
+
+	else if (is_text_mode_change(str[i] == 2))
+
+	else
 
 }
 
@@ -106,8 +116,9 @@ t_lexnode	*lexer(char *input)
 		if (!input[i])
 			break ;
 		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-			i = easy_node(input, i, &head);
+			i = pipe_or_redirect_token(input, i, &head);
 		else
-			i = text_reading(input, i, &head);
+			i = read_text_mode(input, i, &head, 0);
 	}
+	return (head);
 }
