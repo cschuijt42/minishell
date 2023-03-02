@@ -38,6 +38,6 @@ typedef union frog
 	char	*swag;
 }	t_frog;
 t_lexnode	*lexer(char *input);
-void		temp_error(char *str);
+void		error_exit(char *str, int err_nbr);
 
 #endif

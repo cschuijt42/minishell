@@ -54,7 +54,7 @@ void	add_token(int token_type, t_lexnode **token_list)
 
 	token = ft_calloc(sizeof(t_lexnode));
 	if (!token)
-		temp_error("malloc fail"); //will change
+		error_exit("malloc fail", errno); //will change
 	token->token_type = token_type;
 	if (!*token_list)
 		*token_list = token;

@@ -36,7 +36,10 @@ int	main(int argc, char **argv, char **envp)
 	(void) envp;
 	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m");
 	if (!input)
-		temp_error("readline fail");
+	{
+		prtinf("exit");
+		exit();
+	}
 	token_list = lexer(input);
 	print_tokens(token_list);
 	return (0);

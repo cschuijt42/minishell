@@ -12,11 +12,12 @@
 
 #include "lexing.h"
 #include <stdbool.h>
+#include <errno.h>
 
-void	temp_error(char *str)
+void	error_exit(char *str, int err_nbr)
 {
-	printf("%s %s \n", C_RED, str);
-	exit(1);
+	dprintf(2, "%s %s \n", C_RED, str);
+	exit(err_nbr);
 }
 
 static int	skip_whitespace(char *str)
@@ -38,14 +39,14 @@ t_lexnode	*single_quotes(char **str)
 	while (*str[i] && *str[i] != '\'')
 		i++;
 	if (*str[i] != '\'')
-		temp_error("missing closing quote!");
+		error_exit("missing closing quote!", 127);
 	node = malloc(sizeof(t_lexnode));
 	if (!node)
-		temp_error("malloc fail");
+		error_exit("malloc fail", errno);
 	node->token_type = token_plain_text;
 	node->value = ft_substr(*str, 0, i);
 	if (!node->value)
-		temp_error("malloc fail");
+		error_exit("malloc fail", errno);
 	*str += i;
 	return (node);
 }
@@ -78,7 +79,7 @@ t_lexnode	*lexer(char *input)
 		input++;
 	}
 	if (!head)
-		temp_error("no tokens found (or malloc error)");
+		error_exit("no tokens found (or malloc error)", 127);
 	//eww doing it this way w double loops is ugly we can do better.. how tho?
 	node = head;
 	while (*input)
@@ -87,7 +88,7 @@ t_lexnode	*lexer(char *input)
 		{
 			node->next = token_checker(&input);
 			if (!node->next)
-				temp_error("malloc fail");
+				error_exit("malloc fail", errno);
 			node = node->next;
 		}
 	}
