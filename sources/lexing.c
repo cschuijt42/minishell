@@ -16,98 +16,98 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-void	temp_error(char *str)
+
+int	easy_node(char *input, int i, t_lexnode **token_list)
 {
-	printf("%s %s \n", C_RED, str);
-	exit(1);
+	if (input[i] == '|')
+	{
+		add_token(token_pipe, token_list);
+		return (i + 1);
+	}
+	else if (input[i] == '>')
+	{
+		if (input[i + 1] == input[i])
+		{
+			add_token(token_redirect_right_append, token_list);
+			return (i + 2);
+		}
+		add_token(token_redirect_right, token_list);
+		return (i + 1);
+	}
+	else
+	{
+		if (input[i + 1] == input[i])
+		{
+			add_token(token_wait_for_delimiter, token_list);
+			return (i + 2);
+		}
+		add_token(token_redirect_left, token_list);
+		return (i + 1);
+	}
+}
+//funtion is fine but my brain goes nooo it can be cleaner
+
+void	add_token(int token_type, t_lexnode **token_list)
+{
+	t_lexnode	*token;
+	t_lexnode	*list_current;
+
+	token = ft_calloc(sizeof(t_lexnode));
+	if (!token)
+		temp_error("malloc fail"); //will change
+	token->token_type = token_type;
+	if (!*token_list)
+		*token_list = token;
+	else
+	{
+		list_current = *token_list;
+		while (list_current->next)
+			list_current = list_current->next;
+		list_current->next = token;
+	}
 }
 
-static int	skip_whitespace(char *str)
+int	quote_mode(char *str, char c, t_lexnode **token_list)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] == ' ')
-		i++;
-	return (i);
-}
-
-t_lexnode	*single_quotes(char **str)
-{
-	int			i;
-	t_lexnode	*node;
-
-	i = 0;
-	while (*str[i] && *str[i] != '\'')
-		i++;
-	if (*str[i] != '\'')
-		temp_error("missing closing quote!");
-	node = malloc(sizeof(t_lexnode));
-	if (!node)
-		temp_error("malloc fail");
-	node->token_type = token_plain_text;
-	node->value = ft_substr(*str, 0, i);
-	if (!node->value)
-		temp_error("malloc fail");
-	*str += i;
-	return (node);
-}
-
-t_lexnode	*token_checker(char **str)
-{
-	static t_lexnode	*(*table[128])(char **) = \
+	while (str[i] && str[i] != c)
 	{
-	['>'] = NULL, ['<'] = NULL, ['|'] = NULL, \
-	[' '] = NULL, ['\''] = single_quotes, ['"'] = NULL
-	};
-	char				*str_after;
+		if (str[i] == '$' && c == '"')
+			insert_var();
+	}
 
-	str_after = *str + 1;
-	//(&(*str +1)) didnt work :s
-	if (**str > 127 || **str < 0 || table[**str] == NULL)
-		return (NULL);
-	return ((*table[(int)**str])(&str_after));
 }
 
-bool	is_token(char c)
+int	text_reading(char *str, int i, t_lexnode **token_list)
 {
-	static int	table[128] = \
-	{
-	['>'] = 1, ['<'] = 1, ['|'] = 1, \
-	[' '] = 1, ['\''] = 1, ['"'] = 1
-	};
-	return (c <= 127 && c >= 0 && table[(int)c]);
+	int		start_pos;
+
+	start_pos = i;
+
+	while (str[i] != is_delim(str[i]))
+		i++;
+	if (str[i] == '\'' || str[i] == '"')
+		i = quote_mode(str, str[i + 1], token_list);
+
 }
 
 t_lexnode	*lexer(char *input)
 {
+	int			i;
 	t_lexnode	*head;
-	t_lexnode	*node;
 
-	input += skip_whitespace(input);
+	i = 0;
 	head = NULL;
-	while (*input)
+	while (input[i])
 	{
-		if (is_token(*input))
-		{
-			head = token_checker(&input);
+		i += skip_whitespace(input);
+		if (!input[i])
 			break ;
-		}
-		input++;
+		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+			i = easy_node(input, i, &head);
+		else
+			i = text_reading(input, i, &head);
 	}
-	if (!head)
-		temp_error("no tokens found (or malloc error)");
-	//eww doing it this way w double loops is ugly we can do better.. how tho?
-	node = head;
-	while (*input)
-	{
-		if (is_token(*input))
-		{
-			node->next = token_checker(&input);
-			if (!node->next)
-				temp_error("malloc fail");
-			node = node->next;
-		}
-	}
-	return (head);
 }

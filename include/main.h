@@ -21,14 +21,16 @@ typedef enum tokentypes
 	token_redirect_right_append,
 	token_pipe,
 	token_flag,
-	token_plain_text
+	token_plain_text,
+	token_quoted_var
 }		t_token;
 
-typedef struct lexnode
+typedef struct s_lexnode
 {
-	t_token			token_type;
-	char			*value;
-	struct lexnode	*next;
+	t_token				token_type;
+	char				*value;
+	struct s_lexnode	*next;
+	struct s_lexnode	*tree_next;
 }	t_lexnode;
 
 typedef enum e_redirect_types {
