@@ -33,7 +33,7 @@ t_command	*build_command_tree(t_lexnode *input)
 
 	command_tree = NULL;
 	current_lexed = input;
-	if (current_lexed->token_type == token_pipe)
+	if (current_lexed && current_lexed->token_type == token_pipe)
 		temp_error("Loose pipe at start of command");
 	while (current_lexed)
 	{

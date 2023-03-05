@@ -10,20 +10,21 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 
 SOURCEFILES	:=	main.c \
 								lexing.c \
-								parsing.c \
+								lexing_utils.c \
+								parsing.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
-SRC_DIR	:=	./sources/
-OBJ_DIR	:=	./objects/
+SRC_DIR	:=	sources/
+OBJ_DIR	:=	objects/
 SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
 OBJS	  :=	$(addprefix $(OBJ_DIR), $(OFILES))
 LIBFT_A :=  ./LIBFT/libft.a
 
 #-----------------targets---------------
 
-all: $(NAME)
+all : $(NAME)
 
-$(NAME): $(LIBFT_A) $(OBJS)
+$(NAME) : $(LIBFT_A) $(OBJS)
 	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
 	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(LIBFT_A) -g -lreadline
 	@printf "$(COMP_DONE)"
@@ -34,6 +35,9 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
 	@printf "$(COMP_DONE)"
 
 objects :
+	@mkdir $(OBJ_DIR)
+
+$(OBJ_DIR) :
 	@mkdir $(OBJ_DIR)
 
 $(LIBFT_A) :

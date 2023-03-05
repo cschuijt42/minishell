@@ -13,17 +13,20 @@
 #include "h_colors.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "main.h"
 #include "lexing.h"
 #include "parsing.h"
 #include "libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int	g_return_value = 0;
+
 void	print_tokens(t_lexnode *list)
 {
 	while (list)
 	{
-		printf("%s\n", list->value);
+		printf("%d: [%s]\n", list->token_type, list->value);
 		list = list->next;
 	}
 }
@@ -90,44 +93,50 @@ void	print_command_tree(t_command *command_tree)
 // 	return (0);
 // }
 
-void	add_token(t_lexnode **tokens, int type, char *content)
-{
-	t_lexnode	*new_node;
-	t_lexnode	*last_node;
+// void	add_token(t_lexnode **tokens, int type, char *content)
+// {
+// 	t_lexnode	*new_node;
+// 	t_lexnode	*last_node;
 
-	new_node = ft_calloc(1, sizeof(t_lexnode));
-	new_node->token_type = type;
-	if (content)
-		new_node->value = ft_strdup(content);
-	if (!(*tokens))
-		*tokens = new_node;
-	else
-	{
-		last_node = *tokens;
-		while (last_node->next)
-			last_node = last_node->next;
-		last_node->next = new_node;
-	}
-}
+// 	new_node = ft_calloc(1, sizeof(t_lexnode));
+// 	new_node->token_type = type;
+// 	if (content)
+// 		new_node->value = ft_strdup(content);
+// 	if (!(*tokens))
+// 		*tokens = new_node;
+// 	else
+// 	{
+// 		last_node = *tokens;
+// 		while (last_node->next)
+// 			last_node = last_node->next;
+// 		last_node->next = new_node;
+// 	}
+// }
 
 int	main(void)
 {
 	t_lexnode	*tokens;
 	t_command	*command_tree;
+	char		*input;
 
-	tokens = NULL;
-	add_token(&tokens, token_plain_text, "hoi");
-	add_token(&tokens, token_redirect_right, NULL);
-	add_token(&tokens, token_plain_text, "asdf");
-	add_token(&tokens, token_redirect_right, NULL);
-	add_token(&tokens, token_plain_text, "asdf2");
-	add_token(&tokens, token_redirect_right, NULL);
-	add_token(&tokens, token_plain_text, "asdf3");
-	add_token(&tokens, token_redirect_right, NULL);
-	add_token(&tokens, token_plain_text, "asdf4");
-	add_token(&tokens, token_redirect_right, NULL);
-	add_token(&tokens, token_plain_text, "asdf5");
-	command_tree = build_command_tree(tokens);
-	print_command_tree(command_tree);
+	using_history();
+	while (1)
+	{
+		input = readline(SHELL_PROMPT);
+		if (!input)
+		{
+			printf("exit\n");
+			break ;
+		}
+		tokens = lexer(input);
+		// print_tokens(tokens);
+		command_tree = build_command_tree(tokens);
+		print_command_tree(command_tree);
+		if (ft_strlen(input))
+			add_history(input);
+		free(input);
+	}
+	rl_clear_history();
+	// Replace with return value later
 	return (0);
 }

@@ -10,18 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #ifndef MAIN_H
 # define MAIN_H
+
+extern int	g_return_value;
 
 typedef enum tokentypes
 {
 	token_redirect_left,
-	token_wait_for_delimiter,
+	token_heredoc,
 	token_redirect_right,
-	token_redirect_right_append,
+	token_redirect_append,
 	token_pipe,
 	token_flag,
 	token_plain_text,
+	token_unquoted_var,
 	token_quoted_var
 }		t_token;
 
