@@ -121,19 +121,21 @@ int	read_var_mode(char *str, int i, t_lexnode **token_list, int in_quotes)
 t_lexnode	*lexer(char *input)
 {
 	int			i;
-	t_lexnode	*head;
+	t_lexnode	*token_list;
 
 	i = 0;
-	head = NULL;
+	token_list = NULL;
 	while (input[i])
 	{
 		i = skip_whitespace(input, i);
 		if (!input[i])
 			break ;
 		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-			i = pipe_or_redirect_token(input, i, &head);
+			i = pipe_or_redirect_token(input, i, &token_list);
 		else
-			i = read_text_mode(input, i, &head, 0);
+			i = read_text_mode(input, i, &token_list, 0);
 	}
-	return (head);
+	expand_variables(&token_list);
+	condense_lexer_output(&token_list);
+	return (token_list);
 }

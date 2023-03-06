@@ -18,7 +18,7 @@
 
 void	temp_error(char *str)
 {
-	printf("%s %s \n", C_RED, str);
+	printf("%s%s\n", C_RED, str);
 	exit(1);
 }
 
