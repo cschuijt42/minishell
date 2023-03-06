@@ -17,8 +17,8 @@
 
 typedef struct s_env_list
 {
-	char			*key;
-	char			*value;
+	char				*key;
+	char				*value;
 	struct s_env_list	*next;
 }	t_envir_var;
 #endif

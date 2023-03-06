@@ -21,6 +21,7 @@ t_envir_var	*make_node(t_envir_var *list, char *key, char *value)
 	else
 	{
 		list->next = ft_calloc(sizeof(t_envir_var), 1); //ditto
+		list->next->prev = list;
 		list = list->next;
 	}
 	if (!key || !value)
@@ -30,6 +31,11 @@ t_envir_var	*make_node(t_envir_var *list, char *key, char *value)
 	return (list);
 }
 
+t_envir_var	list_first(t_envir_var *list)
+{
+	while (list->prev)
+		list = list->prev;
+}
 
 t_envir_var	*make_envir_list(char **envp)
 {
@@ -55,10 +61,17 @@ t_envir_var	*make_envir_list(char **envp)
 		printf("value = %s\n", list->value);
 		printf("key %i = %s", i, list->key);
 	}
-	return (list);
+	return (list_first(list));
 }
 
-
+char	*get_env_value(char *key, t_envir_list *list)
+{
+	while (list && ft_strncmp(key, list->key, ft_strlen(key))) //replace w strcm[?]
+		list = list->next;
+	if (!list)
+		return (NULL);
+	return (ft_strdup(list->value));
+}
 
 //im assuming we wont ever have a line without =
 
