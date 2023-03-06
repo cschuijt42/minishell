@@ -26,10 +26,14 @@ void		add_nested_node_to_lexer_output(char *content, int token_type, \
 											t_lexnode **token_list);
 
 int			pipe_or_redirect_token(char *input, int i, t_lexnode **token_list);
-int			read_quote_mode(char *str, char c, int i, t_lexnode **token_list);
+int			read_quote_mode(char *str, char closing_quote, int i, \
+							t_lexnode **token_list);
 int			read_text_mode(char *str, int i, t_lexnode **token_list, \
 							int nested);
 int			read_var_mode(char *str, int i, t_lexnode **token_list, \
 							int in_quotes);
+
+void		condense_lexer_output(t_lexnode **token_list);
+void		condense_token(t_lexnode *token);
 
 #endif

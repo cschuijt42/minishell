@@ -11,6 +11,7 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 SOURCEFILES	:=	main.c \
 								lexing.c \
 								lexing_utils.c \
+								lexing_condensing.c \
 								parsing.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)

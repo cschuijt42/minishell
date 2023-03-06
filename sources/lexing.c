@@ -58,7 +58,7 @@ int	read_text_mode(char *str, int i, t_lexnode **token_list, int nested)
 		add_node_to_lexer_output(text, token_plain_text, token_list);
 	if (is_text_mode_change(str[i]) == 1)
 		return (i);
-	else if (is_text_mode_change(str[i] == 2))
+	else if (is_text_mode_change(str[i]) == 2)
 		return (read_quote_mode(str, str[i], i + 1, token_list));
 	else if (!ft_isalnum(str[i + 1]) && str[i + 1] != '_' && str[i + 1] != '?')
 	{
@@ -70,15 +70,19 @@ int	read_text_mode(char *str, int i, t_lexnode **token_list, int nested)
 		return (read_var_mode(str, i + 1, token_list, 0));
 }
 
-int	read_quote_mode(char *str, char c, int i, t_lexnode **token_list)
+int	read_quote_mode(char *str, char closing_quote, int i, \
+						t_lexnode **token_list)
 {
 	int		start;
 	char	*text;
 
 	start = i;
-	while (str[i] && str[i] != c)
+	while (str[i] && str[i] != closing_quote)
 	{
-		if (str[i] == '$' || str[i] == c)
+		if (str[i] == closing_quote)
+			break ;
+		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || \
+								str[i + 1] == '_' || str[i + 1] == '?'))
 			break ;
 		i++;
 	}
@@ -86,7 +90,7 @@ int	read_quote_mode(char *str, char c, int i, t_lexnode **token_list)
 		temp_error("Unclosed quote in input");
 	text = ft_substr(str, start, i - start);
 	add_nested_node_to_lexer_output(text, token_plain_text, token_list);
-	if (c == '$')
+	if (str[i] == '$')
 		return (read_var_mode(str, i + 1, token_list, 1));
 	else
 		return (read_text_mode(str, i + 1, token_list, 1));
@@ -135,7 +139,6 @@ t_lexnode	*lexer(char *input)
 		else
 			i = read_text_mode(input, i, &token_list, 0);
 	}
-	expand_variables(&token_list);
 	condense_lexer_output(&token_list);
 	return (token_list);
 }

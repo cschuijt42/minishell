@@ -136,7 +136,7 @@ int	main(void)
 			add_history(input);
 		free(input);
 	}
-	rl_clear_history();
+	// rl_clear_history();
 	// Replace with return value later
 	return (0);
 }
