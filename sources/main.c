@@ -15,10 +15,9 @@
 #include "h_colors.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "main.h"
+#include "minishell.h"
 #include "lexing.h"
 #include "parsing.h"
-#include "libft.h"
 
 int	g_return_value = 0;
 

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   var_expansion.c                                    :+:    :+:            */
+/*   environment.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -14,48 +14,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// t_env_var	*make_node(t_env_var **list, char *key, char *value)
-// {
-// 	if (!*list)
-// 		*list = ft_calloc(sizeof(t_env_var), 1); //replace with protected malloc
-// 	else
-// 	{
-// 		*list->next = ft_calloc(sizeof(t_env_var), 1); //ditto
-// 		*list->next->prev = *list;
-// 		*list = *list->next;
-// 	}
-// 	if (!key || !value)
-// 		printf("SUBSTRING ERROR IN ENVIR *LIST");
-// 	*list->key = key;
-// 	*list->value = value;
-// 	return (*list);
-// }
-
-// t_env_var	list_first(t_env_var *list)
-// {
-// 	while (list->prev)
-// 		list = list->prev;
-// }
-
-t_env_var	*make_env_node(t_env_var *list, char *key, char *value)
+void	add_env_node_to_list(t_env_var **list, char *key, char *value)
 {
-	if (!list)
-		list = ft_calloc(sizeof(t_env_var), 1); //replace with protected malloc
-	else
-	{
-		while (list->next)
-			list = list->next;
-		list->next = ft_calloc(sizeof(t_env_var), 1); //ditto
-		list = list->next;
-	}
+	t_env_var	*last;
+	t_env_var	*new;
+
 	if (!key || !value)
 		printf("SUBSTRING ERROR IN ENVIR LIST");
-	list->key = key;
-	list->value = value;
-	return (list);
+	new = ft_calloc(sizeof(t_env_var), 1);
+	new->key = key;
+	new->value = value;
+	if (!list)
+		*list = new;
+	else
+	{
+		last = *list;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
 }
 
-void	add_env_var_to_list(char *env_line, t_env_var *list)
+void	add_list_node_from_env_variable(char *env_line, t_env_var **list)
 {
 	int		key_length;
 	int		val_length;
@@ -70,10 +50,10 @@ void	add_env_var_to_list(char *env_line, t_env_var *list)
 	while (env_line[key_length + 1 + val_length])
 		val_length++;
 	value = ft_substr(env_line, key_length + 1, val_length);
-	make_env_node(list, key, value);
+	add_env_node_to_list(list, key, value);
 }
 
-t_env_var	*make_envir_list(char **envp)
+t_env_var	*parse_envp(char **envp)
 {
 	int			i;
 	t_env_var	*list;
@@ -82,12 +62,12 @@ t_env_var	*make_envir_list(char **envp)
 	list = NULL;
 	while (envp[i])
 	{
-		add_env_var_to_list(envp[i], list);
+		add_list_node_from_env_variable(envp[i], &list);
 		printf("value = %s\n", list->value);
 		printf("key %i = %s", i, list->key);
 		i++;
 	}
-	return (list_first(list));
+	return (list);
 }
 
 
@@ -96,6 +76,6 @@ char	*get_env_value(char *key, t_env_var *list)
 	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
 		list = list->next;
 	if (!list)
-		return (ft_strdup(""));
+		return (NULL);
 	return (list->value);
 }

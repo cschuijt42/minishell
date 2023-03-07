@@ -9,6 +9,7 @@ LINKFLAGS 		?= -I include -I LIBFT/include
 #sources and objects -------------
 
 SOURCEFILES	:=	main.c \
+								environment.c \
 								lexing.c \
 								lexing_utils.c \
 								lexing_condensing.c \

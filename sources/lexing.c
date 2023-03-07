@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   old_lexing.c                                       :+:    :+:            */
+/*   lexing.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "lexing.h"
-#include "h_colors.h"
-#include "libft.h"
 
 int	pipe_or_redirect_token(char *input, int i, t_lexnode **token_list)
 {
@@ -87,7 +85,7 @@ int	read_quote_mode(char *str, char closing_quote, int i, \
 		i++;
 	}
 	if (str[i] == '\0')
-		temp_error("Unclosed quote in input");
+		error_exit("Unclosed quote in input", 1);
 	text = ft_substr(str, start, i - start);
 	add_nested_node_to_lexer_output(text, token_plain_text, token_list);
 	if (str[i] == '$')

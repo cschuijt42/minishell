@@ -12,7 +12,6 @@
 
 #include "lexing.h"
 #include "parsing.h"
-#include "libft.h"
 
 t_command	*build_command_node(t_lexnode **input);
 void		add_command_node_to_tree(t_command *new_command, t_command **tree);
@@ -34,7 +33,7 @@ t_command	*build_command_tree(t_lexnode *input)
 	command_tree = NULL;
 	current_lexed = input;
 	if (current_lexed && current_lexed->token_type == token_pipe)
-		temp_error("Loose pipe at start of command");
+		error_exit("Loose pipe at start of command", 1);
 	while (current_lexed)
 	{
 		if (current_lexed->token_type == token_pipe)
@@ -43,7 +42,7 @@ t_command	*build_command_tree(t_lexnode *input)
 		add_command_node_to_tree(current_node, &command_tree);
 		if (!(current_node->arguments) && !(current_node->target) && \
 			!(current_node->redirects))
-			temp_error("Empty node in command tree (loose pipe?)");
+			error_exit("Empty node in command tree (loose pipe?)", 1);
 	}
 	return (command_tree);
 }
@@ -125,7 +124,7 @@ void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command)
 	// This check happens before anything is allocated so cleaning up
 	// the tree should be easy enough from here
 	if (!(*lexnode)->next || (*lexnode)->next->token_type != token_plain_text)
-		temp_error("No text token after redirect");
+		error_exit("No text token after redirect", 1);
 	new_redirect = ft_calloc(1, sizeof(t_redirect));
 	new_redirect->type = (*lexnode)->token_type;
 	new_redirect->target = (*lexnode)->next->value;

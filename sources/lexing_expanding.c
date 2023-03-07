@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
 #include "lexing.h"
 
 static int	is_whitespace(char c)
@@ -23,7 +22,9 @@ void	expand_variable_in_quotes(char *var_name, t_lexnode **token_list)
 {
 	char	*var_value;
 
-	var_value = value_for_variable(var_name);
+	var_value = get_env_variable(var_name);
+	if (!var_value)
+		return ;
 	add_nested_node_to_lexer_output(var_value, token_plain_text, token_list);
 	free(var_value);
 }
@@ -33,7 +34,9 @@ void	expand_variable(char *var_name, t_lexnode **token_list, int i)
 	char	*var_value;
 	int		start;
 
-	var_value = value_for_variable(var_name);
+	var_value = get_env_variable(var_name);
+	if (!var_value)
+		return ;
 	start = i;
 	while (var_value[i] && !is_whitespace(var_value[i]))
 		i++;

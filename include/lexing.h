@@ -12,7 +12,7 @@
 
 #ifndef LEXING_H
 # define LEXING_H
-# include "main.h"
+# include "minishell.h"
 
 t_lexnode	*lexer(char *input);
 void		error_exit(char *str, int err_nbr);

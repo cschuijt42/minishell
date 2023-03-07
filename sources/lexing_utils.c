@@ -12,11 +12,8 @@
 
 #include "lexing.h"
 #include "h_colors.h"
-#include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <errno.h>
 
 void	error_exit(char *str, int err_nbr)
 {
@@ -76,7 +73,7 @@ void	add_nested_node_to_lexer_output(char *content, int token_type, \
 	new_node->token_type = token_type;
 	new_node->value = content;
 	if (!(*token_list))
-		temp_error("Tried to add nested node with nothing in list");
+		error_exit("Tried to add nested node with nothing in list", 1);
 	else
 	{
 		last_node = *token_list;

@@ -12,7 +12,7 @@
 
 #ifndef PARSING_H
 # define PARSING_H
-# include "main.h"
+# include "minishell.h"
 
 t_command	*build_command_tree(t_lexnode *input);
 

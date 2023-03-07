@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
 #include "lexing.h"
 
 void	condense_lexer_output(t_lexnode **token_list)
