@@ -13,12 +13,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "libft.h"
+# include "libft.h"
 
 typedef struct s_env_list
 {
 	char				*key;
 	char				*value;
 	struct s_env_list	*next;
-}	t_envir_var;
+}	t_env_var;
 #endif

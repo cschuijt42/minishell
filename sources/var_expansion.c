@@ -14,14 +14,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-t_envir_var	*make_node(t_envir_var *list, char *key, char *value)
+// t_env_var	*make_node(t_env_var **list, char *key, char *value)
+// {
+// 	if (!*list)
+// 		*list = ft_calloc(sizeof(t_env_var), 1); //replace with protected malloc
+// 	else
+// 	{
+// 		*list->next = ft_calloc(sizeof(t_env_var), 1); //ditto
+// 		*list->next->prev = *list;
+// 		*list = *list->next;
+// 	}
+// 	if (!key || !value)
+// 		printf("SUBSTRING ERROR IN ENVIR *LIST");
+// 	*list->key = key;
+// 	*list->value = value;
+// 	return (*list);
+// }
+
+// t_env_var	list_first(t_env_var *list)
+// {
+// 	while (list->prev)
+// 		list = list->prev;
+// }
+
+t_env_var	*make_env_node(t_env_var *list, char *key, char *value)
 {
 	if (!list)
-		list = ft_calloc(sizeof(t_envir_var), 1); //replace with protected malloc
+		list = ft_calloc(sizeof(t_env_var), 1); //replace with protected malloc
 	else
 	{
-		list->next = ft_calloc(sizeof(t_envir_var), 1); //ditto
-		list->next->prev = list;
+		while (list->next)
+			list = list->next;
+		list->next = ft_calloc(sizeof(t_env_var), 1); //ditto
 		list = list->next;
 	}
 	if (!key || !value)
@@ -31,38 +55,42 @@ t_envir_var	*make_node(t_envir_var *list, char *key, char *value)
 	return (list);
 }
 
-t_envir_var	list_first(t_envir_var *list)
+void	add_env_var_to_list(char *env_line, t_env_var list)
 {
-	while (list->prev)
-		list = list->prev;
+	int		key_length;
+	int		val_length;
+	char	*key;
+	char	*value;
+
+	key_length = 0;
+	val_length = 0;
+	while (env_line[key_length] && env_line[key_length] != '=')
+		key_length++;
+	key = ft_substr(env_line, 0, key_length);
+	val_length = i;
+	while (env_line[val_length])
+		val_length++;
+	value = ft_substr(env_line, key_length + 1, val_length);
+	make_env_node(list, key, value);
 }
 
-t_envir_var	*make_envir_list(char **envp)
+t_env_var	*make_envir_list(char **envp)
 {
 	int			i;
-	int			j;
-	int			k;
-	t_envir_var	*list;
+	t_env_var	*list;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	list = NULL;
+	i = 1;
+	list = add_env_var_to_list(env[i], list);;
 	while (envp[i])
 	{
-		while (envp[i][j] && envp[i][j] != '=')
-			j++;
-		k = j;
-		while (envp[i][k])
-			k++;
-		list = make_node(list, ft_substr(envp[i], 0, j), ft_substr(envp[i], j + 1, k));
-		i++;
-		j = 0;
+		add_env_var_to_list(env[i], list);
 		printf("value = %s\n", list->value);
 		printf("key %i = %s", i, list->key);
+		i++;
 	}
 	return (list_first(list));
 }
+
 
 char	*get_env_value(char *key, t_envir_list *list)
 {
@@ -70,24 +98,7 @@ char	*get_env_value(char *key, t_envir_list *list)
 		list = list->next;
 	if (!list)
 		return (NULL);
-	return (ft_strdup(list->value));
+	return (list->value); //changed from strdup as asked ^^
 }
 
 //im assuming we wont ever have a line without =
-
-int	main(int argc, char **argv, char **envp)
-{
-	// char	*env;
-
-	// char *str = "HOME=GAMER\0";
-	// envp = &str;
-	// env = getenv("HOME");
-	// printf("%s\n", env);
-	// while (*envp)
-	// {
-	// 	printf("%s\n", *envp);
-	// 	envp++;
-	// }
-	make_envir_list(envp);
-	return (0);
-}
