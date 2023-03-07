@@ -15,11 +15,13 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <errno.h>
 
-void	temp_error(char *str)
+void	error_exit(char *str, int err_nbr)
 {
-	printf("%s%s\n", C_RED, str);
-	exit(1);
+	dprintf(2, "%s %s \n", C_RED, str); // can't use this
+	exit(err_nbr);
 }
 
 int	is_text_mode_change(char c)

@@ -15,7 +15,7 @@
 # include "main.h"
 
 t_lexnode	*lexer(char *input);
-void		temp_error(char *str);
+void		error_exit(char *str, int err_nbr);
 
 int			is_text_mode_change(char c);
 int			skip_whitespace(char *str, int i);
