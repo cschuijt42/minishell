@@ -36,4 +36,7 @@ int			read_var_mode(char *str, int i, t_lexnode **token_list, \
 void		condense_lexer_output(t_lexnode **token_list);
 void		condense_token(t_lexnode *token);
 
+void		expand_variable_in_quotes(char *var_name, t_lexnode **token_list);
+void		expand_variable(char *var_name, t_lexnode **token_list, int i);
+
 #endif

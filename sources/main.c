@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "h_colors.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +19,6 @@
 #include "lexing.h"
 #include "parsing.h"
 #include "libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 int	g_return_value = 0;
 

@@ -115,10 +115,10 @@ int	read_var_mode(char *str, int i, t_lexnode **token_list, int in_quotes)
 	}
 	if (in_quotes)
 	{
-		add_nested_node_to_lexer_output(var_name, token_quoted_var, token_list);
+		expand_variable_in_quotes(var_name, token_list);
 		return (read_quote_mode(str, '"', i, token_list));
 	}
-	add_nested_node_to_lexer_output(var_name, token_unquoted_var, token_list);
+	expand_variable(var_name, token_list, 0);
 	return (read_text_mode(str, i, token_list, 1));
 }
 
