@@ -15,7 +15,6 @@
 # include "minishell.h"
 
 void	lexer(t_shell *shell, char *input);
-void	error_exit(char *str, int err_nbr);
 
 int		is_text_mode_change(char c);
 int		skip_whitespace(char *str, int i);

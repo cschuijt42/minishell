@@ -14,7 +14,8 @@ SOURCEFILES	:=	main.c \
 								lexing_utils.c \
 								lexing_condensing.c \
 								lexing_expanding.c \
-								parsing.c
+								parsing.c \
+								dir_builtins.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/
