@@ -24,7 +24,7 @@ void	add_env_node_to_list(t_env_var **list, char *key, char *value)
 	new = ft_calloc(sizeof(t_env_var), 1);
 	new->key = key;
 	new->value = value;
-	if (!list)
+	if (!*list)
 		*list = new;
 	else
 	{
@@ -63,15 +63,13 @@ t_env_var	*parse_envp(char **envp)
 	while (envp[i])
 	{
 		add_list_node_from_env_variable(envp[i], &list);
-		printf("value = %s\n", list->value);
-		printf("key %i = %s", i, list->key);
 		i++;
 	}
 	return (list);
 }
 
 
-char	*get_env_value(char *key, t_env_var *list)
+char	*get_env_var_value(char *key, t_env_var *list)
 {
 	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
 		list = list->next;

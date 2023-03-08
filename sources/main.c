@@ -112,12 +112,15 @@ void	print_command_tree(t_command *command_tree)
 // 	}
 // }
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
-	t_lexnode	*tokens;
-	t_command	*command_tree;
-	char		*input;
+	t_shell	*shell;
+	char	*input;
 
+	(void) ac;
+	(void) av;
+	shell = ft_calloc(1, sizeof(t_shell));
+	shell->environment = parse_envp(envp);
 	using_history();
 	while (1)
 	{
@@ -127,15 +130,13 @@ int	main(void)
 			printf("exit\n");
 			break ;
 		}
-		tokens = lexer(input);
-		// print_tokens(tokens);
-		command_tree = build_command_tree(tokens);
-		print_command_tree(command_tree);
+		lexer(shell, input);
+		shell->command_tree = build_command_tree(shell->lexer_output);
+		print_command_tree(shell->command_tree);
 		if (ft_strlen(input))
 			add_history(input);
 		free(input);
 	}
 	// rl_clear_history();
-	// Replace with return value later
 	return (0);
 }

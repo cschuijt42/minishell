@@ -43,8 +43,7 @@ int	skip_whitespace(char *str, int i)
 	return (i);
 }
 
-void	add_node_to_lexer_output(char *content, int token_type, \
-										t_lexnode **token_list)
+void	add_node_to_lexer_output(char *content, int token_type, t_shell *shell)
 {
 	t_lexnode	*new_node;
 	t_lexnode	*last_node;
@@ -52,11 +51,11 @@ void	add_node_to_lexer_output(char *content, int token_type, \
 	new_node = ft_calloc(1, sizeof(t_lexnode));
 	new_node->token_type = token_type;
 	new_node->value = content;
-	if (!(*token_list))
-		*token_list = new_node;
+	if (!(shell->lexer_output))
+		shell->lexer_output = new_node;
 	else
 	{
-		last_node = *token_list;
+		last_node = shell->lexer_output;
 		while (last_node->next)
 			last_node = last_node->next;
 		last_node->next = new_node;
@@ -64,7 +63,7 @@ void	add_node_to_lexer_output(char *content, int token_type, \
 }
 
 void	add_nested_node_to_lexer_output(char *content, int token_type, \
-										t_lexnode **token_list)
+										t_shell *shell)
 {
 	t_lexnode	*new_node;
 	t_lexnode	*last_node;
@@ -72,11 +71,11 @@ void	add_nested_node_to_lexer_output(char *content, int token_type, \
 	new_node = ft_calloc(1, sizeof(t_lexnode));
 	new_node->token_type = token_type;
 	new_node->value = content;
-	if (!(*token_list))
+	if (!(shell->lexer_output))
 		error_exit("Tried to add nested node with nothing in list", 1);
 	else
 	{
-		last_node = *token_list;
+		last_node = shell->lexer_output;
 		while (last_node->next)
 			last_node = last_node->next;
 		while (last_node->tree_next)

@@ -75,7 +75,14 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }	t_env_var;
 
+typedef struct s_shell
+{
+	t_env_var	*environment;
+	t_lexnode	*lexer_output;
+	t_command	*command_tree;
+}	t_shell;
+
 t_env_var	*parse_envp(char **envp);
-char		*get_env_value(char *key, t_env_var *list);
+char		*get_env_var_value(char *key, t_env_var *list);
 
 #endif
