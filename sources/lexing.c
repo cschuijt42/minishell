@@ -78,8 +78,8 @@ int	read_quote_mode(char *str, char closing_quote, int i, t_shell *shell)
 	{
 		if (str[i] == closing_quote)
 			break ;
-		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || \
-								str[i + 1] == '_' || str[i + 1] == '?'))
+		if (closing_quote == '"' && str[i] == '$' && \
+			(ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
 			break ;
 		i++;
 	}

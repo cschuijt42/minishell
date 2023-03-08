@@ -25,9 +25,7 @@ typedef enum tokentypes
 	token_redirect_append,
 	token_pipe,
 	token_flag,
-	token_plain_text,
-	token_unquoted_var,
-	token_quoted_var
+	token_plain_text
 }		t_token;
 
 typedef struct s_lexnode
