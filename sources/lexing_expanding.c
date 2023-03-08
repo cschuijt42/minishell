@@ -25,8 +25,8 @@ void	expand_variable_in_quotes(char *var_name, t_shell *shell)
 	var_value = get_env_var_value(var_name, shell->environment);
 	if (!var_value)
 		return ;
-	add_nested_node_to_lexer_output(var_value, token_plain_text, shell);
-	free(var_value);
+	add_nested_node_to_lexer_output(ft_strdup(var_value), \
+									token_plain_text, shell);
 }
 
 void	expand_variable(char *var_name, t_shell *shell, int i)
