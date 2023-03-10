@@ -135,7 +135,6 @@ int	main(int ac, char **av, char **envp)
 		print_command_tree(shell->command_tree);
 		if (ft_strlen(input))
 			add_history(input);
-		pwd();
 		free(input);
 	}
 	// rl_clear_history();
