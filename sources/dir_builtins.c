@@ -37,8 +37,10 @@ char	*pwd(bool for_printing)
 
 void	cd(char *path)
 {
-	if (!path or !*path)
-		return
+	if (!path)
+		// go to parent dir;
+	if (!*path)
+		return;
 }
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
