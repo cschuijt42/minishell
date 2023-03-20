@@ -15,12 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	error_exit(char *str, int err_nbr)
-{
-	dprintf(2, "%s %s \n", C_RED, str); // can't use this
-	exit(err_nbr);
-}
-
 int	is_text_mode_change(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' || c == '|' || \

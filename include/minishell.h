@@ -85,10 +85,13 @@ t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
 // ----------------- utils ----------------
 
-void		error_exit(char *str, int err_nbr);
 
 // --------------------------------- builtins --------------------------------
 
 char		*pwd(bool for_printing);
-# define MAL_ERR "your malloc failed! D:"
+
+// --------------------------------- temp --------------------------------
+
+void		naive_executor(t_shell *info, char **envp);
+
 #endif

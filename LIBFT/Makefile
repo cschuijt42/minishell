@@ -65,7 +65,9 @@ MEM 		:=	ft_memchr.c \
 						ft_memmove.c \
 						ft_memset.c \
 						ft_bzero.c \
-						ft_calloc.c
+						ft_calloc.c \
+						ptrarr_len.c \
+						safe_alloc.c
 
 PRINT 	:=	ft_putchar_fd.c \
 						ft_putstr_fd.c \
@@ -78,7 +80,8 @@ PRINTF	 :=	ft_printf.c \
 						hex_printers.c \
 						nbr_printers.c \
 
-MISC :=		free_map.c
+MISC :=		free_map.c \
+			error_exit.c
 
 GNLPATH = $(addprefix gnl/, $(GNL))
 PRINTFPATH = $(addprefix printf/, $(PRINTF))

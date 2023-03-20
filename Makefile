@@ -3,7 +3,6 @@
 NAME 			    := minishell
 CC				    := gcc
 COMPIL_FLAGS	?= #-Wall -Wextra -Werror
-DEBUG_FLAGS		?= -g
 LINKFLAGS 		?= -I include -I LIBFT/include
 
 #sources and objects -------------
@@ -15,7 +14,8 @@ SOURCEFILES	:=	main.c \
 								lexing_condensing.c \
 								lexing_expanding.c \
 								parsing.c \
-								dir_builtins.c
+								dir_builtins.c \
+								naive_executor.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/
@@ -23,6 +23,12 @@ OBJ_DIR	:=	objects/
 SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
 OBJS	  :=	$(addprefix $(OBJ_DIR), $(OFILES))
 LIBFT_A :=  ./LIBFT/libft.a
+
+#-----------------debug---------------
+ifdef DEBUG
+COMPIL_FLAGS += -g
+#-fsanitize=address -fno-omit-frame-pointer
+endif
 
 #-----------------targets---------------
 
@@ -48,14 +54,17 @@ $(LIBFT_A) :
 	@printf "$(C_GREEN)Compiling $(C_CYAN)LIBFT \n$(C_RESET)"
 	make -C LIBFT
 
-clean:
+clean :
 	@$(RM) -rf $(OBJ_DIR)
 	@printf "$(C_RED)Files cleaned\n$(C_RESET)"
 
-fclean: clean
+fclean : clean
 	@rm -f $(NAME)
 
-re: fclean all
+re:: fclean all
+
+run : $(NAME)
+	./minishell
 
 .phony : clean fclean all re
 
