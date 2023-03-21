@@ -3,6 +3,13 @@
 NAME 			    := minishell
 CC				    := gcc
 COMPIL_FLAGS	?= #-Wall -Wextra -Werror
+DEBUG_FLAGS		?= -g
+UNAME_S       := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin)
+	READLINEFLAGS := -lreadline -I $(shell brew --prefix readline)/include -L $(shell brew --prefix readline)/lib
+else
+	READLINEFLAGS := -lreadline
+endif
 LINKFLAGS 		?= -I include -I LIBFT/include
 
 #sources and objects -------------
@@ -36,7 +43,7 @@ all : $(NAME)
 
 $(NAME) : $(LIBFT_A) $(OBJS)
 	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
-	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(LIBFT_A) -g -lreadline
+	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A) -g
 	@printf "$(COMP_DONE)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)

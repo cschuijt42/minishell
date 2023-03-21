@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "h_colors.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "minishell.h"
 #include "lexing.h"
 #include "parsing.h"
@@ -53,7 +53,7 @@ void	print_command_tree(t_command *command_tree)
 				printf("%s, ", C_RESET);
 			argument = argument->next;
 		}
-		printf("\n%sRedirects: ", C_RESET);
+		printf("\n%sRedirect: ", C_RESET);
 		redirect = command_tree->redirects;
 		while (redirect)
 		{
@@ -138,6 +138,6 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 		free(input);
 	}
-	// rl_clear_history();
+	rl_clear_history();
 	return (0);
 }
