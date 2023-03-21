@@ -93,21 +93,31 @@ char	**arg_list_to_2dstr(t_argument *head, char *cmd)
 	return (str_arr);
 }
 
-
 //first version works! now the main thing will be the structure of forking and
 // waiting, and ofcourse the pipes
 // not to forget to also work in our dynamic envp list
-void	child_process_command(t_command *command, char **envp, int pipe_fd[2])
+void	child_process_command(t_command *command, char **envp, int piped_from_fd[2])
 {
 	char	**path;
 	char	**args;
 	char	*target;
+	int		pipe_fd[2];
 
 	target = command->target;
 	args = arg_list_to_2dstr(command->arguments, target);
-
-	// if (pipe_fd)
-
+	if (piped_from_fd)
+	{
+		dup2(piped_from_fd[0], 0);
+		close(piped_from_fd[1]);
+	}
+	if (command->next)
+	{
+		pipe(pipe_fd); //add protec
+		if (fork() == 0)
+			child_process_command(command->next, envp, pipe_fd[2]);
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], 1);
+	}
 	if (ft_strchr(target, '/'))
 		execve(target, args, envp);
 	path = find_path(envp, target);
@@ -121,6 +131,7 @@ void	child_process_command(t_command *command, char **envp, int pipe_fd[2])
 		path++;
 	}
 	execve(target, args, envp);
+	error_exit("exec fail", 127);
 }
 
 void	naive_executor(t_shell *shell, char **envp)
@@ -133,7 +144,9 @@ void	naive_executor(t_shell *shell, char **envp)
 	{
 	// if command->pipes_to
 		// pipe(pipe_fd[0]) //add protec
-		child_process_command(command_node, envp, pipe_fd[0])
-
+	// if piped from
+		//
+		child_process_command(command_node, envp, pipe_fd[0]);
+		command_node = command_node->next;
 	}
 }
