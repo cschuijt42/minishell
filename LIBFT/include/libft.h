@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <stdbool.h>
 
+# define MAL_ERR "your malloc failed! D:"
+
 int			ft_isalpha(int c);
 int			ft_isalnum(int c);
 int			ft_isdigit(int c);
@@ -59,6 +61,10 @@ int			ft_printf(const char *str, ...);
 char		*get_next_line(int fd);
 void		ft_print_map(char **map);
 void		free_map(char **map);
+int			ptrarr_len(void **arr);
+void		error_exit(char *str, int err_nbr);
+void		*safe_alloc(int size, int count);
+
 
 typedef struct s_list
 {

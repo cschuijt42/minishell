@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <errno.h>
 
 extern int	g_return_value;
 
@@ -82,5 +83,15 @@ typedef struct s_shell
 
 t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
+// ----------------- utils ----------------
+
+
+// --------------------------------- builtins --------------------------------
+
+char		*pwd(bool for_printing);
+
+// --------------------------------- temp --------------------------------
+
+void		naive_executor(t_shell *info, char **envp);
 
 #endif

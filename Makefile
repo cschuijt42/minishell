@@ -20,7 +20,9 @@ SOURCEFILES	:=	main.c \
 								lexing_utils.c \
 								lexing_condensing.c \
 								lexing_expanding.c \
-								parsing.c
+								parsing.c \
+								dir_builtins.c \
+								naive_executor.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/
@@ -29,13 +31,19 @@ SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
 OBJS	  :=	$(addprefix $(OBJ_DIR), $(OFILES))
 LIBFT_A :=  ./LIBFT/libft.a
 
+#-----------------debug---------------
+ifdef DEBUG
+COMPIL_FLAGS += -g
+#-fsanitize=address -fno-omit-frame-pointer
+endif
+
 #-----------------targets---------------
 
 all : $(NAME)
 
 $(NAME) : $(LIBFT_A) $(OBJS)
 	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
-	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A) -g 
+	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A) -g
 	@printf "$(COMP_DONE)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
@@ -53,14 +61,17 @@ $(LIBFT_A) :
 	@printf "$(C_GREEN)Compiling $(C_CYAN)LIBFT \n$(C_RESET)"
 	make -C LIBFT
 
-clean:
+clean :
 	@$(RM) -rf $(OBJ_DIR)
 	@printf "$(C_RED)Files cleaned\n$(C_RESET)"
 
-fclean: clean
+fclean : clean
 	@rm -f $(NAME)
 
-re: fclean all
+re:: fclean all
+
+run : $(NAME)
+	./minishell
 
 .phony : clean fclean all re
 
