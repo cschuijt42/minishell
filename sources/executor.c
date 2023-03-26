@@ -54,6 +54,22 @@ void	expand_command_target(t_shell *shell, t_command *command)
 	}
 }
 
+// Function to close the current and future commands' heredocs, to
+// prevent them from hanging with other child processes.
+// Every heredoc is a pipe open on the reading end. To prevent these
+// pipes from living longer than necessary, any process they don't
+// belong to should close them in advance.
+// We assume previous heredoc pipes have already been closed in the loop.
+void	clean_up_heredocs(t_command *command)
+{
+	while (command)
+	{
+		if (command->heredoc_pipe)
+			close(command->heredoc_pipe[0]);
+		command = command->next;
+	}
+}
+
 // Actual forking function. The PID gets saved into the command tree if
 // we are in the main process, else we continue with the rest of this
 // function:
@@ -88,6 +104,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	setup_redirects(command);
 	// Setup argument array here.
 	expand_command_target(shell, command);
+	clean_up_heredocs(command);
 	execve(command->target_expanded, arguments, shell->envp);
 	error_exit("Exec fail", 127);
 }
@@ -114,7 +131,6 @@ void	executor(t_shell *shell)
 		if (command->heredoc_pipe)
 		{
 			close(command->heredoc_pipe[0]);
-			close(command->heredoc_pipe[1]);
 		}
 		if (command->prev)
 		{
