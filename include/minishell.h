@@ -92,6 +92,6 @@ char		*pwd(bool for_printing);
 
 // --------------------------------- temp --------------------------------
 
-void		naive_executor(t_shell *info, char **envp);
+void		executor(t_shell *info, char **envp);
 
 #endif

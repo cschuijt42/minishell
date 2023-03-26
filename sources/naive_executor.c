@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   naive_executor.c                                   :+:    :+:            */
+/*   executor.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -96,19 +96,16 @@ char	**arg_list_to_2dstr(t_argument *head, char *cmd)
 //first version works! now the main thing will be the structure of forking and
 // waiting, and ofcourse the pipes
 // not to forget to also work in our dynamic envp list
-void	child_process_command(t_command *command, char **envp, int piped_from_fd[2])
+
+
+void	handle_pipes(t_command *command, char **envp, int prev_pipe_fd[2])
 {
-	char	**path;
-	char	**args;
-	char	*target;
 	int		pipe_fd[2];
 
-	target = command->target;
-	args = arg_list_to_2dstr(command->arguments, target);
-	if (piped_from_fd)
+	if (prev_pipe_fd)
 	{
-		dup2(piped_from_fd[0], 0);
-		close(piped_from_fd[1]);
+		dup2(prev_pipe_fd[0], 0);
+		close(prev_pipe_fd[1]);
 	}
 	if (command->next)
 	{
@@ -118,35 +115,45 @@ void	child_process_command(t_command *command, char **envp, int piped_from_fd[2]
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], 1);
 	}
-	if (ft_strchr(target, '/'))
-		execve(target, args, envp);
-	path = find_path(envp, target);
-	while (*path)
-	{
-		if (access(*path, F_OK | X_OK) == 0)
-		{
-			execve(*path, args, envp);
-			error_exit("exec fail", 127);
-		}
-		path++;
-	}
-	execve(target, args, envp);
+}
+
+void	execve_exit(char *path, char **args, char **envp)
+{
+	execve(path, args, envp);
 	error_exit("exec fail", 127);
 }
 
-void	naive_executor(t_shell *shell, char **envp)
+void	child_process_command(t_command *command, char **envp, int prev_pipe_fd[2])
+{
+	char	**path;
+	char	**args;
+	char	*target;
+
+
+	target = command->target;
+	args = arg_list_to_2dstr(command->arguments, target);
+
+	handle_pipes(command, envp, prev_pipe_fd);
+	if (!ft_strchr(target, '/'))
+	{
+		path = find_path(envp, target);
+		while (*path && access(*path, F_OK | X_OK) == 0)
+			path++;
+		if (access(*path, F_OK | X_OK) == 0)
+			execve_exit(*path, args, envp);
+	}
+	execve_exit(target, args, envp);
+}
+
+void	executor(t_shell *shell, char **envp)
 {
 	t_command	*command_node;
-	int			pipe_fd[2][2];
+
 
 	command_node = shell->command_tree;
 	while (command_node)
 	{
-	// if command->pipes_to
-		// pipe(pipe_fd[0]) //add protec
-	// if piped from
-		//
-		child_process_command(command_node, envp, pipe_fd[0]);
+		child_process_command(command_node, envp, NULL);
 		command_node = command_node->next;
 	}
 }

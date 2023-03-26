@@ -133,7 +133,7 @@ int	main(int ac, char **av, char **envp)
 		lexer(shell, input);
 		shell->command_tree = build_command_tree(shell->lexer_output);
 		print_command_tree(shell->command_tree);
-		naive_executor(shell, envp);
+		executor(shell, envp);
 		if (ft_strlen(input))
 			add_history(input);
 		free(input);
