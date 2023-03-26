@@ -96,6 +96,7 @@ char	**arg_list_to_2dstr(t_argument *head, char *cmd)
 //first version works! now the main thing will be the structure of forking and
 // waiting, and ofcourse the pipes
 // not to forget to also work in our dynamic envp list
+void	child_process_command(t_command *command, char **envp, int prev_pipe_fd[2]);
 
 
 void	handle_pipes(t_command *command, char **envp, int prev_pipe_fd[2])
@@ -123,17 +124,15 @@ void	execve_exit(char *path, char **args, char **envp)
 	error_exit("exec fail", 127);
 }
 
-void	child_process_command(t_command *command, char **envp, int prev_pipe_fd[2])
+void	child_process_command(t_command *cmd, char **envp, int prev_pipe_fd[2])
 {
 	char	**path;
 	char	**args;
 	char	*target;
 
-
-	target = command->target;
-	args = arg_list_to_2dstr(command->arguments, target);
-
-	handle_pipes(command, envp, prev_pipe_fd);
+	target = cmd->target;
+	args = arg_list_to_2dstr(cmd->arguments, target);
+	handle_pipes(cmd, envp, prev_pipe_fd);
 	if (!ft_strchr(target, '/'))
 	{
 		path = find_path(envp, target);
@@ -149,11 +148,36 @@ void	executor(t_shell *shell, char **envp)
 {
 	t_command	*command_node;
 
-
 	command_node = shell->command_tree;
 	while (command_node)
 	{
 		child_process_command(command_node, envp, NULL);
 		command_node = command_node->next;
+	}
+}
+
+void	executor2(t_shell *shell, char **envp)
+{
+	t_command	*command;
+	int			pipe_fd[2];
+	bool		builtin;
+
+	builtin = false; //should we have this done in parser?
+
+	command = shell->command_tree;
+	if (!command->next && builtin == true)
+	{
+		e
+	}
+	while (command)
+	{
+		if (command->next)
+		{
+			pipe(pipe_fd);
+
+		}
+
+		child_process_command(command, envp, NULL);
+		command = command->next;
 	}
 }

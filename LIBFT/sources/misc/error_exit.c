@@ -26,4 +26,3 @@ void	error_exit(char *str, int err_nbr)
 	write(2, C_RESET, ft_strlen(C_RESET));
 	exit(err_nbr);
 }
-
