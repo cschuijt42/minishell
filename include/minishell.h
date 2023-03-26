@@ -49,6 +49,9 @@ typedef struct s_command {
 	char				*target_expanded;
 	struct s_argument	*arguments;
 	struct s_redirect	*redirects;
+	int					heredoc_pipe[2];
+	int					pipe_out[2];
+	pid_t				pid;
 	struct s_command	*next;
 	struct s_command	*prev;
 }	t_command;
@@ -83,12 +86,13 @@ typedef struct s_shell
 
 t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
+
 // ----------------- utils ----------------
 
 
 // --------------------------------- builtins --------------------------------
 
-char		*pwd(bool for_printing);
+char		*pwd(int for_printing);
 
 // --------------------------------- temp --------------------------------
 
