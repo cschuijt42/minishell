@@ -68,8 +68,6 @@ typedef struct s_redirect {
 	struct s_redirect	*next;
 }	t_redirect;
 
-# define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
-
 typedef struct s_env_list
 {
 	char				*key;
@@ -82,7 +80,11 @@ typedef struct s_shell
 	t_env_var	*environment;
 	t_lexnode	*lexer_output;
 	t_command	*command_tree;
+	char		**envp;
+	char		**split_path;
 }	t_shell;
+
+# define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
 
 t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);

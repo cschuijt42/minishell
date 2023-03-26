@@ -13,10 +13,33 @@
 #include "minishell.h"
 #include <unistd.h>
 
+// Loop over redirects in order of appearance, setting them up one by one.
+// It is okay if one overrides another, as long as that results in all 
+// relevant file descriptors being closed.
 void	setup_command_redirects(t_command *command)
 {
+	t_redirect	*redirect;
+
+	redirect = command->redirects;
+	while (redirect)
+	{
+		if (redirect->type == redirect_input)
+			setup_input_redirect(command, redirect); // Write this
+		else if (redirect->type == redirect_output)
+			setup_output_redirect(command, redirect, 0); // Write this
+		else if (redirect->type == redirect_output_append)
+			setup_output_redirect(command, redirect, 1); // Write this
+		else
+			setup_heredoc_redirect(command, redirect); // Write this
+		redirect = redirect->next;
+	}
 }
 
+// Program name expander, should loop over all PATH locations until we
+// find a valid executable to run. If the target contains a slash character,
+// we know the we're dealing with an absolute/relative path and can just
+// copy that to command->target_expanded instead.
+// When executing, we always use command->target_expanded.
 void	expand_command_target(t_shell *shell, t_command *command)
 {
 	char	*target_prefix;
@@ -25,10 +48,22 @@ void	expand_command_target(t_shell *shell, t_command *command)
 		command->target_expanded = ft_strdup(command->target);
 	else
 	{
-		
+		// PATH matching until we find the right executable
+		// Save eventual absolute path in command->target_expanded
+		// Error out if we can't find a match?
 	}
 }
 
+// Actual forking function. The PID gets saved into the command tree if
+// we are in the main process, else we continue with the rest of this
+// function:
+// - If there is a previous command, set up the in-pipe.
+// - If there is a next command, set up the out-pipe.
+// - Set up any redirects we may have to work through, possibly
+//   overriding pipes.
+// - Expand the command name to a full path if necessary.
+// - Set up an array of arguments with the original program name (TODO)
+// - Execve time!
 void	setup_child_process(t_shell *shell, t_command *command)
 {
 	char	**arguments;
@@ -51,25 +86,19 @@ void	setup_child_process(t_shell *shell, t_command *command)
 		close(command->pipe_out[1]);
 	}
 	setup_redirects(command);
+	// Setup argument array here.
 	expand_command_target(shell, command);
 	execve(command->target_expanded, arguments, shell->envp);
 	error_exit("Exec fail", 127);
 }
 
-void	close_last_pipe(t_command *command_tree)
-{
-	t_command	*last_with_pipe;
-
-	if (!command_tree->next)
-		return ;
-	last_with_pipe = command_tree;
-	while (last_with_pipe->next && last_with_pipe->next->next)
-		last_with_pipe = last_with_pipe->next;
-	close(last_with_pipe->pipe_out[0]);
-	close(last_with_pipe->pipe_out[1]);
-}
-
-void	executor(t_shell *shell, char **envp)
+// Main loop. For each command, an out-pipe is created if there is
+// another command to pipe to. Pipes are stored in the command struct,
+// on the command they are piping out of. Once a pipe is no longer needed,
+// it is closed here for the main process, like a heredoc pipe for a process
+// that has already been forked or a pipe between two processes that have
+// already been forked. At the very end, the last remaining pipe is closed.
+void	executor(t_shell *shell)
 {
 	t_command	*command;
 
@@ -94,5 +123,4 @@ void	executor(t_shell *shell, char **envp)
 		}
 		command = command->next;
 	}
-	close_last_pipe(shell->command_tree);
 }
