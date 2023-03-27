@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "execution.h"
 #include <unistd.h>
+#include <sys/wait.h>
+#include <stdio.h>
 
 // Loop over redirects in order of appearance, setting them up one by one.
 // It is okay if one overrides another, as long as that results in all 
@@ -44,29 +46,13 @@ void	expand_command_target(t_shell *shell, t_command *command)
 {
 	char	*target_prefix;
 
-	if (ft_strchr(command->target, "/"))
-		command->target_expanded = ft_strdup(command->target);
+	if (ft_strchr(command->target, '/'))
+		command->target_expanded = command->target;
 	else
 	{
 		// PATH matching until we find the right executable
 		// Save eventual absolute path in command->target_expanded
 		// Error out if we can't find a match?
-	}
-}
-
-// Function to close the current and future commands' heredocs, to
-// prevent them from hanging with other child processes.
-// Every heredoc is a pipe open on the reading end. To prevent these
-// pipes from living longer than necessary, any process they don't
-// belong to should close them in advance.
-// We assume previous heredoc pipes have already been closed in the loop.
-void	clean_up_heredocs(t_command *command)
-{
-	while (command)
-	{
-		if (command->heredoc_pipe)
-			close(command->heredoc_pipe[0]);
-		command = command->next;
 	}
 }
 
@@ -82,8 +68,6 @@ void	clean_up_heredocs(t_command *command)
 // - Execve time!
 void	setup_child_process(t_shell *shell, t_command *command)
 {
-	char	**arguments;
-
 	command->pid = fork();
 	if (command->pid == -1)
 		error_exit("Fork error", 1);
@@ -101,11 +85,11 @@ void	setup_child_process(t_shell *shell, t_command *command)
 		close(command->pipe_out[0]);
 		close(command->pipe_out[1]);
 	}
-	setup_redirects(command);
-	// Setup argument array here.
+	setup_command_redirects(command);
+	setup_arg_array(command);
 	expand_command_target(shell, command);
 	clean_up_heredocs(command);
-	execve(command->target_expanded, arguments, shell->envp);
+	execve(command->target_expanded, command->arg_array, shell->envp);
 	error_exit("Exec fail", 127);
 }
 
@@ -115,7 +99,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 // it is closed here for the main process, like a heredoc pipe for a process
 // that has already been forked or a pipe between two processes that have
 // already been forked. At the very end, the last remaining pipe is closed.
-void	executor(t_shell *shell)
+void	execute_commands(t_shell *shell)
 {
 	t_command	*command;
 
@@ -128,7 +112,7 @@ void	executor(t_shell *shell)
 				error_exit("Pipe failure", 1);
 		}
 		setup_child_process(shell, command);
-		if (command->heredoc_pipe)
+		if (command->heredoc_pipe[0])
 		{
 			close(command->heredoc_pipe[0]);
 		}
@@ -139,4 +123,20 @@ void	executor(t_shell *shell)
 		}
 		command = command->next;
 	}
+}
+
+void	executor(t_shell *shell)
+{
+	t_command	*command;
+	int			return_value;
+
+	// process_heredocs
+	execute_commands(shell);
+	command = shell->command_tree;
+	while (command)
+	{
+		waitpid(command->pid, &return_value, 0);
+		command = command->next;
+	}
+	printf("Return value: %d", return_value);
 }

@@ -22,7 +22,9 @@ SOURCEFILES	:=	main.c \
 								lexing_expanding.c \
 								parsing.c \
 								dir_builtins.c \
-								naive_executor.c
+								executor.c \
+								execution_helpers.c \
+								redirects.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/
@@ -30,6 +32,7 @@ OBJ_DIR	:=	objects/
 SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
 OBJS	  :=	$(addprefix $(OBJ_DIR), $(OFILES))
 LIBFT_A :=  ./LIBFT/libft.a
+LIBFT_H :=  ./LIBFT/include/libft.h
 
 #-----------------debug---------------
 ifdef DEBUG
@@ -57,7 +60,7 @@ objects :
 $(OBJ_DIR) :
 	@mkdir $(OBJ_DIR)
 
-$(LIBFT_A) :
+$(LIBFT_A) : $(LIBFT_H)
 	@printf "$(C_GREEN)Compiling $(C_CYAN)LIBFT \n$(C_RESET)"
 	make -C LIBFT
 

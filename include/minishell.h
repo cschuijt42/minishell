@@ -27,7 +27,7 @@ typedef enum tokentypes
 	token_pipe,
 	token_flag,
 	token_plain_text
-}		t_token;
+}	t_token;
 
 typedef struct s_lexnode
 {
@@ -54,6 +54,7 @@ typedef struct s_command {
 	pid_t				pid;
 	struct s_command	*next;
 	struct s_command	*prev;
+	char				**arg_array;
 }	t_command;
 
 typedef struct s_argument {
@@ -98,6 +99,6 @@ char		*pwd(int for_printing);
 
 // --------------------------------- temp --------------------------------
 
-void		naive_executor(t_shell *info, char **envp);
+void		executor(t_shell *shell);
 
 #endif
