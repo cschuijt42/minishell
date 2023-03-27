@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   safe_malloc.c                                      :+:    :+:            */
+/*   safe_alloc.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -25,6 +25,6 @@ void	*safe_alloc(int size, int count)
 
 	heap_ptr = ft_calloc((size_t)size, (size_t)count);
 	if (!heap_ptr)
-		error_exit(MAL_ERR, 1);
+		error_exit("Malloc error", 1);
 	return (heap_ptr);
 }

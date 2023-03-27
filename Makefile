@@ -24,7 +24,9 @@ SOURCEFILES	:=	main.c \
 								dir_builtins.c \
 								executor.c \
 								execution_helpers.c \
-								redirects.c
+								redirects.c \
+								cleanup.c \
+								path.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/

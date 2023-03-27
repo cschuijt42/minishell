@@ -26,13 +26,13 @@ void	setup_command_redirects(t_command *command)
 	while (redirect)
 	{
 		if (redirect->type == redirect_input)
-			setup_input_redirect(command, redirect); // Write this
+			setup_input_redirect(command, redirect);
 		else if (redirect->type == redirect_output)
-			setup_output_redirect(command, redirect, 0); // Write this
+			setup_output_redirect(command, redirect, 0);
 		else if (redirect->type == redirect_output_append)
-			setup_output_redirect(command, redirect, 1); // Write this
+			setup_output_redirect(command, redirect, 1);
 		else
-			setup_heredoc_redirect(command, redirect); // Write this
+			setup_heredoc_redirect(command, redirect);
 		redirect = redirect->next;
 	}
 }
@@ -128,15 +128,18 @@ void	execute_commands(t_shell *shell)
 void	executor(t_shell *shell)
 {
 	t_command	*command;
-	int			return_value;
+	int			wstatus;
 
 	// process_heredocs
 	execute_commands(shell);
 	command = shell->command_tree;
 	while (command)
 	{
-		waitpid(command->pid, &return_value, 0);
+		if (!command->pid)
+			break ;
+		waitpid(command->pid, &wstatus, 0);
 		command = command->next;
 	}
-	printf("Return value: %d", return_value);
+	g_return_value = WEXITSTATUS(wstatus);
+	printf("\nReturn value: %d\n", g_return_value);
 }

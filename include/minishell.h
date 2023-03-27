@@ -64,7 +64,6 @@ typedef struct s_argument {
 
 typedef struct s_redirect {
 	char				*target;
-	char				*target_expanded;
 	int					type;
 	struct s_redirect	*next;
 }	t_redirect;
@@ -91,6 +90,9 @@ t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
 
 // ----------------- utils ----------------
+
+void		clean_up_execution(t_shell *shell);
+void		regenerate_path_array(t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 
