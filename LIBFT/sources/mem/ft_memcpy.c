@@ -12,6 +12,11 @@
 
 #include "libft.h"
 
+//even though I thought at first this would cause overflow whenever the size
+//  would be bigger than what an unsigned char contains, it actually doesn't
+// matter because we cast the whole pointer to an unsigned char pointer and
+// therefore we only change the bits that belong to that part of memory
+//IE: if it's an Int array it would iterate 4 times for every int it changes
 void	*ft_memcpy(void	*dest, const void	*src, size_t	n)
 {
 	size_t		i;
@@ -26,9 +31,3 @@ void	*ft_memcpy(void	*dest, const void	*src, size_t	n)
 	}
 	return (dest);
 }
-
-//even though I thought at first this would cause overflow whenever the size
-// would be bigger than what an unsigned char contains, it actually doesn't 
-// matter because we cast the whole pointer to an unsigned char pointer and 
-// therefore we only change the bits that belong to that part of memory
-//IE: if it's an Int array it would iterate 4 times for every int it changes

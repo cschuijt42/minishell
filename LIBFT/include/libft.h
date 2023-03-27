@@ -65,6 +65,7 @@ int			ptrarr_len(void **arr);
 void		error_exit(char *str, int err_nbr);
 void		*safe_alloc(int size, int count);
 void		free_array(void **array);
+char		*str_iple_join(char *s1, char *s2, char *s3);
 
 typedef struct s_list
 {

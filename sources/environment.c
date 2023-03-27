@@ -68,7 +68,6 @@ t_env_var	*parse_envp(char **envp)
 	return (list);
 }
 
-
 char	*get_env_var_value(char *key, t_env_var *list)
 {
 	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
