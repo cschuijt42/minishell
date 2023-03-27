@@ -65,7 +65,6 @@ int			ptrarr_len(void **arr);
 void		error_exit(char *str, int err_nbr);
 void		*safe_alloc(int size, int count);
 
-
 typedef struct s_list
 {
 	void			*content;

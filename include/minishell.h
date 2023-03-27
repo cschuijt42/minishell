@@ -92,7 +92,6 @@ char		*get_env_var_value(char *key, t_env_var *list);
 
 // ----------------- utils ----------------
 
-
 // --------------------------------- builtins --------------------------------
 
 char		*pwd(int for_printing);
