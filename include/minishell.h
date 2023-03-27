@@ -27,7 +27,7 @@ typedef enum tokentypes
 	token_pipe,
 	token_flag,
 	token_plain_text
-}		t_token;
+}	t_token;
 
 typedef struct s_lexnode
 {
@@ -49,8 +49,12 @@ typedef struct s_command {
 	char				*target_expanded;
 	struct s_argument	*arguments;
 	struct s_redirect	*redirects;
+	int					heredoc_pipe[2];
+	int					pipe_out[2];
+	pid_t				pid;
 	struct s_command	*next;
 	struct s_command	*prev;
+	char				**arg_array;
 }	t_command;
 
 typedef struct s_argument {
@@ -65,8 +69,6 @@ typedef struct s_redirect {
 	struct s_redirect	*next;
 }	t_redirect;
 
-# define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
-
 typedef struct s_env_list
 {
 	char				*key;
@@ -79,19 +81,24 @@ typedef struct s_shell
 	t_env_var	*environment;
 	t_lexnode	*lexer_output;
 	t_command	*command_tree;
+	char		**envp;
+	char		**split_path;
 }	t_shell;
+
+# define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
 
 t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
+
 // ----------------- utils ----------------
 
 
 // --------------------------------- builtins --------------------------------
 
-char		*pwd(bool for_printing);
+char		*pwd(int for_printing);
 
 // --------------------------------- temp --------------------------------
 
-void		executor(t_shell *info, char **envp);
+void		executor(t_shell *shell);
 
 #endif

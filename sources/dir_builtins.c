@@ -16,7 +16,7 @@
 //changed from void to char * ret so it can be used internally, if u dont like
 // it this way I can also just make 1 only for printing and put the instructions
 // in cd
-char	*pwd(bool for_printing)
+char	*pwd(int for_printing)
 {
 	char	*path;
 

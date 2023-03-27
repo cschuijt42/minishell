@@ -81,7 +81,7 @@ PRINTF	 :=	ft_printf.c \
 						nbr_printers.c \
 
 MISC :=		free_map.c \
-			error_exit.c
+					error_exit.c
 
 GNLPATH = $(addprefix gnl/, $(GNL))
 PRINTFPATH = $(addprefix printf/, $(PRINTF))
@@ -113,7 +113,7 @@ $(NAME): $(OBJ) | $(OBJ_DIR)
 	@ar -rcs $@ $^
 	@printf "$(YELLOW) $@ $(GREEN)(DONE) \n"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)*/%.c | $(OBJ_DIR)
+$(OBJ_DIR)%.o : $(SRC_DIR)*/%.c include/libft.h | $(OBJ_DIR)
 	@$(CC) -c $<  -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS)
 	@printf "$(BLUE) $(notdir $@) $(GREEN) (DONE) $(BLUE)$(C_RESET)\n"
 

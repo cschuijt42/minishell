@@ -112,6 +112,12 @@ void	print_command_tree(t_command *command_tree)
 // 	}
 // }
 
+void	clean_up_shell(t_shell *shell)
+{
+	shell->command_tree = NULL;
+	shell->lexer_output = NULL;
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
@@ -121,6 +127,7 @@ int	main(int ac, char **av, char **envp)
 	(void) av;
 	shell = ft_calloc(1, sizeof(t_shell));
 	shell->environment = parse_envp(envp);
+	shell->envp = envp;
 	using_history();
 	while (1)
 	{
@@ -133,10 +140,11 @@ int	main(int ac, char **av, char **envp)
 		lexer(shell, input);
 		shell->command_tree = build_command_tree(shell->lexer_output);
 		print_command_tree(shell->command_tree);
-		executor(shell, envp);
+		executor(shell);
 		if (ft_strlen(input))
 			add_history(input);
 		free(input);
+		clean_up_shell(shell);
 	}
 	rl_clear_history();
 	return (0);
