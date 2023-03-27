@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 // Loop over redirects in order of appearance, setting them up one by one.
-// It is okay if one overrides another, as long as that results in all 
+// It is okay if one overrides another, as long as that results in all
 // relevant file descriptors being closed.
 void	setup_command_redirects(t_command *command)
 {
@@ -45,16 +45,32 @@ void	setup_command_redirects(t_command *command)
 void	expand_command_target(t_shell *shell, t_command *command)
 {
 	char	*target_prefix;
+	char	*path_match;
+	size_t	i;
 
 	if (ft_strchr(command->target, '/'))
-		command->target_expanded = command->target;
-	else
 	{
-		// PATH matching until we find the right executable
-		// Save eventual absolute path in command->target_expanded
-		// Error out if we can't find a match?
+		command->target_expanded = command->target;
+		return ;
 	}
+	i = 0;
+	while (shell->split_path[i])
+	{
+		path_match = str_iple_join(shell->split_path[i], \
+									"/", command->target);
+		if (access(path_match, F_OK | X_OK) == 0)
+		{
+			command->target_expanded = path_match;
+			return ;
+		}
+		free(path_match);
+		i++;
+	}
+	error_exit("no executable found", 404);
 }
+	// PATH matching until we find the right executable
+	// Save eventual absolute path in command->target_expanded
+	// Error out if we can't find a match?
 
 // Actual forking function. The PID gets saved into the command tree if
 // we are in the main process, else we continue with the rest of this
@@ -140,3 +156,8 @@ void	executor(t_shell *shell)
 	}
 	printf("Return value: %d", return_value);
 }
+
+// todo
+// 1redirect
+// 2 path splitting (casper)
+// 3 path + arg checking

@@ -55,6 +55,9 @@ void		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(char *s, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
+
+
+// -----------------aditions------------------
 void		str_reveverse(char *str);
 bool		ft_strrcmp(char *str1, char *str2, size_t n);
 int			ft_printf(const char *str, ...);
@@ -64,6 +67,7 @@ void		free_map(char **map);
 int			ptrarr_len(void **arr);
 void		error_exit(char *str, int err_nbr);
 void		*safe_alloc(int size, int count);
+char		*str_iple_join(char *s1, char *s2, char *s3);
 
 typedef struct s_list
 {

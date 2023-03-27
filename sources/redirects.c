@@ -15,6 +15,8 @@
 void	setup_input_redirect(t_command *command, t_redirect *redirect)
 {
 	(void) command;
+	// does file exist if not error
+
 	(void) redirect;
 }
 
@@ -23,11 +25,15 @@ void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 {
 	(void) command;
 	(void) redirect;
+	// open(O_CREATE | );
 	(void) append_mode;
+	// if append mode and file exists point fd to end of file
+	//
 }
 
 void	setup_heredoc_redirect(t_command *command, t_redirect *redirect)
 {
 	(void) command;
+	// dup2(command->pipe_out)
 	(void) redirect;
 }
