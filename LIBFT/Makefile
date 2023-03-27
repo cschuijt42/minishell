@@ -111,7 +111,7 @@ all: $(NAME)
 $(NAME): $(OBJ) | $(OBJ_DIR)
 	@printf "$(C_LORANGE)\n BUILDING LIBRARY \n"
 	@ar -rcs $@ $^
-	@printf "$(YELLOW) $@ $(GREEN)(DONE) \n"
+	@printf "$(YELLOW) $@ $(GREEN)(DONE)$(C_RESET) \n"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)*/%.c include/libft.h | $(OBJ_DIR)
 	@$(CC) -c $<  -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS)
