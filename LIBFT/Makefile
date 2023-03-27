@@ -81,7 +81,8 @@ PRINTF	 :=	ft_printf.c \
 						nbr_printers.c \
 
 MISC :=		free_map.c \
-					error_exit.c
+					error_exit.c \
+					free_array.c
 
 GNLPATH = $(addprefix gnl/, $(GNL))
 PRINTFPATH = $(addprefix printf/, $(PRINTF))

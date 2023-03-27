@@ -64,6 +64,7 @@ void		free_map(char **map);
 int			ptrarr_len(void **arr);
 void		error_exit(char *str, int err_nbr);
 void		*safe_alloc(int size, int count);
+void		free_array(void **array);
 
 typedef struct s_list
 {
