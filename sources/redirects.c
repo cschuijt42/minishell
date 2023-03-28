@@ -13,11 +13,10 @@
 #include "execution.h"
 #include <fcntl.h>
 
-void	setup_input_redirect(t_command *command, t_redirect *redirect)
+void	setup_input_redirect(t_redirect *redirect)
 {
 	int	fd;
 
-	(void) command;
 	if (access(redirect->target, F_OK) == -1)
 		error_exit("infile doesn't exist", errno);
 	fd = open(redirect->target, O_RDONLY);
@@ -27,15 +26,12 @@ void	setup_input_redirect(t_command *command, t_redirect *redirect)
 	close(fd);
 }
 
-
 // do we want protection on our dups and closes?
-void	setup_output_redirect(t_command *command, t_redirect *redirect, \
-								int append_mode)
+void	setup_output_redirect(t_redirect *redirect)
 {
 	int		fd;
 
-	(void) command;
-	if (append_mode)
+	if (redirect->type == redirect_output_append)
 		fd = open(redirect->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
 		fd = open(redirect->target, O_CREAT | O_WRONLY, 0644);
@@ -45,7 +41,7 @@ void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 	close(fd);
 }
 
-void	setup_heredoc_redirect(t_command *command, t_redirect *redirect)
+void	setup_heredoc_redirect(t_command *command)
 {
 	dup2(command->heredoc_pipe[0], 0);
 }

@@ -17,9 +17,8 @@
 void	clean_up_heredocs(t_command *command);
 void	setup_arg_array(t_command *command);
 
-void	setup_input_redirect(t_command *command, t_redirect *redirect);
-void	setup_output_redirect(t_command *command, t_redirect *redirect, \
-								int append_mode);
-void	setup_heredoc_redirect(t_command *command, t_redirect *redirect);
+void	setup_input_redirect(t_redirect *redirect);
+void	setup_output_redirect(t_redirect *redirect);
+void	setup_heredoc_redirect(t_command *command);
 
 #endif

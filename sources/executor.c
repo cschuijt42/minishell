@@ -26,13 +26,12 @@ void	setup_command_redirects(t_command *command)
 	while (redirect)
 	{
 		if (redirect->type == redirect_input)
-			setup_input_redirect(command, redirect);
-		else if (redirect->type == redirect_output)
-			setup_output_redirect(command, redirect, 0);
-		else if (redirect->type == redirect_output_append)
-			setup_output_redirect(command, redirect, 1);
+			setup_input_redirect(redirect);
+		else if (redirect->type == redirect_output || \
+					redirect->type == redirect_output_append)
+			setup_output_redirect(redirect);
 		else
-			setup_heredoc_redirect(command, redirect);
+			setup_heredoc_redirect(command);
 		redirect = redirect->next;
 	}
 }
