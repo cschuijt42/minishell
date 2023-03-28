@@ -29,7 +29,7 @@ void	setup_input_redirect(t_command *command, t_redirect *redirect)
 }
 
 
-// do we want protection on our opens and dups?
+// do we want protection on our dups and closes?
 void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 								int append_mode)
 {
