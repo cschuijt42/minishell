@@ -19,8 +19,7 @@ void	setup_input_redirect(t_command *command, t_redirect *redirect)
 
 	(void) command;
 	if (access(redirect->target, F_OK) == -1)
-		error_exit("file doesn't exist", errno);
-	// specefic errors for not exist or no permisison?
+		error_exit("infile doesn't exist", errno);
 	fd = open(redirect->target, O_RDONLY);
 	if (fd == -1)
 		error_exit("can't open infile", errno);
