@@ -15,6 +15,7 @@
 void	setup_input_redirect(t_command *command, t_redirect *redirect)
 {
 	(void) command;
+	if (access(redirect->target, F_OK | R_OK))
 	// does file exist if not error
 
 	(void) redirect;
@@ -23,9 +24,16 @@ void	setup_input_redirect(t_command *command, t_redirect *redirect)
 void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 								int append_mode)
 {
+	int		fd;
+	mode_t	mode;
+
 	(void) command;
 	(void) redirect;
-	// open(O_CREATE | );
+	mode =
+	if (append_mode)
+		fd = open(O_CREATE | O_APPEND);
+	else
+		fd = open(O_CREATE | )
 	(void) append_mode;
 	// if append mode and file exists point fd to end of file
 	//
