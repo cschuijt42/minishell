@@ -146,7 +146,7 @@ void	executor(t_shell *shell)
 	t_command	*command;
 	int			wstatus;
 
-	// process_heredocs
+	setup_all_heredocs(shell);
 	execute_commands(shell);
 	command = shell->command_tree;
 	while (command)
