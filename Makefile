@@ -10,7 +10,7 @@ ifeq ($(UNAME_S), Darwin)
 else
 	READLINEFLAGS := -lreadline
 endif
-LINKFLAGS 		?= -I include -I LIBFT/include
+LINKFLAGS 		?= -I include -I LIBFT/include -g
 
 #sources and objects -------------
 
@@ -26,7 +26,8 @@ SOURCEFILES	:=	main.c \
 								execution_helpers.c \
 								redirects.c \
 								cleanup.c \
-								path.c
+								path.c \
+								heredoc.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/

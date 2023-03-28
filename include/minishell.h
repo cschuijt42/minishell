@@ -88,6 +88,7 @@ typedef struct s_shell
 
 t_env_var	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_var *list);
+void		setup_all_heredocs(t_shell *shell);
 
 // ----------------- utils ----------------
 

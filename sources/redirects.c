@@ -33,7 +33,5 @@ void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 
 void	setup_heredoc_redirect(t_command *command, t_redirect *redirect)
 {
-	(void) command;
-	// dup2(command->pipe_out)
-	(void) redirect;
+	dup2(command->heredoc_pipe[0], 0);
 }

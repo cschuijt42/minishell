@@ -121,13 +121,13 @@ void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command)
 	t_redirect	*last_redirect;
 	t_redirect	*new_redirect;
 
-	// This check happens before anything is allocated so cleaning up
-	// the tree should be easy enough from here
 	if (!(*lexnode)->next || (*lexnode)->next->token_type != token_plain_text)
 		error_exit("No text token after redirect", 1);
 	new_redirect = ft_calloc(1, sizeof(t_redirect));
 	new_redirect->type = (*lexnode)->token_type;
-	new_redirect->target = (*lexnode)->next->value;
+	new_redirect->target = ft_strdup((*lexnode)->next->value);
+	if (!new_redirect->target)
+		error_exit("Malloc error", 1);
 	if (command->redirects == NULL)
 		command->redirects = new_redirect;
 	else

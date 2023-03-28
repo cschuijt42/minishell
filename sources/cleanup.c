@@ -35,7 +35,8 @@ void	clean_up_redirect_list(t_redirect *redirects)
 	current = redirects;
 	while (current)
 	{
-		free(current->target);
+		if (current->target)
+			free(current->target);
 		next = current->next;
 		free(current);
 		current = next;
