@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 void	cycle_heredoc_pipe(t_command *command)
 {
@@ -29,7 +29,8 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 	char	*prompt;
 
 	cycle_heredoc_pipe(command);
-	asprintf(&prompt, "heredoc[%d]>", i);
+	prompt = safe_alloc(sizeof(char), 15);
+	sprintf(prompt, "heredoc[%d]>", i);
 	while (1)
 	{
 		input = readline(prompt);
