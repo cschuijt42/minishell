@@ -11,32 +11,39 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <fcntl.h>
 
 void	setup_input_redirect(t_command *command, t_redirect *redirect)
 {
-	(void) command;
-	if (access(redirect->target, F_OK | R_OK))
-	// does file exist if not error
+	int	fd;
 
-	(void) redirect;
+	(void) command;
+	if (access(redirect->target, F_OK) == -1)
+		error_exit("file doesn't exist", errno);
+	// specefic errors for not exist or no permisison?
+	fd = open(redirect->target, O_RDONLY);
+	if (fd == -1)
+		error_exit("can't open infile", errno);
+	dup2(fd, 0);
+	close(fd);
 }
 
+
+// do we want protection on our opens and dups?
 void	setup_output_redirect(t_command *command, t_redirect *redirect, \
 								int append_mode)
 {
 	int		fd;
-	mode_t	mode;
 
 	(void) command;
-	(void) redirect;
-	mode =
 	if (append_mode)
-		fd = open(O_CREATE | O_APPEND);
+		fd = open(redirect->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
-		fd = open(O_CREATE | )
-	(void) append_mode;
-	// if append mode and file exists point fd to end of file
-	//
+		fd = open(redirect->target, O_CREAT | O_WRONLY, 0644);
+	if (fd == -1)
+		error_exit("cant open outfile", errno);
+	dup2(fd, 1);
+	close(fd);
 }
 
 void	setup_heredoc_redirect(t_command *command, t_redirect *redirect)
