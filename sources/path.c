@@ -14,7 +14,7 @@
 
 void	regenerate_path_array(t_shell *shell)
 {
-	t_env_var	*path_variable;
+	t_env_list	*path_variable;
 
 	path_variable = shell->environment;
 	while (path_variable && ft_strncmp("PATH", path_variable->key, 5))

@@ -14,14 +14,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	add_env_node_to_list(t_env_var **list, char *key, char *value)
+void	add_env_node_to_list(t_env_list **list, char *key, char *value)
 {
-	t_env_var	*last;
-	t_env_var	*new;
+	t_env_list	*last;
+	t_env_list	*new;
 
 	if (!key || !value)
-		printf("SUBSTRING ERROR IN ENVIR LIST");
-	new = ft_calloc(sizeof(t_env_var), 1);
+		dprintf(2, "SUBSTRING ERROR IN ENVIR LIST");
+	new = ft_calloc(sizeof(t_env_list), 1);
 	new->key = key;
 	new->value = value;
 	if (!*list)
@@ -35,7 +35,7 @@ void	add_env_node_to_list(t_env_var **list, char *key, char *value)
 	}
 }
 
-void	add_list_node_from_env_variable(char *env_line, t_env_var **list)
+void	add_list_node_from_env_variable(char *env_line, t_env_list **list)
 {
 	int		key_length;
 	int		val_length;
@@ -53,10 +53,10 @@ void	add_list_node_from_env_variable(char *env_line, t_env_var **list)
 	add_env_node_to_list(list, key, value);
 }
 
-t_env_var	*parse_envp(char **envp)
+t_env_list	*parse_envp(char **envp)
 {
 	int			i;
-	t_env_var	*list;
+	t_env_list	*list;
 
 	i = 0;
 	list = NULL;
@@ -68,7 +68,7 @@ t_env_var	*parse_envp(char **envp)
 	return (list);
 }
 
-char	*get_env_var_value(char *key, t_env_var *list)
+char	*get_env_var_value(char *key, t_env_list *list)
 {
 	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
 		list = list->next;
@@ -76,3 +76,4 @@ char	*get_env_var_value(char *key, t_env_var *list)
 		return (NULL);
 	return (list->value);
 }
+

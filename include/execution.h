@@ -21,4 +21,6 @@ void	setup_input_redirect(t_redirect *redirect);
 void	setup_output_redirect(t_redirect *redirect);
 void	setup_heredoc_redirect(t_command *command);
 
+
+bool	is_builtin(t_command *cmd, t_shell *shell);
 #endif

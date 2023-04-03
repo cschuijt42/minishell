@@ -43,7 +43,6 @@ void	setup_command_redirects(t_command *command)
 // When executing, we always use command->target_expanded.
 void	expand_command_target(t_shell *shell, t_command *command)
 {
-	char	*target_prefix;
 	char	*path_match;
 	size_t	i;
 
@@ -145,9 +144,12 @@ void	executor(t_shell *shell)
 	t_command	*command;
 	int			wstatus;
 
-	setup_all_heredocs(shell);
-	execute_commands(shell);
 	command = shell->command_tree;
+	setup_all_heredocs(shell);
+	if (!command->next && is_builtin(command))
+		return ;
+//probably needs a bit more for redirects but just for now so i can test
+	execute_commands(shell);
 	while (command)
 	{
 		if (!command->pid)

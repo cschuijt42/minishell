@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <errno.h>
+# include "h_colors.h"
 
 extern int	g_return_value;
 
@@ -73,11 +74,11 @@ typedef struct s_env_list
 	char				*key;
 	char				*value;
 	struct s_env_list	*next;
-}	t_env_var;
+}	t_env_list;
 
 typedef struct s_shell
 {
-	t_env_var	*environment;
+	t_env_list	*environment;
 	t_lexnode	*lexer_output;
 	t_command	*command_tree;
 	char		**envp;
@@ -86,8 +87,8 @@ typedef struct s_shell
 
 # define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
 
-t_env_var	*parse_envp(char **envp);
-char		*get_env_var_value(char *key, t_env_var *list);
+t_env_list	*parse_envp(char **envp);
+char		*get_env_var_value(char *key, t_env_list *list);
 void		setup_all_heredocs(t_shell *shell);
 
 // ----------------- utils ----------------
@@ -98,6 +99,8 @@ void		regenerate_path_array(t_shell *shell);
 // --------------------------------- builtins --------------------------------
 
 char		*pwd(int for_printing);
+void		cd(char *path, t_shell *shell);
+
 
 // --------------------------------- temp --------------------------------
 

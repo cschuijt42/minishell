@@ -51,3 +51,24 @@ void	setup_arg_array(t_command *command)
 		current = current->next;
 	}
 }
+
+bool	is_builtin(t_command *cmd, t_shell *shell)
+{
+	char	*name;
+
+	name = cmd->target;
+	if (!ft_strcmp(name, "cd"))
+	{
+		if (cmd->arguments)
+			cd(cmd->arguments->content, shell);
+		else
+			cd(NULL, shell);
+		return (true);
+	}
+	else if (!ft_strcmp(name, "pwd"))
+	{
+		pwd(true);
+		return (true);
+	}
+	return (false);
+}

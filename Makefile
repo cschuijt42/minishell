@@ -1,8 +1,9 @@
 #General----------
 
 NAME 			    := minishell
-CC				    := gcc
-COMPIL_FLAGS	?= #-Wall -Wextra -Werror
+CC				    := cc
+COMPIL_FLAGS	?= -Wall -Wextra
+# COMPIL_FLAGS	+= -Werror
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
