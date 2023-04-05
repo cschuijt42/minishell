@@ -59,7 +59,7 @@ void		str_reverse(char *str);
 bool		ft_strrcmp(char *str1, char *str2, size_t n);
 int			ft_printf(const char *str, ...);
 char		*get_next_line(int fd);
-void		ft_print_map(char **map);
+void		print_2d_charray(char **map);
 void		free_map(char **map);
 int			ptrarr_len(void **arr);
 void		error_exit(char *str, int err_nbr);
@@ -70,8 +70,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 
 typedef struct s_list
 {
-	void			*content;
 	struct s_list	*next;
+	void			*content;
 }				t_list;
 
 t_list		*ft_lstnew(void *content);

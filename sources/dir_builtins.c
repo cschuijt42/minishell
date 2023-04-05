@@ -58,6 +58,13 @@ void	cd(char *path, t_shell *shell)
 		// path = getenv("OLDPWD");
 	return ;
 }
+
+builtin_exit(void)
+{
+	printf("exit\n");
+	exit(0);
+}
+
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
 

@@ -121,7 +121,7 @@ int	main(int ac, char **av, char **envp)
 	(void) av;
 	shell = safe_alloc(1, sizeof(t_shell));
 	shell->environment = parse_envp(envp);
-	shell->envp = envp;
+	shell->envp = env_list_to_arr(shell->environment);
 	regenerate_path_array(shell);
 	using_history();
 	while (1)

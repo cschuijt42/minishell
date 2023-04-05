@@ -77,3 +77,39 @@ char	*get_env_var_value(char *key, t_env_list *list)
 	return (list->value);
 }
 
+void	set_value(char *key, char *value, t_shell *shell)
+{
+	t_env_list	*env;
+
+	env = shell->environment;
+	while (env)
+	{
+		if (ft_strcmp(key, env->key) == 0)
+		{
+			free(env->value);
+			env->value = value;
+		}
+		env = env->next;
+	}
+
+}
+
+char	**env_list_to_arr(t_env_list *list)
+{
+	int			list_size;
+	char		**ret;
+	int			i;
+
+	list_size = ft_lstsize((t_list *)list); //test
+	ret = safe_alloc(sizeof(char *), list_size + 1);
+	i = 0;
+
+	while (i < list_size)
+	{
+		ret[i] = str_iple_join(list->key, "=", list->value);
+		i++;
+		list = list->next;
+	}
+	ret[i] = NULL;
+	return (ret);
+}

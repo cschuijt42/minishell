@@ -74,7 +74,7 @@ PRINT 	:=	ft_putchar_fd.c \
 						ft_putstr_fd.c \
 						ft_putendl_fd.c \
 						ft_putnbr_fd.c \
-						ft_print_map.c
+						print_2d_charray.c
 
 PRINTF	 :=	ft_printf.c \
 						char_printers.c \

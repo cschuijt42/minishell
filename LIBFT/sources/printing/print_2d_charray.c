@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_print_map.c                                     :+:    :+:            */
+/*   print_2d_charray.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	ft_print_map(char **map)
+void	print_2d_charray(char **map)
 {
 	int	i;
 

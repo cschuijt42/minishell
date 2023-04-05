@@ -146,8 +146,8 @@ void	executor(t_shell *shell)
 
 	command = shell->command_tree;
 	setup_all_heredocs(shell);
-	if (!command->next && is_builtin(command))
-		return ;
+	if (!command->next && !command->prev && is_builtin(command, shell))
+		return ;// (scuffed_exec()) ;
 //probably needs a bit more for redirects but just for now so i can test
 	execute_commands(shell);
 	while (command)
@@ -162,6 +162,10 @@ void	executor(t_shell *shell)
 }
 
 // todo
-// 1redirect
 // 2 path splitting (casper)
 // 3 path + arg checking
+
+
+//
+
+
