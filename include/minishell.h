@@ -102,7 +102,7 @@ void		regenerate_path_array(t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 
-char		*pwd(int for_printing);
+char		*pwd(bool for_printing);
 void		cd(char *path, t_shell *shell);
 
 

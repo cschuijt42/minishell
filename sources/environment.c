@@ -19,7 +19,7 @@ void	add_env_node_to_list(t_env_list **list, char *key, char *value)
 	t_env_list	*last;
 	t_env_list	*new;
 
-	if (!key || !value)
+	if (!key)
 		dprintf(2, "SUBSTRING ERROR IN ENVIR LIST");
 	new = ft_calloc(sizeof(t_env_list), 1);
 	new->key = key;
@@ -35,23 +35,6 @@ void	add_env_node_to_list(t_env_list **list, char *key, char *value)
 	}
 }
 
-void	add_list_node_from_env_variable(char *env_line, t_env_list **list)
-{
-	int		key_length;
-	int		val_length;
-	char	*key;
-	char	*value;
-
-	key_length = 0;
-	val_length = 0;
-	while (env_line[key_length] && env_line[key_length] != '=')
-		key_length++;
-	key = ft_substr(env_line, 0, key_length);
-	while (env_line[key_length + 1 + val_length])
-		val_length++;
-	value = ft_substr(env_line, key_length + 1, val_length);
-	add_env_node_to_list(list, key, value);
-}
 
 t_env_list	*parse_envp(char **envp)
 {
@@ -80,36 +63,21 @@ char	*get_env_var_value(char *key, t_env_list *list)
 void	set_value(char *key, char *value, t_shell *shell)
 {
 	t_env_list	*env;
+	size_t		i;
 
 	env = shell->environment;
+	i = 0;
 	while (env)
 	{
 		if (ft_strcmp(key, env->key) == 0)
 		{
 			free(env->value);
 			env->value = value;
+			free(shell->envp[i]);
+			shell->envp[i] = str_iple_join(env->key, "=", env->value);
 		}
 		env = env->next;
-	}
-
-}
-
-char	**env_list_to_arr(t_env_list *list)
-{
-	int			list_size;
-	char		**ret;
-	int			i;
-
-	list_size = ft_lstsize((t_list *)list); //test
-	ret = safe_alloc(sizeof(char *), list_size + 1);
-	i = 0;
-
-	while (i < list_size)
-	{
-		ret[i] = str_iple_join(list->key, "=", list->value);
 		i++;
-		list = list->next;
 	}
-	ret[i] = NULL;
-	return (ret);
 }
+

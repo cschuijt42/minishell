@@ -20,7 +20,7 @@ cd? more like c deez error messages haHA\x1b[0m"
 // it this way I can also just make 1 only for printing and put the instructions
 // in cd
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
-char	*pwd(int for_printing)
+char	*pwd(bool for_printing)
 {
 	char	*path;
 
@@ -39,11 +39,15 @@ char	*pwd(int for_printing)
 // so.. yeah getcwd seems to make this basicly a freebie?
 // Idk if there's edgecases that im not thinking of
 
+
+
 void	cd(char *path, t_shell *shell)
 {
-	char	*prev_path;
+	char	*current_dir;
 
-	prev_path = pwd(false);
+	current_dir = pwd(false);
+	if (access(current_dir, F_OK) != 0)
+
 	if (!path || !*path)
 		path = get_env_var_value("HOME", shell->environment);
 	else if (*path == '-' && !path[1])
@@ -58,11 +62,14 @@ void	cd(char *path, t_shell *shell)
 		// path = getenv("OLDPWD");
 	return ;
 }
+// EDGECASE deleting current dir and then cding
+// solve by access checking first -> if false cd OLDPWD if false cd HOME if false
+// then cmon bro then your minishell wouldnt even be there anymore
 
-builtin_exit(void)
+builtin_exit(int code)
 {
 	printf("exit\n");
-	exit(0);
+	exit(10);
 }
 
 //ok so, cd both starting with dir names and ./dirname should function the same
