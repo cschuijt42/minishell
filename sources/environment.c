@@ -35,7 +35,6 @@ void	add_env_node_to_list(t_env_list **list, char *key, char *value)
 	}
 }
 
-
 t_env_list	*parse_envp(char **envp)
 {
 	int			i;
