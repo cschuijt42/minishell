@@ -55,7 +55,10 @@ void	add_list_node_from_env_variable(char *env_line, t_env_list **list)
 	add_env_node_to_list(list, key, value);
 }
 
-void	export(char *env_line)
+void	export(char *env_line, t_shell *shell)
 {
+	if (!ft_strchr(env_line, (int)'='))
+		{
 
+		}
 }

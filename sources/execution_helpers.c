@@ -72,3 +72,5 @@ bool	is_builtin(t_command *cmd, t_shell *shell)
 	}
 	return (false);
 }
+
+built_

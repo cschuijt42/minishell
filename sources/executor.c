@@ -164,8 +164,3 @@ void	executor(t_shell *shell)
 // todo
 // 2 path splitting (casper)
 // 3 path + arg checking
-
-
-//
-
-
