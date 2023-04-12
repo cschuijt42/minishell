@@ -55,7 +55,7 @@ void	setup_arg_array(t_command *command)
 bool	is_builtin(t_command *cmd, t_shell *shell)
 {
 	char	*name;
-
+	//idk if func ptr array works with different parameters but i mean they should be the same ok i have to pee
 	name = cmd->target;
 	if (!ft_strcmp(name, "cd"))
 	{
@@ -73,4 +73,19 @@ bool	is_builtin(t_command *cmd, t_shell *shell)
 	return (false);
 }
 
-built_
+//strcompares the cmd name to see if its a builtin and returns corresponding
+// index, returns -1 on no index found
+int	builtin_index(char *cmd)
+{
+	char	**builtins;
+	int		index;
+
+	builtins = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+	index = 0;
+	while (builtins[i])
+	{
+		if (ft_strcmp(cmd, builtins) == 0)
+			return (index);
+	}
+	return (-1);
+}
