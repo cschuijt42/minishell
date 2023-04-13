@@ -104,6 +104,9 @@ void		regenerate_path_array(t_shell *shell);
 
 char		*pwd(bool for_printing);
 void		cd(char *path, t_shell *shell);
+int			echo(char *text, t_shell *shell);
+int			export(char *env_line, t_shell *shell);
+int			env(char *hoi, t_shell *shell);
 
 
 // --------------------------------- temp --------------------------------

@@ -47,7 +47,9 @@ void	cd(char *path, t_shell *shell)
 
 	current_dir = pwd(false);
 	if (access(current_dir, F_OK) != 0)
-
+	{
+		printf("hoi"); //go into
+	}
 	if (!path || !*path)
 		path = get_env_var_value("HOME", shell->environment);
 	else if (*path == '-' && !path[1])
@@ -63,15 +65,30 @@ void	cd(char *path, t_shell *shell)
 	return ;
 }
 // EDGECASE deleting current dir and then cding
-// solve by access checking first -> if false cd OLDPWD if false cd HOME if false
+// solve by access checking first->if false cd OLDPWD if false cd HOME if false
 // then cmon bro then your minishell wouldnt even be there anymore
 
-builtin_exit(int code)
+void	builtin_exit(char *code, t_shell *shell)
 {
+	(void)shell; //do we have to free before exiting?
 	printf("exit\n");
+	if (code && *code)
+		exit(ft_atoi(code)); //custom atoi that protects against >230 overflow?
 	exit(10);
 }
 
+int	echo(char *text, t_shell *shell)
+{
+}
+
+int	export(char *env_line, t_shell *shell)
+{
+}
+
+int	env(char *hoi, t_shell *shell)
+{
+
+}
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
 

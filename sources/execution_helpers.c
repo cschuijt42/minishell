@@ -11,6 +11,12 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "minishell.h"
+
+typedef int	(*t_builtin_ptr)(char *, t_shell *);
+
+int	builtin_index(char *cmd);
+int	*setup_single_builtin_redirects(t_command *cmd);
 
 // Function to close the current and future commands' heredocs, to
 // prevent them from hanging with other child processes.
@@ -54,23 +60,34 @@ void	setup_arg_array(t_command *command)
 
 bool	is_builtin(t_command *cmd, t_shell *shell)
 {
-	char	*name;
-	//idk if func ptr array works with different parameters but i mean they should be the same ok i have to pee
-	name = cmd->target;
-	if (!ft_strcmp(name, "cd"))
-	{
-		if (cmd->arguments)
-			cd(cmd->arguments->content, shell);
-		else
-			cd(NULL, shell);
-		return (true);
-	}
-	else if (!ft_strcmp(name, "pwd"))
-	{
-		pwd(true);
-		return (true);
-	}
-	return (false);
+	t_builtin_ptr	*builtins;
+	int				i;
+	int				*temp_std_fd;
+
+	i = builtin_index(cmd->target);
+	if (i == -1)
+		return (false);
+	builtins = safe_alloc(sizeof(t_builtin_ptr), 6);
+	*builtins = (t_builtin_ptr){&echo, &cd, &pwd, &export, &env, &exit};
+	if (cmd->redirects)
+		temp_std_fd = setup_single_builtin_redirects(cmd->redirects);
+	builtins[i](cmd->arg_array[0], shell);
+	free(builtins);
+	dup2(temp_std_fd[0], 0);
+	dup2(temp_std_fd[1], 1);
+	close(temp_std_fd[0]);
+	close(temp_std_fd[1]);
+	return (true);
+}
+
+int	*setup_single_builtin_redirects(t_command *cmd)
+{
+	int	temp_inout[2];
+
+	temp_inout[0] = dup(0);
+	temp_inout[1] = dup(1); //dup protection?
+	setup_command_redirects(cmd);
+	return (temp_inout);
 }
 
 //strcompares the cmd name to see if its a builtin and returns corresponding
@@ -80,12 +97,20 @@ int	builtin_index(char *cmd)
 	char	**builtins;
 	int		index;
 
-	builtins = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+	builtins = safe_alloc(sizeof(char *), 8);
+	*builtins = (char *){"echo", "cd", "pwd", "export", "unset", "env", \
+						"exit", NULL};
 	index = 0;
-	while (builtins[i])
+	while (builtins[index])
 	{
-		if (ft_strcmp(cmd, builtins) == 0)
+		if (ft_strcmp(cmd, builtins[index]) == 0)
+		{
+			free(builtins);
 			return (index);
+		}
 	}
 	return (-1);
 }
+
+//builtin handler thoughts: I feel like the refactor should move the builtin
+// index into the main function, and the last
