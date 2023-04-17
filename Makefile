@@ -6,11 +6,15 @@ COMPIL_FLAGS	?= #-Wall -Wextra -Werror
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	READLINEFLAGS := -lreadline -I $(shell brew --prefix readline)/include -L $(shell brew --prefix readline)/lib
+	READLINEFLAGS := -lreadline -L $(shell brew --prefix readline)/lib
 else
 	READLINEFLAGS := -lreadline
 endif
-LINKFLAGS 		?= -I include -I LIBFT/include -g
+ifeq ($(UNAME_S), Darwin)
+	LINKFLAGS 		?= -I include -I LIBFT/include -I $(shell brew --prefix readline)/include -g
+else
+	LINKFLAGS 		?= -I include -I LIBFT/include -g
+endif
 
 #sources and objects -------------
 
