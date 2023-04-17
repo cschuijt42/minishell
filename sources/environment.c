@@ -79,4 +79,3 @@ void	set_value(char *key, char *value, t_shell *shell)
 		i++;
 	}
 }
-

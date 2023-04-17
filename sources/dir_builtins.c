@@ -20,32 +20,26 @@ cd? more like c deez error messages haHA\x1b[0m"
 // it this way I can also just make 1 only for printing and put the instructions
 // in cd
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
-char	*pwd(bool for_printing)
+void	pwd(char **args, t_shell *shell)
 {
 	char	*path;
 
+	(void)shell;
 	path = getcwd(NULL, 0);
 	if (!path)
 		error_exit(MAL_ERR, errno);
-	if (for_printing)
-	{
-		printf("%s\n", path);
-		//do i need to give a newline??
-		free(path);
-		return (NULL);
-	}
-	return (path);
+	printf("%s\n", path);
+	//do i need to give a newline??
+	free(path);
 }
 // so.. yeah getcwd seems to make this basicly a freebie?
 // Idk if there's edgecases that im not thinking of
 
-
-
-void	cd(char *path, t_shell *shell)
+void	cd(char **path, t_shell *shell)
 {
 	char	*current_dir;
 
-	current_dir = pwd(false);
+	current_dir = getcwd(NULL, 0);
 	if (access(current_dir, F_OK) != 0)
 	{
 		printf("hoi"); //go into
@@ -59,7 +53,6 @@ void	cd(char *path, t_shell *shell)
 				%s\n", C_RED, C_RESET);
 	if (chdir(path) == -1)
 		perror(CHDIR_ERROR);
-
 		// path = getenv("HOME");
 		// path = getenv("OLDPWD");
 	return ;
@@ -68,7 +61,7 @@ void	cd(char *path, t_shell *shell)
 // solve by access checking first->if false cd OLDPWD if false cd HOME if false
 // then cmon bro then your minishell wouldnt even be there anymore
 
-void	builtin_exit(char *code, t_shell *shell)
+void	builtin_exit(char **code, t_shell *shell)
 {
 	(void)shell; //do we have to free before exiting?
 	printf("exit\n");
@@ -77,17 +70,25 @@ void	builtin_exit(char *code, t_shell *shell)
 	exit(10);
 }
 
-int	echo(char *text, t_shell *shell)
+void	echo(char **text, t_shell *shell)
 {
+	(void)text;
+	(void)shell;
 }
 
-int	export(char *env_line, t_shell *shell)
+void	export(char **env_line, t_shell *shell)
 {
+	(void)shell;
+	if (!ft_strchr(env_line, (int) '='))
+	{
+		puts("placeholder");
+	}
 }
 
-int	env(char *hoi, t_shell *shell)
+void	env(char **hoi, t_shell *shell)
 {
-
+	(void)hoi;
+	(void)shell;
 }
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!

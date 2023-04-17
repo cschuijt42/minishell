@@ -21,7 +21,6 @@ char	**env_list_to_arr(t_env_list *list)
 	list_size = ft_lstsize((t_list *)list); //test
 	ret = safe_alloc(sizeof(char *), list_size + 1);
 	i = 0;
-
 	while (i < list_size)
 	{
 		ret[i] = str_iple_join(list->key, "=", list->value);
@@ -53,12 +52,4 @@ void	add_list_node_from_env_variable(char *env_line, t_env_list **list)
 		value = ft_substr(env_line, key_length + 1, val_length);
 	}
 	add_env_node_to_list(list, key, value);
-}
-
-void	export(char *env_line, t_shell *shell)
-{
-	if (!ft_strchr(env_line, (int)'='))
-		{
-
-		}
 }

@@ -146,9 +146,9 @@ void	executor(t_shell *shell)
 
 	command = shell->command_tree;
 	setup_all_heredocs(shell);
-	if (!command->next && !command->prev && is_builtin(command, shell))
-		return ;// (scuffed_exec()) ;
-//probably needs a bit more for redirects but just for now so i can test
+	if (!command->next && !command->prev && single_builtin_executor \
+		(command, shell))
+		return ;
 	execute_commands(shell);
 	while (command)
 	{
@@ -160,7 +160,3 @@ void	executor(t_shell *shell)
 	g_return_value = WEXITSTATUS(wstatus);
 	printf("\nReturn value: %d\n", g_return_value);
 }
-
-// todo
-// 2 path splitting (casper)
-// 3 path + arg checking

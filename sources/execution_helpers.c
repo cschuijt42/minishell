@@ -13,10 +13,11 @@
 #include "execution.h"
 #include "minishell.h"
 
-typedef int	(*t_builtin_ptr)(char *, t_shell *);
+typedef void	(*t_builtin_ptr)(char **, t_shell *);
 
-int	builtin_index(char *cmd);
-int	*setup_single_builtin_redirects(t_command *cmd);
+int		find_builtin_index(char *cmd);
+void	setup_single_builtin_redirects(t_command *cmd, int *temp_inout);
+void	return_single_builtin_redirects(int *temp_std_fd);
 
 // Function to close the current and future commands' heredocs, to
 // prevent them from hanging with other child processes.
@@ -58,59 +59,53 @@ void	setup_arg_array(t_command *command)
 	}
 }
 
-bool	is_builtin(t_command *cmd, t_shell *shell)
+bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 {
-	t_builtin_ptr	*builtins;
-	int				i;
-	int				*temp_std_fd;
+	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &env, \
+										&builtin_exit};
+	int					temp_inout[2];
+	int					builtin_index;
 
-	i = builtin_index(cmd->target);
-	if (i == -1)
+	builtin_index = find_builtin_index(cmd->target);
+	if (builtin_index == -1)
 		return (false);
-	builtins = safe_alloc(sizeof(t_builtin_ptr), 6);
-	*builtins = (t_builtin_ptr){&echo, &cd, &pwd, &export, &env, &exit};
 	if (cmd->redirects)
-		temp_std_fd = setup_single_builtin_redirects(cmd->redirects);
-	builtins[i](cmd->arg_array[0], shell);
-	free(builtins);
-	dup2(temp_std_fd[0], 0);
-	dup2(temp_std_fd[1], 1);
-	close(temp_std_fd[0]);
-	close(temp_std_fd[1]);
+		setup_single_builtin_redirects(cmd, temp_inout);
+	setup_arg_array(cmd);
+	builtins[builtin_index](cmd->arg_array, shell);
+	if (cmd->redirects)
+		return_single_builtin_redirects(temp_inout);
 	return (true);
 }
 
-int	*setup_single_builtin_redirects(t_command *cmd)
+int	find_builtin_index(char *cmd)
 {
-	int	temp_inout[2];
+	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", \
+								"exit"};
+	int			index;
 
-	temp_inout[0] = dup(0);
-	temp_inout[1] = dup(1); //dup protection?
-	setup_command_redirects(cmd);
-	return (temp_inout);
-}
-
-//strcompares the cmd name to see if its a builtin and returns corresponding
-// index, returns -1 on no index found
-int	builtin_index(char *cmd)
-{
-	char	**builtins;
-	int		index;
-
-	builtins = safe_alloc(sizeof(char *), 8);
-	*builtins = (char *){"echo", "cd", "pwd", "export", "unset", "env", \
-						"exit", NULL};
 	index = 0;
 	while (builtins[index])
 	{
 		if (ft_strcmp(cmd, builtins[index]) == 0)
 		{
-			free(builtins);
 			return (index);
 		}
 	}
 	return (-1);
 }
 
-//builtin handler thoughts: I feel like the refactor should move the builtin
-// index into the main function, and the last
+void	setup_single_builtin_redirects(t_command *cmd, int *temp_inout)
+{
+	temp_inout[0] = dup(0);
+	temp_inout[1] = dup(1); //dup protection?
+	setup_command_redirects(cmd);
+}
+
+void	return_single_builtin_redirects(int *temp_std_fd)
+{
+	dup2(temp_std_fd[0], 0);
+	dup2(temp_std_fd[1], 1);
+	close(temp_std_fd[0]);
+	close(temp_std_fd[1]);
+}
