@@ -1,8 +1,8 @@
 #General----------
-
+#O3
 NAME 			    := minishell
 CC				    := cc
-COMPIL_FLAGS	?= -Wall -Wextra
+COMPIL_FLAGS	?= -Wall -Wextra -Og -flto
 # COMPIL_FLAGS	+= -Werror
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
@@ -16,20 +16,20 @@ LINKFLAGS 		?= -I include -I LIBFT/include -g
 #sources and objects -------------
 
 SOURCEFILES	:=	main.c \
-								environment.c \
-								env_utils.c \
-								lexing.c \
-								lexing_utils.c \
-								lexing_condensing.c \
-								lexing_expanding.c \
-								parsing.c \
-								dir_builtins.c \
-								executor.c \
-								execution_helpers.c \
-								redirects.c \
-								cleanup.c \
-								path.c \
-								heredoc.c
+				environment.c \
+				env_utils.c \
+				lexing.c \
+				lexing_utils.c \
+				lexing_condensing.c \
+				lexing_expanding.c \
+				parsing.c \
+				dir_builtins.c \
+				executor.c \
+				execution_helpers.c \
+				redirects.c \
+				cleanup.c \
+				path.c \
+				heredoc.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/

@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <errno.h>
 # include "h_colors.h"
+# include <limits.h>
 
 extern int	g_return_value;
 
@@ -103,12 +104,13 @@ void		regenerate_path_array(t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 
-void		pwd(char **args, t_shell *shell);
-void		cd(char **path, t_shell *shell);
-void		echo(char **text, t_shell *shell);
-void		export(char **env_line, t_shell *shell);
-void		env(char **hoi, t_shell *shell);
-void		builtin_exit(char **code, t_shell *shell);
+void		pwd(t_argument *args, t_shell *shell);
+void		cd(t_argument *args, t_shell *shell);
+void		echo(t_argument *args, t_shell *shell);
+void		export(t_argument *args, t_shell *shell);
+void		env(t_argument *args, t_shell *shell);
+void		builtin_exit(t_argument *args, t_shell *shell);
+void		unset(t_argument *args, t_shell *shell);
 
 // --------------------------------- temp --------------------------------
 

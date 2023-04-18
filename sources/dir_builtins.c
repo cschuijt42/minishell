@@ -20,75 +20,81 @@ cd? more like c deez error messages haHA\x1b[0m"
 // it this way I can also just make 1 only for printing and put the instructions
 // in cd
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
-void	pwd(char **args, t_shell *shell)
+void	pwd(t_argument *args, t_shell *shell)
 {
 	char	*path;
 
-	(void)shell;
+	(void) args;
+	(void) shell;
 	path = getcwd(NULL, 0);
 	if (!path)
 		error_exit(MAL_ERR, errno);
 	printf("%s\n", path);
 	//do i need to give a newline??
+	// set PWD in ENVP!
 	free(path);
 }
 // so.. yeah getcwd seems to make this basicly a freebie?
 // Idk if there's edgecases that im not thinking of
 
-void	cd(char **path, t_shell *shell)
+void	cd(t_argument *args, t_shell *shell)
 {
-	char	*current_dir;
+	char	current_dir[PATH_MAX];
+	char	*new_dir;
 
-	current_dir = getcwd(NULL, 0);
-	if (access(current_dir, F_OK) != 0)
+	new_dir = NULL;
+	if (!getcwd(current_dir, PATH_MAX) || access(current_dir, F_OK) != 0)
 	{
-		printf("hoi"); //go into
+		perror(C_RED "current dir destroyed, I'm going HOME >:c\n" C_RESET);
+		args = NULL;
 	}
-	if (!path || !*path)
-		path = get_env_var_value("HOME", shell->environment);
-	else if (*path == '-' && !path[1])
-		path = get_env_var_value("OLDPWD", shell->environment);
-	if (!path || !*path)
-		dprintf(2, "%s you can't cd to your HOME or OLDPWD if its not set silly! \
-				%s\n", C_RED, C_RESET);
-	if (chdir(path) == -1)
+	if (!args)
+		new_dir = get_env_var_value("HOME", shell->environment); //should be new alloc
+	//other arguments just get ignored by bash :)
+	else if (args->content && args->content[0] == '-' && !args->content[1])
+		new_dir = get_env_var_value("OLDPWD", shell->environment);
+	if (!new_dir || !*new_dir)
+		dprintf(2, C_RED " you can't cd to your HOME or OLDPWD if its not set silly! \
+				\n" C_RESET);
+	if (chdir(new_dir) == -1)
 		perror(CHDIR_ERROR);
-		// path = getenv("HOME");
-		// path = getenv("OLDPWD");
+	//set new PWD and old PWD
 	return ;
 }
 // EDGECASE deleting current dir and then cding
 // solve by access checking first->if false cd OLDPWD if false cd HOME if false
 // then cmon bro then your minishell wouldnt even be there anymore
 
-void	builtin_exit(char **code, t_shell *shell)
+void	builtin_exit(t_argument *args, t_shell *shell)
 {
 	(void)shell; //do we have to free before exiting?
 	printf("exit\n");
-	if (code && *code)
-		exit(ft_atoi(code)); //custom atoi that protects against >230 overflow?
+	if (args && args->content)
+		exit(ft_atoi(args->content)); //custom atoi that protects against >230 overflow?
 	exit(10);
 }
 
-void	echo(char **text, t_shell *shell)
+void	echo(t_argument *args, t_shell *shell)
 {
-	(void)text;
+	(void)args;
 	(void)shell;
 }
 
-void	export(char **env_line, t_shell *shell)
+void	export(t_argument *args, t_shell *shell)
 {
-	(void)shell;
-	if (!ft_strchr(env_line, (int) '='))
+	if (!args)
+		print_2d_charray(shell->envp); //sort alphabetically?
+	else if (!ft_strchr(args->content, (int) '='))
 	{
 		puts("placeholder");
 	}
 }
 
-void	env(char **hoi, t_shell *shell)
+void	env(t_argument *args, t_shell *shell)
 {
-	(void)hoi;
+	(void)args;
 	(void)shell;
+	print_2d_charray(shell->envp);
 }
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
@@ -97,3 +103,8 @@ void	env(char **hoi, t_shell *shell)
 // cd blank space/with no args goes to home folder??
 
 // https://man7.org/linux/man-pages/man1/cd.1p.html
+
+void		unset(t_argument *args, t_shell *shell)
+{
+
+}
