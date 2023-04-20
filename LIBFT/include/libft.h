@@ -67,6 +67,7 @@ void		*safe_alloc(int size, int count);
 void		free_array(void **array);
 char		*str_iple_join(char *s1, char *s2, char *s3);
 int			ft_strcmp(const char *s1, const char *s2);
+bool		str_is_fully_alnum(char *str);
 
 typedef struct s_list
 {

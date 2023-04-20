@@ -103,6 +103,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	setup_arg_array(command);
 	expand_command_target(shell, command);
 	clean_up_heredocs(command);
+	child_builtin(command, shell);
 	execve(command->target_expanded, command->arg_array, shell->envp);
 	error_exit("Exec fail", 127);
 }

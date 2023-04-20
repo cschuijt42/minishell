@@ -20,7 +20,7 @@ cd? more like c deez error messages haHA\x1b[0m"
 // it this way I can also just make 1 only for printing and put the instructions
 // in cd
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
-void	pwd(t_argument *args, t_shell *shell)
+int	pwd(t_argument *args, t_shell *shell)
 {
 	char	*path;
 
@@ -37,7 +37,7 @@ void	pwd(t_argument *args, t_shell *shell)
 // so.. yeah getcwd seems to make this basicly a freebie?
 // Idk if there's edgecases that im not thinking of
 
-void	cd(t_argument *args, t_shell *shell)
+int	cd(t_argument *args, t_shell *shell)
 {
 	char	current_dir[PATH_MAX];
 	char	*new_dir;
@@ -65,7 +65,7 @@ void	cd(t_argument *args, t_shell *shell)
 // solve by access checking first->if false cd OLDPWD if false cd HOME if false
 // then cmon bro then your minishell wouldnt even be there anymore
 
-void	builtin_exit(t_argument *args, t_shell *shell)
+int	builtin_exit(t_argument *args, t_shell *shell)
 {
 	(void)shell; //do we have to free before exiting?
 	printf("exit\n");
@@ -74,23 +74,28 @@ void	builtin_exit(t_argument *args, t_shell *shell)
 	exit(10);
 }
 
-void	echo(t_argument *args, t_shell *shell)
+int	echo(t_argument *args, t_shell *shell)
 {
 	(void)args;
 	(void)shell;
 }
 
-void	export(t_argument *args, t_shell *shell)
+int	export(t_argument *args, t_shell *shell)
 {
 	if (!args)
 		print_2d_charray(shell->envp); //sort alphabetically?
 	else if (!ft_strchr(args->content, (int) '='))
 	{
-		puts("placeholder");
+		puts("placeholder"); //can put
 	}
 }
 
-void	env(t_argument *args, t_shell *shell)
+void print_alphabet()
+{
+
+}
+
+int	env(t_argument *args, t_shell *shell)
 {
 	(void)args;
 	(void)shell;
@@ -104,7 +109,69 @@ void	env(t_argument *args, t_shell *shell)
 
 // https://man7.org/linux/man-pages/man1/cd.1p.html
 
-void		unset(t_argument *args, t_shell *shell)
+
+void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
+{
+	t_env_list	*current;
+
+	current = shell->environment;
+	if (current != remove_me)
+	{
+		while (current->next != remove_me)
+			current = current->next;
+		current->next = current->next->next;
+	}
+	else
+		shell->environment = remove_me->next;
+	free(remove_me->key);
+	free(remove_me->value);
+	free(remove_me);
+	free_array(shell->envp);
+	shell->envp = env_list_to_arr(shell->environment);
+}
+
+void	find_env_var(char *key, t_shell *shell)
 {
 
+	t_env_list	*list;
+
+	list = shell->environment;
+	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
+		list = list->next;
+	if (list)
+		remove_node_and_remake_env(list, shell);
+} //wanted to finish but was getting too late, this could be 1 fun w the 1 above
+
+int	unset(t_argument *args, t_shell *shell)
+{
+	t_env_list	*node;
+	bool		err_occured;
+
+	err_occured = false;
+	while (args)
+	{
+		node = shell->environment;
+		if (!str_is_fully_alnum(args->content))
+		{
+			dprintf(2, "you" C_RED "set" C_RESET "yourself up for failure\n\
+					%s is not a valid identifier\n", args->content);
+			err_occured = true;
+		}
+		else
+		{
+			while (node)
+			{
+				if (!ft_strcmp(args->content, node->key))
+				{
+					remove_node_and_remake_env(node, shell);
+					break ; //could remove for more readablity but less performance
+				}
+				node = node->next;
+			}
+		}
+		args = args->next;
+	}
+	if (err_occured)
+		return (1);
+	return (0);
 }

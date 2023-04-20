@@ -13,7 +13,7 @@
 #include "execution.h"
 #include "minishell.h"
 
-typedef void	(*t_builtin_ptr)(t_argument *, t_shell *);
+typedef int	(*t_builtin_ptr)(t_argument *, t_shell *);
 
 int		find_builtin_index(char *cmd);
 void	setup_single_builtin_redirects(t_command *cmd, int *temp_inout);
@@ -62,7 +62,7 @@ void	setup_arg_array(t_command *command)
 bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 {
 	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &unset, &env, \
-										&builtin_exit};
+									&builtin_exit};
 	int					temp_inout[2];
 	int					builtin_index;
 
@@ -71,11 +71,23 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 		return (false);
 	if (cmd->redirects)
 		setup_single_builtin_redirects(cmd, temp_inout);
-	setup_arg_array(cmd);
-	builtins[builtin_index](cmd->arguments, shell);
+	g_return_value = builtins[builtin_index](cmd->arguments, shell);
 	if (cmd->redirects)
 		return_single_builtin_redirects(temp_inout);
+		//cleanup heredocs?
 	return (true);
+}
+
+void	child_builtin(t_command *cmd, t_shell *shell)
+{
+	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &unset, &env, \
+									&builtin_exit};
+	int					i;
+
+	i = find_builtin_index(cmd);
+	if (i == -1)
+		return ;
+	exit(builtins[i](cmd->arguments, shell));
 }
 
 int	find_builtin_index(char *cmd)
@@ -88,9 +100,7 @@ int	find_builtin_index(char *cmd)
 	while (builtins[index])
 	{
 		if (ft_strcmp(cmd, builtins[index]) == 0)
-		{
 			return (index);
-		}
 		index++;
 	}
 	return (-1);

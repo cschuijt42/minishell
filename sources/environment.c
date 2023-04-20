@@ -14,51 +14,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	add_env_node_to_list(t_env_list **list, char *key, char *value)
-{
-	t_env_list	*last;
-	t_env_list	*new;
-
-	if (!key)
-		dprintf(2, "SUBSTRING ERROR IN ENVIR LIST");
-	new = ft_calloc(sizeof(t_env_list), 1);
-	new->key = key;
-	new->value = value;
-	if (!*list)
-		*list = new;
-	else
-	{
-		last = *list;
-		while (last->next)
-			last = last->next;
-		last->next = new;
-	}
-}
-
-t_env_list	*parse_envp(char **envp)
-{
-	int			i;
-	t_env_list	*list;
-
-	i = 0;
-	list = NULL;
-	while (envp[i])
-	{
-		add_list_node_from_env_variable(envp[i], &list);
-		i++;
-	}
-	return (list);
-}
-
-char	*get_env_var_value(char *key, t_env_list *list)
-{
-	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
-		list = list->next;
-	if (!list)
-		return (NULL);
-	return (list->value);
-}
-
 void	set_value(char *key, char *value, t_shell *shell)
 {
 	t_env_list	*env;
@@ -78,4 +33,46 @@ void	set_value(char *key, char *value, t_shell *shell)
 		env = env->next;
 		i++;
 	}
+}
+
+t_env_list	*env_line_to_node(char *env_line)
+{
+	int			key_length;
+	int			val_length;
+	t_env_list	*node;
+
+	key_length = 0;
+	val_length = 0;
+	node = safe_alloc(sizeof(t_env_list), 1);
+	while (env_line[key_length] && env_line[key_length] != '=')
+		key_length++;
+	node->key = ft_substr(env_line, 0, key_length); //= substr exit, make diff version
+	if (!env_line[key_length])
+		node->value = NULL;
+	else
+	{
+		while (env_line[key_length + 1 + val_length])
+			val_length++;
+		node->value = ft_substr(env_line, key_length + 1, val_length);
+	}
+	return (node);
+}
+
+t_env_list	*parse_envp(char **envp)
+{
+	int			i;
+	t_env_list	*list;
+	t_env_list	*head;
+
+	list = env_line_to_node(envp[0]);
+	i = 1;
+	head = list;
+	while (envp[i])
+	{
+		list->next = env_line_to_node(envp[i]);
+		list = list->next;
+		i++;
+	}
+	list->next = NULL;
+	return (head);
 }

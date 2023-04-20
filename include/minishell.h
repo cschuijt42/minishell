@@ -93,9 +93,6 @@ typedef struct s_shell
 t_env_list	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_list *list);
 char		**env_list_to_arr(t_env_list *list);
-void		add_list_node_from_env_variable(char *env_line, t_env_list **list);
-void		setup_all_heredocs(t_shell *shell);
-void		add_env_node_to_list(t_env_list **list, char *key, char *value);
 
 // ----------------- utils ----------------
 
@@ -104,16 +101,17 @@ void		regenerate_path_array(t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 
-void		pwd(t_argument *args, t_shell *shell);
-void		cd(t_argument *args, t_shell *shell);
-void		echo(t_argument *args, t_shell *shell);
-void		export(t_argument *args, t_shell *shell);
-void		env(t_argument *args, t_shell *shell);
-void		builtin_exit(t_argument *args, t_shell *shell);
-void		unset(t_argument *args, t_shell *shell);
+int			pwd(t_argument *args, t_shell *shell);
+int			cd(t_argument *args, t_shell *shell);
+int			echo(t_argument *args, t_shell *shell);
+int			export(t_argument *args, t_shell *shell);
+int			env(t_argument *args, t_shell *shell);
+int			builtin_exit(t_argument *args, t_shell *shell);
+int			unset(t_argument *args, t_shell *shell);
 
 // --------------------------------- temp --------------------------------
 
 void		executor(t_shell *shell);
+void		setup_all_heredocs(t_shell *shell);
 
 #endif
