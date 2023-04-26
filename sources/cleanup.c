@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+void	free_nested_lexer_output(t_lexnode *lexnode)
+{
+	t_lexnode	*current;
+	t_lexnode	*next;
+
+	current = lexnode;
+	while (current)
+	{
+		if (current->value)
+			free(current->value);
+		next = current->tree_next;
+		free(current);
+		current = next;
+	}
+}
+
 void	clean_up_lexer_output(t_lexnode *lexnodes)
 {
 	t_lexnode	*current;
@@ -20,7 +36,10 @@ void	clean_up_lexer_output(t_lexnode *lexnodes)
 	current = lexnodes;
 	while (current)
 	{
-		free(current->value);
+		if (current->tree_next)
+			free_nested_lexer_output(current->tree_next);
+		if (current->value)
+			free(current->value);
 		next = current->next;
 		free(current);
 		current = next;
