@@ -23,4 +23,5 @@ void	setup_output_redirect(t_redirect *redirect);
 void	setup_heredoc_redirect(t_command *command);
 
 bool	single_builtin_executor(t_command *cmd, t_shell *shell);
+void	child_builtin(t_command *cmd, t_shell *shell);
 #endif

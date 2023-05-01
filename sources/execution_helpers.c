@@ -84,7 +84,7 @@ void	child_builtin(t_command *cmd, t_shell *shell)
 									&builtin_exit};
 	int					i;
 
-	i = find_builtin_index(cmd);
+	i = find_builtin_index(cmd->target);
 	if (i == -1)
 		return ;
 	exit(builtins[i](cmd->arguments, shell));

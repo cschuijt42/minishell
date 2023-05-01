@@ -33,6 +33,7 @@ int	pwd(t_argument *args, t_shell *shell)
 	//do i need to give a newline??
 	// set PWD in ENVP!
 	free(path);
+	return (0);
 }
 // so.. yeah getcwd seems to make this basicly a freebie?
 // Idk if there's edgecases that im not thinking of
@@ -59,7 +60,7 @@ int	cd(t_argument *args, t_shell *shell)
 	if (chdir(new_dir) == -1)
 		perror(CHDIR_ERROR);
 	//set new PWD and old PWD
-	return ;
+	return (0);
 }
 // EDGECASE deleting current dir and then cding
 // solve by access checking first->if false cd OLDPWD if false cd HOME if false
@@ -78,21 +79,63 @@ int	echo(t_argument *args, t_shell *shell)
 {
 	(void)args;
 	(void)shell;
+	return (0);
+}
+
+void	print_alphabet(char **envp)
+{
+	int		i;
+	int		j;
+	int		arrlen;
+	char	**copy;
+	char	*temp;
+
+	arrlen = ptrarr_len((void **)envp);
+	copy = safe_alloc(sizeof(char *), arrlen);
+	i = 0;
+	j = 0;
+	ft_memcpy(copy, envp, sizeof(envp));
+	print_2d_charray(copy);
+	while (arrlen)
+	{
+		while (copy[i])
+		{
+			if (copy[i][j] >= copy[i + 1][j])
+			{
+				if (copy[i][j] == copy[i + 1][j])
+				{
+					while(copy[i][j] == copy[i + 1][j]) //shouldnt have seg danger?
+						j++;
+					if (copy[i][j] <= copy[i + 1][j])
+					{
+						i++;
+						continue ;
+					}
+					j = 0;
+				}
+				temp = copy[i - 1];
+				copy[i - 1] = copy[i];
+				copy[i] = temp;
+			}
+			i++;
+		}
+		puts("hoi");
+		arrlen--;
+		i = 0;
+	}
+	print_2d_charray(copy);
+	free(copy);
 }
 
 int	export(t_argument *args, t_shell *shell)
 {
 	if (!args)
-		print_2d_charray(shell->envp); //sort alphabetically?
+		print_alphabet(shell->envp); //sort alphabetically?
 	else if (!ft_strchr(args->content, (int) '='))
 	{
 		puts("placeholder"); //can put
 	}
-}
-
-void print_alphabet()
-{
-
+	return (0);
 }
 
 int	env(t_argument *args, t_shell *shell)
@@ -100,6 +143,7 @@ int	env(t_argument *args, t_shell *shell)
 	(void)args;
 	(void)shell;
 	print_2d_charray(shell->envp);
+	return (0);
 }
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
@@ -126,7 +170,7 @@ void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
 	free(remove_me->key);
 	free(remove_me->value);
 	free(remove_me);
-	free_array(shell->envp);
+	free_array((void **)shell->envp);
 	shell->envp = env_list_to_arr(shell->environment);
 }
 
