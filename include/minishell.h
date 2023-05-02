@@ -16,7 +16,7 @@
 # include "libft.h"
 # include <errno.h>
 
-extern int	g_return_value;
+extern int	g_interrupted;
 
 typedef enum tokentypes
 {
@@ -82,6 +82,7 @@ typedef struct s_shell
 	t_command	*command_tree;
 	char		**envp;
 	char		**split_path;
+	int			return_value;
 }	t_shell;
 
 # define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "

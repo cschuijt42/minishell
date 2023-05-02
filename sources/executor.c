@@ -104,6 +104,8 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	setup_arg_array(command);
 	expand_command_target(shell, command);
 	clean_up_heredocs(command);
+	if (g_interrupted)
+		exit(130);
 	execve(command->target_expanded, command->arg_array, shell->envp);
 	error_exit("Exec fail", 127);
 }
@@ -145,6 +147,11 @@ void	executor(t_shell *shell)
 	t_command	*command;
 	int			wstatus;
 
+	if (g_interrupted)
+	{
+		shell->return_value = 130;
+		return ;
+	}
 	setup_all_heredocs(shell);
 	execute_commands(shell);
 	command = shell->command_tree;
@@ -155,8 +162,8 @@ void	executor(t_shell *shell)
 		waitpid(command->pid, &wstatus, 0);
 		command = command->next;
 	}
-	g_return_value = WEXITSTATUS(wstatus);
-	printf("\nReturn value: %d\n", g_return_value);
+	shell->return_value = WEXITSTATUS(wstatus);
+	printf("\nReturn value: %d\n", shell->return_value);
 }
 
 // todo

@@ -28,6 +28,8 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 	char	*input;
 	char	*prompt;
 
+	if (g_interrupted)
+		return ;
 	cycle_heredoc_pipe(command);
 	prompt = safe_alloc(sizeof(char), 15);
 	sprintf(prompt, "heredoc[%d]>", i);
@@ -43,6 +45,8 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 		}
 		ft_putendl_fd(input, command->heredoc_pipe[1]);
 		free(input);
+		if (g_interrupted)
+			break ;
 	}
 	free(prompt);
 	close(command->heredoc_pipe[1]);

@@ -19,7 +19,7 @@
 #include "lexing.h"
 #include "parsing.h"
 
-int	g_return_value = 0;
+int	g_interrupted = 0;
 
 void	print_tokens(t_lexnode *list)
 {
@@ -76,42 +76,6 @@ void	print_command_tree(t_command *command_tree)
 	}
 }
 
-// int	main(void)
-// {
-// 	char		*input;
-// 	t_lexnode	*token_list;
-// 	t_command	*command_tree;
-
-// 	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m ");
-// 	if (!input)
-// 		temp_error("readline fail");
-// 	token_list = lexer(input);
-// 	print_tokens(token_list);
-// 	command_tree = build_command_tree(token_list);
-// 	print_command_tree(command_tree);
-// 	return (0);
-// }
-
-// void	add_token(t_lexnode **tokens, int type, char *content)
-// {
-// 	t_lexnode	*new_node;
-// 	t_lexnode	*last_node;
-
-// 	new_node = ft_calloc(1, sizeof(t_lexnode));
-// 	new_node->token_type = type;
-// 	if (content)
-// 		new_node->value = ft_strdup(content);
-// 	if (!(*tokens))
-// 		*tokens = new_node;
-// 	else
-// 	{
-// 		last_node = *tokens;
-// 		while (last_node->next)
-// 			last_node = last_node->next;
-// 		last_node->next = new_node;
-// 	}
-// }
-
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
@@ -120,10 +84,12 @@ int	main(int ac, char **av, char **envp)
 	(void) ac;
 	(void) av;
 	shell = safe_alloc(1, sizeof(t_shell));
+	shell->return_value = 0;
 	shell->environment = parse_envp(envp);
 	shell->envp = envp;
 	regenerate_path_array(shell);
 	using_history();
+	g_interrupted = 0;
 	while (1)
 	{
 		input = readline(SHELL_PROMPT);
@@ -134,7 +100,6 @@ int	main(int ac, char **av, char **envp)
 		}
 		lexer(shell, input);
 		shell->command_tree = build_command_tree(shell->lexer_output);
-		print_command_tree(shell->command_tree);
 		executor(shell);
 		if (ft_strlen(input))
 			add_history(input);

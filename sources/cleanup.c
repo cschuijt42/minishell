@@ -98,4 +98,5 @@ void	clean_up_execution(t_shell *shell)
 {
 	clean_up_lexer_output(shell->lexer_output);
 	clean_up_command_tree(shell->command_tree);
+	g_interrupted = 0;
 }
