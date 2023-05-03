@@ -74,9 +74,9 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 	g_return_value = builtins[builtin_index](cmd->arguments, shell);
 	if (cmd->redirects)
 		return_single_builtin_redirects(temp_inout);
-		//cleanup heredocs?
 	return (true);
 }
+		//cleanup heredocs?
 
 void	child_builtin(t_command *cmd, t_shell *shell)
 {

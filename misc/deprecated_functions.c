@@ -41,7 +41,6 @@ static void	remove_node_and_remake_env(t_shell *shell, t_argument *args)
 	if (!ft_strcmp(args->content, node->key))
 	{
 		shell->environment = node->next;
-=
 	}
 	while (node)
 	{
@@ -59,7 +58,7 @@ static void	remove_node_and_remake_env(t_shell *shell, t_argument *args)
 	}
 }
 
-static int	unset(t_argument *args, t_shell *shell)
+static int	unset(t_argument *args, t_shell *shell);
 {
 	bool		err_occured;
 
@@ -80,3 +79,21 @@ static int	unset(t_argument *args, t_shell *shell)
 		return (1);
 	return (0);
 }
+
+// old_export_alphabetize_part_which_is_just_strcmp()
+// {
+// 				if (copy[i][j] >= copy[i + 1][j])
+// 			{
+// 				if (copy[i][j] == copy[i + 1][j])
+// 				{
+// 					while(copy[i][j] == copy[i + 1][j]) //shouldnt have seg danger?
+// 						j++;
+// 					if (copy[i][j] <= copy[i + 1][j])
+// 					{
+// 						j = 0;
+// 						i++;
+// 						continue ;
+// 					}
+// 					j = 0;
+// 				}
+// }

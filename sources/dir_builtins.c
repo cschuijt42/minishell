@@ -85,41 +85,22 @@ int	echo(t_argument *args, t_shell *shell)
 void	print_alphabet(char **envp)
 {
 	int		i;
-	int		j;
 	int		arrlen;
 	char	**copy;
 	char	*temp;
 
+	i = 0;
 	arrlen = ptrarr_len((void **)envp);
 	copy = safe_alloc(sizeof(char *), arrlen);
-	i = 0;
-	j = 0;
-	ft_memcpy(copy, envp, sizeof(envp));
-	print_2d_charray(copy);
+	ft_memcpy(copy, envp, sizeof(char *) * arrlen);
 	while (arrlen)
 	{
-		while (copy[i])
+		while (copy[i + 1] && i + 1 < arrlen)
 		{
-			if (copy[i][j] >= copy[i + 1][j])
-			{
-				if (copy[i][j] == copy[i + 1][j])
-				{
-					while(copy[i][j] == copy[i + 1][j]) //shouldnt have seg danger?
-						j++;
-					if (copy[i][j] <= copy[i + 1][j])
-					{
-						i++;
-						continue ;
-					}
-					j = 0;
-				}
-				temp = copy[i - 1];
-				copy[i - 1] = copy[i];
-				copy[i] = temp;
-			}
+			if (ft_strcmp(copy[i], copy[i + 1]) > 0)
+				str_switch(&copy[i], &copy[i + 1]);
 			i++;
 		}
-		puts("hoi");
 		arrlen--;
 		i = 0;
 	}
