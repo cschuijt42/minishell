@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 #include "h_colors.h"
 #include "minishell.h"
 #include "lexing.h"
@@ -90,9 +91,13 @@ int	main(int ac, char **av, char **envp)
 	regenerate_path_array(shell);
 	using_history();
 	g_interrupted = 0;
+	rl_getc_function = getc;
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		signal(SIGINT, sigint_handler_interactive);
 		input = readline(SHELL_PROMPT);
+		signal(SIGINT, sigint_handler_generic);
 		if (!input)
 		{
 			printf("exit\n");

@@ -106,6 +106,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	clean_up_heredocs(command);
 	if (g_interrupted)
 		exit(130);
+	signal(SIGQUIT, SIG_DFL);
 	execve(command->target_expanded, command->arg_array, shell->envp);
 	error_exit("Exec fail", 127);
 }

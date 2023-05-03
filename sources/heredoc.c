@@ -58,6 +58,7 @@ void	setup_all_heredocs(t_shell *shell)
 	t_redirect	*current_redirect;
 	int			i;
 
+	signal(SIGINT, sigint_handler_heredoc);
 	i = 1;
 	current_command = shell->command_tree;
 	while (current_command)
@@ -74,4 +75,5 @@ void	setup_all_heredocs(t_shell *shell)
 		}
 		current_command = current_command->next;
 	}
+	signal(SIGINT, sigint_handler_generic);
 }

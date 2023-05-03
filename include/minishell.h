@@ -104,4 +104,8 @@ char		*pwd(int for_printing);
 
 void		executor(t_shell *shell);
 
+void		sigint_handler_generic(int signum);
+void		sigint_handler_interactive(int signum);
+void		sigint_handler_heredoc(int signum);
+
 #endif

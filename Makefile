@@ -31,7 +31,8 @@ SOURCEFILES	:=	main.c \
 								redirects.c \
 								cleanup.c \
 								path.c \
-								heredoc.c
+								heredoc.c \
+								signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/
