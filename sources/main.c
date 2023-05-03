@@ -107,5 +107,5 @@ int	main(int ac, char **av, char **envp)
 		clean_up_execution(shell);
 	}
 	rl_clear_history();
-	return (0);
+	return (shell->return_value);
 }
