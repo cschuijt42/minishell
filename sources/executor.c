@@ -64,7 +64,7 @@ void	expand_command_target(t_shell *shell, t_command *command)
 		free(path_match);
 		i++;
 	}
-	error_exit("no executable found", 404);
+	error_exit("no executable found\n", 404);
 }
 	// PATH matching until we find the right executable
 	// Save eventual absolute path in command->target_expanded
