@@ -28,12 +28,12 @@ void	free_nested_lexer_output(t_lexnode *lexnode)
 	}
 }
 
-void	clean_up_lexer_output(t_lexnode *lexnodes)
+void	clean_up_lexer_output(t_shell *shell)
 {
 	t_lexnode	*current;
 	t_lexnode	*next;
 
-	current = lexnodes;
+	current = shell->lexer_output;
 	while (current)
 	{
 		if (current->tree_next)
@@ -44,6 +44,7 @@ void	clean_up_lexer_output(t_lexnode *lexnodes)
 		free(current);
 		current = next;
 	}
+	shell->lexer_output = NULL;
 }
 
 void	clean_up_redirect_list(t_redirect *redirects)
@@ -77,12 +78,12 @@ void	clean_up_argument_list(t_argument *arguments)
 	}
 }
 
-void	clean_up_command_tree(t_command *command_tree)
+void	clean_up_command_tree(t_shell *shell)
 {
 	t_command	*current;
 	t_command	*next;
 
-	current = command_tree;
+	current = shell->command_tree;
 	while (current)
 	{
 		free(current->target);
@@ -92,11 +93,12 @@ void	clean_up_command_tree(t_command *command_tree)
 		free(current);
 		current = next;
 	}
+	shell->command_tree = NULL;
 }
 
 void	clean_up_execution(t_shell *shell)
 {
-	clean_up_lexer_output(shell->lexer_output);
-	clean_up_command_tree(shell->command_tree);
+	clean_up_lexer_output(shell);
+	clean_up_command_tree(shell);
 	g_interrupted = 0;
 }

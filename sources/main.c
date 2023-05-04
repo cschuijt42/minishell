@@ -111,5 +111,6 @@ int	main(int ac, char **av, char **envp)
 		clean_up_execution(shell);
 	}
 	rl_clear_history();
+	// Clean up other variables/shell struct here
 	return (shell->return_value);
 }
