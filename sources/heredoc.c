@@ -60,6 +60,7 @@ void	setup_all_heredocs(t_shell *shell)
 	int			i;
 
 	signal(SIGINT, sigint_handler_heredoc);
+	rl_getc_function = getc;
 	i = 1;
 	current_command = shell->command_tree;
 	while (current_command)
@@ -76,5 +77,6 @@ void	setup_all_heredocs(t_shell *shell)
 		}
 		current_command = current_command->next;
 	}
+	rl_getc_function = rl_getc;
 	signal(SIGINT, sigint_handler_generic);
 }

@@ -91,7 +91,6 @@ int	main(int ac, char **av, char **envp)
 	regenerate_path_array(shell);
 	using_history();
 	g_interrupted = 0;
-	rl_getc_function = getc;
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
