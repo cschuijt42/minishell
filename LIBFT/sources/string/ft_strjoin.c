@@ -64,7 +64,6 @@ char	*str_iple_join(char *s1, char *s2, char *s3)
 	s2_len = ft_strlen(s2);
 	s3_len = ft_strlen(s3);
 	ret = safe_alloc(s1_len + s2_len + s3_len + 1, sizeof(char));
-
 	ez_strcpy(ret, s1, 0, s1_len);
 	ez_strcpy(ret, s2, s1_len, s2_len);
 	ft_strlcat(ret, s3, s1_len + s2_len + s3_len + 1);

@@ -26,7 +26,6 @@ void	execute_command_tree(t_command *tree)
 			execute_command(current);
 		current = current->next;
 	}
-
 }
 
 size_t	count_commannds(t_command *tree)
