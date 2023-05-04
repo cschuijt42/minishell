@@ -27,6 +27,7 @@ SOURCEFILES	:=	main.c \
 								parsing.c \
 								dir_builtins.c \
 								executor.c \
+								executor_child.c \
 								execution_helpers.c \
 								redirects.c \
 								cleanup.c \
