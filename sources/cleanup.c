@@ -47,34 +47,30 @@ void	clean_up_lexer_output(t_shell *shell)
 	shell->lexer_output = NULL;
 }
 
-void	clean_up_redirect_list(t_redirect *redirects)
+void	clean_up_argument_and_redirect_list(t_argument *arguments, \
+											t_redirect *redirects)
 {
-	t_redirect	*current;
-	t_redirect	*next;
+	t_argument	*current_argument;
+	t_argument	*next_argument;
+	t_redirect	*current_redirect;
+	t_redirect	*next_redirect;
 
-	current = redirects;
-	while (current)
+	current_argument = arguments;
+	while (current_argument)
 	{
-		if (current->target)
-			free(current->target);
-		next = current->next;
-		free(current);
-		current = next;
+		free(current_argument->content);
+		next_argument = current_argument->next;
+		free(current_argument);
+		current_argument = next_argument;
 	}
-}
-
-void	clean_up_argument_list(t_argument *arguments)
-{
-	t_argument	*current;
-	t_argument	*next;
-
-	current = arguments;
-	while (current)
+	current_redirect = redirects;
+	while (current_redirect)
 	{
-		free(current->content);
-		next = current->next;
-		free(current);
-		current = next;
+		if (current_redirect->target)
+			free(current_redirect->target);
+		next_redirect = current_redirect->next;
+		free(current_redirect);
+		current_redirect = next_redirect;
 	}
 }
 
@@ -87,8 +83,8 @@ void	clean_up_command_tree(t_shell *shell)
 	while (current)
 	{
 		free(current->target);
-		clean_up_argument_list(current->arguments);
-		clean_up_redirect_list(current->redirects);
+		clean_up_argument_and_redirect_list(current->arguments, \
+											current->redirects);
 		next = current->next;
 		free(current);
 		current = next;
