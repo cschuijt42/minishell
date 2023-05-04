@@ -163,11 +163,9 @@ void	executor(t_shell *shell)
 		waitpid(command->pid, &wstatus, 0);
 		command = command->next;
 	}
-	shell->return_value = WEXITSTATUS(wstatus);
+	if (WIFEXITED(wstatus))
+		shell->return_value = WEXITSTATUS(wstatus);
+	else
+		shell->return_value = 128 + WTERMSIG(wstatus);
 	printf("\nReturn value: %d\n", shell->return_value);
 }
-
-// todo
-// 1redirect
-// 2 path splitting (casper)
-// 3 path + arg checking
