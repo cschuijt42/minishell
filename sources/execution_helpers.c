@@ -86,7 +86,12 @@ void	child_builtin(t_command *cmd, t_shell *shell)
 
 	i = find_builtin_index(cmd->target);
 	if (i == -1)
+	{
+		sleep(2);
+		write(2, "not a builtin\n", 14);
 		return ;
+	}
+	write(2, "iss a builtin\n", 14);
 	exit(builtins[i](cmd->arguments, shell));
 }
 

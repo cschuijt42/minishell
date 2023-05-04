@@ -17,6 +17,7 @@
 # include <errno.h>
 # include "h_colors.h"
 # include <limits.h>
+# include <stdio.h> //for puts testing
 
 extern int	g_return_value;
 

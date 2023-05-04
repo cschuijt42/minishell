@@ -104,6 +104,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	expand_command_target(shell, command);
 	clean_up_heredocs(command);
 	child_builtin(command, shell);
+	write(2, "kawai\n", 6);
 	execve(command->target_expanded, command->arg_array, shell->envp);
 	error_exit("Exec fail", 127);
 }

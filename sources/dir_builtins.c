@@ -77,8 +77,27 @@ int	builtin_exit(t_argument *args, t_shell *shell)
 
 int	echo(t_argument *args, t_shell *shell)
 {
-	(void)args;
+	bool	print_nl;
+
+	print_nl = true;
 	(void)shell;
+	if (args && args->content)
+	{
+		if (!ft_strcmp(args->content, "-n"))
+		{
+			print_nl = false;
+			args = args->next;
+		}
+		while (args->next)
+		{
+			printf("%s ", args->content);
+			args = args->next;
+		}
+		if (args)
+			printf("%s", args->content);
+	}
+	if (print_nl)
+		printf("\n");
 	return (0);
 }
 
@@ -87,7 +106,6 @@ void	print_alphabet(char **envp)
 	int		i;
 	int		arrlen;
 	char	**copy;
-	char	*temp;
 
 	i = 0;
 	arrlen = ptrarr_len((void **)envp);
