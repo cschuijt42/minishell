@@ -80,7 +80,7 @@ int	main(int ac, char **av, char **envp)
 	using_history();
 	g_interrupted = 0;
 	signal(SIGQUIT, SIG_IGN);
-	if (ac == 3)
+	if (ac == 3 && !ft_strncmp(av[1], "-c", 3))
 		run_single_command_mode(shell, av[2]);
 	else
 	{
