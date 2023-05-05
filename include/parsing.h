@@ -14,6 +14,6 @@
 # define PARSING_H
 # include "minishell.h"
 
-t_command	*build_command_tree(t_lexnode *input);
+void	build_command_tree(t_shell *shell);
 
 #endif

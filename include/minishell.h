@@ -18,6 +18,15 @@
 
 extern int	g_interrupted;
 
+typedef enum e_error_types
+{
+	error_continue,
+	error_unclosed_quote,
+	error_loose_pipe,
+	error_loose_redirect_token,
+	error_empty_command_node
+}	t_error_types;
+
 typedef enum tokentypes
 {
 	token_redirect_left,
@@ -83,6 +92,7 @@ typedef struct s_shell
 	char		**envp;
 	char		**split_path;
 	int			return_value;
+	int			error_value;
 }	t_shell;
 
 # define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
@@ -107,5 +117,7 @@ void		executor(t_shell *shell);
 void		sigint_handler_generic(int signum);
 void		sigint_handler_interactive(int signum);
 void		sigint_handler_heredoc(int signum);
+
+void		print_error_message(t_shell *shell);
 
 #endif

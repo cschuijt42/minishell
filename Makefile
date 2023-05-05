@@ -18,21 +18,22 @@ endif
 
 #sources and objects -------------
 
-SOURCEFILES	:=	main.c \
+SOURCEFILES	:=	cleanup.c \
+								dir_builtins.c \
 								environment.c \
+								error_handling.c \
+								execution_helpers.c \
+								executor_child.c \
+								executor.c \
+								heredoc.c \
 								lexing.c \
-								lexing_utils.c \
 								lexing_condensing.c \
 								lexing_expanding.c \
+								lexing_utils.c \
+	              main.c \
 								parsing.c \
-								dir_builtins.c \
-								executor.c \
-								executor_child.c \
-								execution_helpers.c \
-								redirects.c \
-								cleanup.c \
 								path.c \
-								heredoc.c \
+								redirects.c \
 								signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
