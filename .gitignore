@@ -8,3 +8,4 @@ minishell
 *.exe
 *.dSYM
 shell-experiments/*
+valgrind-out.txt
