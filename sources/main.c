@@ -44,7 +44,6 @@ int	run_interactive_mode(t_shell *shell)
 	if (!input)
 	{
 		printf("exit\n");
-		free(input);
 		return (1);
 	}
 	lexer(shell, input);
@@ -67,7 +66,6 @@ void	run_single_command_mode(t_shell *shell, char *input)
 	if (!input)
 	{
 		printf("exit\n");
-		free(input);
 		return ;
 	}
 	lexer(shell, input);
