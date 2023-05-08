@@ -31,7 +31,7 @@ void	execute_commands(t_shell *shell)
 		if (command->next)
 		{
 			if (pipe(command->pipe_out))
-				error_exit("Pipe failure", 1);
+				print_error_message_exit("pipe failure", 1);
 		}
 		setup_child_process(shell, command);
 		if (command->heredoc_pipe[0])

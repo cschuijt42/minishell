@@ -29,9 +29,15 @@ void	print_message_for_error(int error_value)
 		dprintf(2, "Unknown error number %d", error_value);
 }
 
-void	print_error_message(t_shell *shell)
+void	print_error_value(int error_value)
 {
 	dprintf(2, "%sError:\n", C_RED);
-	print_message_for_error(shell->error_value);
+	print_message_for_error(error_value);
 	dprintf(2, "%s\n", C_RESET);
+}
+
+void	print_error_message_exit(char *message, int return_value)
+{
+	dprintf(2, "%sError:\n%s%s\n", C_RED, message, C_RESET);
+	exit(return_value);
 }

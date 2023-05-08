@@ -118,6 +118,7 @@ void		sigint_handler_generic(int signum);
 void		sigint_handler_interactive(int signum);
 void		sigint_handler_heredoc(int signum);
 
-void		print_error_message(t_shell *shell);
+void		print_error_value(int error_value);
+void		print_error_message_exit(char *message, int return_value);
 
 #endif

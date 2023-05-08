@@ -65,7 +65,7 @@ void	expand_command_target(t_shell *shell, t_command *command)
 		free(path_match);
 		i++;
 	}
-	error_exit("no executable found", 127);
+	print_error_message_exit("no executable found", 127);
 }
 	// PATH matching until we find the right executable
 	// Save eventual absolute path in command->target_expanded
@@ -101,17 +101,19 @@ void	setup_child_process(t_shell *shell, t_command *command)
 {
 	command->pid = fork();
 	if (command->pid == -1)
-		error_exit("Fork error", 1);
+		print_error_message_exit("fork error", 1);
 	if (command->pid)
 		return ;
 	setup_command_pipes(command);
 	setup_command_redirects(command);
+	clean_up_heredocs(command);
+	if (!command->target)
+		exit(0);
 	setup_arg_array(command);
 	expand_command_target(shell, command);
-	clean_up_heredocs(command);
 	if (g_interrupted)
 		exit(130);
 	signal(SIGQUIT, SIG_DFL);
 	execve(command->target_expanded, command->arg_array, shell->envp);
-	error_exit("Exec fail", 127);
+	print_error_message_exit("exec fail", 127);
 }

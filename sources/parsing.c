@@ -109,7 +109,7 @@ void	add_argument_to_command_node(t_lexnode *lexnode, t_command *command)
 	new_arg = ft_calloc(1, sizeof(t_argument));
 	new_arg->content = ft_strdup(lexnode->value);
 	if (!(new_arg->content))
-		error_exit("Malloc error", 1);
+		print_error_message_exit("malloc error", 1);
 	if (command->arguments == NULL)
 		command->arguments = new_arg;
 	else
@@ -140,7 +140,7 @@ void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command, \
 	new_redirect->type = (*lexnode)->token_type;
 	new_redirect->target = ft_strdup((*lexnode)->next->value);
 	if (!new_redirect->target)
-		error_exit("Malloc error", 1);
+		print_error_message_exit("malloc error", 1);
 	if (command->redirects == NULL)
 		command->redirects = new_redirect;
 	else

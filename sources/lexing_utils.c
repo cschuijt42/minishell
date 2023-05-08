@@ -65,15 +65,10 @@ void	add_nested_node_to_lexer_output(char *content, int token_type, \
 	new_node = ft_calloc(1, sizeof(t_lexnode));
 	new_node->token_type = token_type;
 	new_node->value = content;
-	if (!(shell->lexer_output))
-		error_exit("Tried to add nested node with nothing in list", 1);
-	else
-	{
-		last_node = shell->lexer_output;
-		while (last_node->next)
-			last_node = last_node->next;
-		while (last_node->tree_next)
-			last_node = last_node->tree_next;
-		last_node->tree_next = new_node;
-	}
+	last_node = shell->lexer_output;
+	while (last_node->next)
+		last_node = last_node->next;
+	while (last_node->tree_next)
+		last_node = last_node->tree_next;
+	last_node->tree_next = new_node;
 }

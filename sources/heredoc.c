@@ -21,7 +21,7 @@ void	cycle_heredoc_pipe(t_command *command)
 	if (command->heredoc_pipe[0])
 		close(command->heredoc_pipe[0]);
 	if (pipe(command->heredoc_pipe))
-		error_exit("Pipe error", 1);
+		print_error_message_exit("pipe error", 1);
 }
 
 void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)

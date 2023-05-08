@@ -49,10 +49,10 @@ int	run_interactive_mode(t_shell *shell)
 	lexer(shell, input);
 	if (shell->error_value == error_continue)
 		build_command_tree(shell);
-	if (shell->error_value == error_continue)
+	if (shell->error_value == error_continue && shell->command_tree)
 		executor(shell);
 	if (shell->error_value != error_continue)
-		print_error_message(shell);
+		print_error_value(shell->error_value);
 	if (ft_strlen(input))
 		add_history(input);
 	free(input);
@@ -74,7 +74,7 @@ void	run_single_command_mode(t_shell *shell, char *input)
 	if (shell->error_value == error_continue && shell->command_tree)
 		executor(shell);
 	if (shell->error_value != error_continue)
-		print_error_message(shell);
+		print_error_value(shell->error_value);
 	clean_up_execution(shell);
 }
 
