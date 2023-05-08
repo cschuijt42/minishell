@@ -23,7 +23,9 @@ SOURCEFILES	:=	main.c \
 				lexing_condensing.c \
 				lexing_expanding.c \
 				parsing.c \
-				dir_builtins.c \
+				builtins_dir.c \
+				builtins_env.c \
+				builtins_misc.c \
 				executor.c \
 				execution_helpers.c \
 				redirects.c \
