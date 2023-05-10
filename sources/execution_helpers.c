@@ -13,12 +13,6 @@
 #include "execution.h"
 #include "minishell.h"
 
-typedef int	(*t_builtin_ptr)(t_argument *, t_shell *);
-
-int		find_builtin_index(char *cmd);
-void	setup_single_builtin_redirects(t_command *cmd, int *temp_inout);
-void	return_single_builtin_redirects(int *temp_std_fd);
-
 // Function to close the current and future commands' heredocs, to
 // prevent them from hanging with other child processes.
 // Every heredoc is a pipe open on the reading end. To prevent these
@@ -57,66 +51,4 @@ void	setup_arg_array(t_command *command)
 		i++;
 		current = current->next;
 	}
-}
-
-bool	single_builtin_executor(t_command *cmd, t_shell *shell)
-{
-	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &unset, &env, \
-									&builtin_exit};
-	int					temp_inout[2];
-	int					builtin_index;
-
-	builtin_index = find_builtin_index(cmd->target);
-	if (builtin_index == -1)
-		return (false);
-	if (cmd->redirects)
-		setup_single_builtin_redirects(cmd, temp_inout);
-	shell->return_value = builtins[builtin_index](cmd->arguments, shell);
-	if (cmd->redirects)
-		return_single_builtin_redirects(temp_inout);
-	return (true);
-}
-		//cleanup heredocs?
-
-void	exec_if_builtin(t_command *cmd, t_shell *shell)
-{
-	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &unset, &env, \
-									&builtin_exit};
-	int					i;
-
-	i = find_builtin_index(cmd->target);
-	if (i == -1)
-		return ;
-	exit(builtins[i](cmd->arguments, shell));
-}
-
-int	find_builtin_index(char *cmd)
-{
-	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", \
-								"exit", NULL};
-	int			index;
-
-	index = 0;
-	while (builtins[index])
-	{
-		if (ft_strcmp(cmd, builtins[index]) == 0)
-			return (index);
-		index++;
-	}
-	return (-1);
-}
-
-void	setup_single_builtin_redirects(t_command *cmd, int *temp_inout)
-{
-	temp_inout[0] = dup(0);
-	temp_inout[1] = dup(1); //dup protection?
-	setup_command_redirects(cmd);
-}
-
-void	return_single_builtin_redirects(int *temp_std_fd)
-{
-	dup2(temp_std_fd[0], 0);
-	dup2(temp_std_fd[1], 1);
-	close(temp_std_fd[0]);
-	close(temp_std_fd[1]);
 }

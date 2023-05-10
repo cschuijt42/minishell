@@ -19,7 +19,8 @@ endif
 
 #sources and objects -------------
 
-SOURCEFILES	:=	builtins_dir.c \
+SOURCEFILES	:=	builtin_execution.c \
+								builtins_dir.c \
 								builtins_env.c \
 								builtins_misc.c \
 								cleanup.c \
