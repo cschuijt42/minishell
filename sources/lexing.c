@@ -84,7 +84,10 @@ int	read_quote_mode(char *str, char closing_quote, int i, t_shell *shell)
 		i++;
 	}
 	if (str[i] == '\0')
-		error_exit("Unclosed quote in input", 1);
+	{
+		shell->error_value = error_unclosed_quote;
+		return (-1);
+	}
 	text = ft_substr(str, start, i - start);
 	add_nested_node_to_lexer_output(text, token_plain_text, shell);
 	if (str[i] == '$')
@@ -134,6 +137,9 @@ void	lexer(t_shell *shell, char *input)
 			i = pipe_or_redirect_token(input, i, shell);
 		else
 			i = read_text_mode(input, i, shell, 0);
+		if (shell->error_value != error_continue)
+			break ;
 	}
-	condense_lexer_output(&(shell->lexer_output));
+	if (shell->error_value == error_continue)
+		condense_lexer_output(&(shell->lexer_output));
 }

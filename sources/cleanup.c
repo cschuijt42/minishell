@@ -12,71 +12,90 @@
 
 #include "minishell.h"
 
-void	clean_up_lexer_output(t_lexnode *lexnodes)
+void	free_nested_lexer_output(t_lexnode *lexnode)
 {
 	t_lexnode	*current;
 	t_lexnode	*next;
 
-	current = lexnodes;
+	current = lexnode;
 	while (current)
 	{
-		free(current->value);
-		next = current->next;
+		if (current->value)
+			free(current->value);
+		next = current->tree_next;
 		free(current);
 		current = next;
 	}
 }
 
-void	clean_up_redirect_list(t_redirect *redirects)
+void	clean_up_lexer_output(t_shell *shell)
 {
-	t_redirect	*current;
-	t_redirect	*next;
+	t_lexnode	*current;
+	t_lexnode	*next;
 
-	current = redirects;
+	current = shell->lexer_output;
 	while (current)
 	{
-		if (current->target)
-			free(current->target);
+		if (current->tree_next)
+			free_nested_lexer_output(current->tree_next);
+		if (current->value)
+			free(current->value);
 		next = current->next;
 		free(current);
 		current = next;
 	}
+	shell->lexer_output = NULL;
 }
 
-void	clean_up_argument_list(t_argument *arguments)
+void	clean_up_argument_and_redirect_list(t_argument *arguments, \
+											t_redirect *redirects)
 {
-	t_argument	*current;
-	t_argument	*next;
+	t_argument	*current_argument;
+	t_argument	*next_argument;
+	t_redirect	*current_redirect;
+	t_redirect	*next_redirect;
 
-	current = arguments;
-	while (current)
+	current_argument = arguments;
+	while (current_argument)
 	{
-		free(current->content);
-		next = current->next;
-		free(current);
-		current = next;
+		free(current_argument->content);
+		next_argument = current_argument->next;
+		free(current_argument);
+		current_argument = next_argument;
+	}
+	current_redirect = redirects;
+	while (current_redirect)
+	{
+		if (current_redirect->target)
+			free(current_redirect->target);
+		next_redirect = current_redirect->next;
+		free(current_redirect);
+		current_redirect = next_redirect;
 	}
 }
 
-void	clean_up_command_tree(t_command *command_tree)
+void	clean_up_command_tree(t_shell *shell)
 {
 	t_command	*current;
 	t_command	*next;
 
-	current = command_tree;
+	current = shell->command_tree;
 	while (current)
 	{
 		free(current->target);
-		clean_up_argument_list(current->arguments);
-		clean_up_redirect_list(current->redirects);
+		clean_up_argument_and_redirect_list(current->arguments, \
+											current->redirects);
 		next = current->next;
 		free(current);
 		current = next;
 	}
+	shell->command_tree = NULL;
 }
 
 void	clean_up_execution(t_shell *shell)
 {
-	clean_up_lexer_output(shell->lexer_output);
-	clean_up_command_tree(shell->command_tree);
+	clean_up_lexer_output(shell);
+	clean_up_command_tree(shell);
+	g_interrupted = 0;
+	shell->error_value = error_continue;
 }

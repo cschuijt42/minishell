@@ -19,7 +19,16 @@
 # include <limits.h>
 # include <stdio.h> //for puts testing
 
-extern int	g_return_value;
+extern int	g_interrupted;
+
+typedef enum e_error_types
+{
+	error_continue,
+	error_unclosed_quote,
+	error_loose_pipe,
+	error_loose_redirect_token,
+	error_empty_command_node
+}	t_error_types;
 
 typedef enum tokentypes
 {
@@ -85,6 +94,8 @@ typedef struct s_shell
 	t_command	*command_tree;
 	char		**envp;
 	char		**split_path;
+	int			return_value;
+	int			error_value;
 }	t_shell;
 
 # define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
@@ -114,5 +125,12 @@ int			unset(t_argument *args, t_shell *shell);
 
 void		executor(t_shell *shell);
 void		setup_all_heredocs(t_shell *shell);
+
+void		sigint_handler_generic(int signum);
+void		sigint_handler_interactive(int signum);
+void		sigint_handler_heredoc(int signum);
+
+void		print_error_value(int error_value);
+void		print_error_message_exit(char *message, int return_value);
 
 #endif

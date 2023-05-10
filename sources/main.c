@@ -14,133 +14,89 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 #include "h_colors.h"
 #include "minishell.h"
 #include "lexing.h"
 #include "parsing.h"
 
-int	g_return_value = 0;
+int	g_interrupted = 0;
 
-void	print_tokens(t_lexnode *list)
+t_shell	*initialize_shell_struct(char **envp)
 {
-	while (list)
-	{
-		printf("%d: [%s]\n", list->token_type, list->value);
-		list = list->next;
-	}
+	t_shell	*shell;
+
+	shell = safe_alloc(1, sizeof(t_shell));
+	shell->return_value = 0;
+	shell->environment = parse_envp(envp);
+	shell->envp = envp;
+	regenerate_path_array(shell);
+	return (shell);
 }
 
-void	print_command_tree(t_command *command_tree)
+int	run_interactive_mode(t_shell *shell)
 {
-	t_argument	*argument;
-	t_redirect	*redirect;
+	char	*input;
 
-	printf("%s%sCommand tree:%s\n\n", C_BOLD, C_RED, C_RESET);
-	while (command_tree)
+	signal(SIGINT, sigint_handler_interactive);
+	input = readline(SHELL_PROMPT);
+	signal(SIGINT, sigint_handler_generic);
+	if (!input)
 	{
-		printf("%sCommand: %s%s%s\n", C_RESET, C_BOLD, C_ORANGE, \
-										command_tree->target);
-		printf("%sPiped from: %s%s%s\n", C_RESET, C_BOLD, C_YELLOW, \
-					command_tree->prev ? command_tree->prev->target : "-");
-		printf("%sPipes to: %s%s%s\n", C_RESET, C_BOLD, C_GREEN, \
-					command_tree->next ? command_tree->next->target : "-");
-		printf("%sArguments: ", C_RESET);
-		argument = command_tree->arguments;
-		while (argument)
-		{
-			printf("%s%s%s", C_BOLD, C_BLUE, argument->content);
-			if (argument->next)
-				printf("%s, ", C_RESET);
-			argument = argument->next;
-		}
-		printf("\n%sRedirect: ", C_RESET);
-		redirect = command_tree->redirects;
-		while (redirect)
-		{
-			printf("%s%s", C_BOLD, C_VIOLET);
-			if (redirect->type == redirect_input)
-				printf("<");
-			else if (redirect->type == redirect_heredoc)
-				printf("<<");
-			else if (redirect->type == redirect_output)
-				printf(">");
-			else if (redirect->type == redirect_output_append)
-				printf(">>");
-			printf(" %s", redirect->target);
-			if (redirect->next)
-				printf("%s, ", C_RESET);
-			redirect = redirect->next;
-		}
-		printf("%s\n\n", C_RESET);
-		command_tree = command_tree->next;
+		printf("exit\n");
+		return (1);
 	}
+	lexer(shell, input);
+	if (shell->error_value == error_continue)
+		build_command_tree(shell);
+	if (shell->error_value == error_continue && shell->command_tree)
+		executor(shell);
+	if (shell->error_value != error_continue)
+		print_error_value(shell->error_value);
+	if (ft_strlen(input))
+		add_history(input);
+	free(input);
+	clean_up_execution(shell);
+	return (0);
 }
 
-// int	main(void)
-// {
-// 	char		*input;
-// 	t_lexnode	*token_list;
-// 	t_command	*command_tree;
-
-// 	input = readline("\x1b[38;2;0;255;0mFROGGYSHELL:\x1b[0m ");
-// 	if (!input)
-// 		temp_error("readline fail");
-// 	token_list = lexer(input);
-// 	print_tokens(token_list);
-// 	command_tree = build_command_tree(token_list);
-// 	print_command_tree(command_tree);
-// 	return (0);
-// }
-
-// void	add_token(t_lexnode **tokens, int type, char *content)
-// {
-// 	t_lexnode	*new_node;
-// 	t_lexnode	*last_node;
-
-// 	new_node = ft_calloc(1, sizeof(t_lexnode));
-// 	new_node->token_type = type;
-// 	if (content)
-// 		new_node->value = ft_strdup(content);
-// 	if (!(*tokens))
-// 		*tokens = new_node;
-// 	else
-// 	{
-// 		last_node = *tokens;
-// 		while (last_node->next)
-// 			last_node = last_node->next;
-// 		last_node->next = new_node;
-// 	}
-// }
+void	run_single_command_mode(t_shell *shell, char *input)
+{
+	signal(SIGINT, sigint_handler_generic);
+	if (!input)
+	{
+		printf("exit\n");
+		return ;
+	}
+	lexer(shell, input);
+	if (shell->error_value == error_continue)
+		build_command_tree(shell);
+	if (shell->error_value == error_continue && shell->command_tree)
+		executor(shell);
+	if (shell->error_value != error_continue)
+		print_error_value(shell->error_value);
+	clean_up_execution(shell);
+}
 
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
-	char	*input;
 
-	(void) ac;
-	(void) av;
-	shell = safe_alloc(1, sizeof(t_shell));
-	shell->environment = parse_envp(envp);
-	shell->envp = env_list_to_arr(shell->environment);
-	regenerate_path_array(shell);
+	shell = initialize_shell_struct(envp);
 	using_history();
-	while (1)
+	g_interrupted = 0;
+	signal(SIGQUIT, SIG_IGN);
+	if (ac == 3 && !ft_strncmp(av[1], "-c", 3))
+		run_single_command_mode(shell, av[2]);
+	else
 	{
-		input = readline(SHELL_PROMPT);
-		if (!input)
+		while (1)
 		{
-			printf("exit\n");
-			break ;
+			if (run_interactive_mode(shell))
+				break ;
 		}
-		lexer(shell, input);
-		shell->command_tree = build_command_tree(shell->lexer_output);
-		// print_command_tree(shell->command_tree);
-		executor(shell);
-		if (ft_strlen(input))
-			add_history(input);
-		free(input);
-		clean_up_execution(shell);
 	}
 	rl_clear_history();
-	return (0);
+	// Clean up other variables/shell struct here
+	return (shell->return_value);
 }

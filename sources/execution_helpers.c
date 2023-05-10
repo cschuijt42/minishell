@@ -71,7 +71,7 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 		return (false);
 	if (cmd->redirects)
 		setup_single_builtin_redirects(cmd, temp_inout);
-	g_return_value = builtins[builtin_index](cmd->arguments, shell);
+	shell->return_value = builtins[builtin_index](cmd->arguments, shell);
 	if (cmd->redirects)
 		return_single_builtin_redirects(temp_inout);
 	return (true);

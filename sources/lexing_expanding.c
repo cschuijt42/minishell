@@ -23,7 +23,7 @@ void	expand_variable_in_quotes(char *var_name, t_shell *shell)
 	char	*var_value;
 
 	if (var_name[0] == '?')
-		add_nested_node_to_lexer_output(ft_itoa(g_return_value), \
+		add_nested_node_to_lexer_output(ft_itoa(shell->return_value), \
 										token_plain_text, shell);
 	else
 	{
@@ -41,7 +41,7 @@ void	expand_variable(char *var_name, t_shell *shell, int i)
 	int		start;
 
 	if (var_name[0] == '?')
-		add_nested_node_to_lexer_output(ft_itoa(g_return_value), \
+		add_nested_node_to_lexer_output(ft_itoa(shell->return_value), \
 										token_plain_text, shell);
 	else
 	{

@@ -14,13 +14,14 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <stdlib.h>
+#include <signal.h>
 
 void	cycle_heredoc_pipe(t_command *command)
 {
 	if (command->heredoc_pipe[0])
 		close(command->heredoc_pipe[0]);
 	if (pipe(command->heredoc_pipe))
-		error_exit("Pipe error", 1);
+		print_error_message_exit("pipe error", 1);
 }
 
 void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
@@ -28,6 +29,8 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 	char	*input;
 	char	*prompt;
 
+	if (g_interrupted)
+		return ;
 	cycle_heredoc_pipe(command);
 	prompt = safe_alloc(sizeof(char), 15);
 	sprintf(prompt, "heredoc[%d]>", i);
@@ -43,6 +46,8 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 		}
 		ft_putendl_fd(input, command->heredoc_pipe[1]);
 		free(input);
+		if (g_interrupted)
+			break ;
 	}
 	free(prompt);
 	close(command->heredoc_pipe[1]);
@@ -54,6 +59,8 @@ void	setup_all_heredocs(t_shell *shell)
 	t_redirect	*current_redirect;
 	int			i;
 
+	signal(SIGINT, sigint_handler_heredoc);
+	rl_getc_function = getc;
 	i = 1;
 	current_command = shell->command_tree;
 	while (current_command)
@@ -70,4 +77,6 @@ void	setup_all_heredocs(t_shell *shell)
 		}
 		current_command = current_command->next;
 	}
+	rl_getc_function = rl_getc;
+	signal(SIGINT, sigint_handler_generic);
 }
