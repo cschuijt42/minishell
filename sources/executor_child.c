@@ -109,6 +109,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	clean_up_heredocs(command);
 	if (!command->target)
 		exit(0);
+	exec_if_builtin(command, shell);
 	setup_arg_array(command);
 	expand_command_target(shell, command);
 	if (g_interrupted)

@@ -78,7 +78,7 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 }
 		//cleanup heredocs?
 
-void	child_builtin(t_command *cmd, t_shell *shell)
+void	exec_if_builtin(t_command *cmd, t_shell *shell)
 {
 	const t_builtin_ptr	builtins[] = {&echo, &cd, &pwd, &export, &unset, &env, \
 									&builtin_exit};
@@ -86,12 +86,7 @@ void	child_builtin(t_command *cmd, t_shell *shell)
 
 	i = find_builtin_index(cmd->target);
 	if (i == -1)
-	{
-		sleep(2);
-		write(2, "not a builtin\n", 14);
 		return ;
-	}
-	write(2, "iss a builtin\n", 14);
 	exit(builtins[i](cmd->arguments, shell));
 }
 

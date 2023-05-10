@@ -18,7 +18,7 @@ int	builtin_exit(t_argument *args, t_shell *shell)
 	printf("exit\n");
 	if (args && args->content)
 		exit(ft_atoi(args->content)); //custom atoi that protects against >230 overflow?
-	exit(10);
+	exit(0);
 }
 
 int	echo(t_argument *args, t_shell *shell)
