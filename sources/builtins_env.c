@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+#define UNSET_ERR "\x1b[38;2;255;0;0myou've\x1b[38;2;255;128;0m\x1b[1m set \
+\x1b[0m\x1b[38;2;255;0;0myourself up for failure \x1b[38;2;255;255;0m\n\"%s\"\
+\x1b[38;2;255;0;0m is not a valid identifier\n\x1b[0m"
+
 void	print_alphabet(char **envp)
 {
 	int		i;
@@ -55,6 +59,40 @@ int	env(t_argument *args, t_shell *shell)
 	print_2d_charray(shell->envp);
 	return (0);
 }
+
+int	unset(t_argument *args, t_shell *shell)
+{
+	t_env_list	*node;
+	bool		err_occured;
+
+	err_occured = false;
+	while (args)
+	{
+		node = shell->environment;
+		if (!str_is_fully_alnum(args->content))
+		{
+			dprintf(2, UNSET_ERR, args->content);
+			err_occured = true;
+		}
+		else
+		{
+			while (node)
+			{
+				if (!ft_strcmp(args->content, node->key))
+				{
+					remove_node_and_remake_env(node, shell);
+					break ; //could remove for more readablity but less performance
+				}
+				node = node->next;
+			}
+		}
+		args = args->next;
+	}
+	if (err_occured)
+		return (1);
+	return (0);
+}
+
 //ok so, cd both starting with dir names and ./dirname should function the same
 // ./../ is possible though!
 

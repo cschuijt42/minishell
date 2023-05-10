@@ -23,7 +23,7 @@ char	**env_list_to_arr(t_env_list *list)
 	i = 0;
 	while (i < list_size)
 	{
-		ret[i] = str_iple_join(list->key, "=", list->value);
+		ret[i] = protected_str_iple_join(list->key, "=", list->value);
 		i++;
 		list = list->next;
 	}

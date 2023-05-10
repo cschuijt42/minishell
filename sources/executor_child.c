@@ -43,7 +43,6 @@ void	setup_command_redirects(t_command *command)
 // When executing, we always use command->target_expanded.
 void	expand_command_target(t_shell *shell, t_command *command)
 {
-	char	*target_prefix;
 	char	*path_match;
 	size_t	i;
 
@@ -55,7 +54,7 @@ void	expand_command_target(t_shell *shell, t_command *command)
 	i = 0;
 	while (shell->split_path[i])
 	{
-		path_match = str_iple_join(shell->split_path[i], \
+		path_match = protected_str_iple_join(shell->split_path[i], \
 									"/", command->target);
 		if (access(path_match, F_OK | X_OK) == 0)
 		{

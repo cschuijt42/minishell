@@ -53,7 +53,7 @@ void	ez_strcpy(char *dest, char *src, int start, int len)
 	}
 }
 
-char	*str_iple_join(char *s1, char *s2, char *s3)
+char	*protected_str_iple_join(char *s1, char *s2, char *s3)
 {
 	size_t	s1_len;
 	size_t	s2_len;

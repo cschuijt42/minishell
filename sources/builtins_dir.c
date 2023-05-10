@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dir_builtins.c                                     :+:    :+:            */
+/*   builtins_dir.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -22,17 +22,18 @@ cd? more like c deez error messages haHA\x1b[0m"
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
 int	pwd(t_argument *args, t_shell *shell)
 {
-	char	*path;
+	char	current_dir[PATH_MAX];
+	char	*cwd_check;
 
 	(void) args;
 	(void) shell;
-	path = getcwd(NULL, 0);
-	if (!path)
-		error_exit(MAL_ERR, errno);
-	printf("%s\n", path);
-	//do i need to give a newline??
-	// set PWD in ENVP!
-	free(path);
+	cwd_check = getcwd(current_dir, PATH_MAX);
+	if (!cwd_check)
+	{
+		perror("can't get working dir");
+		return (1);
+	}
+	printf("%s\n", current_dir);
 	return (0);
 }
 // so.. yeah getcwd seems to make this basicly a freebie?

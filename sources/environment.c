@@ -28,7 +28,7 @@ void	set_value(char *key, char *value, t_shell *shell)
 			free(env->value);
 			env->value = value;
 			free(shell->envp[i]);
-			shell->envp[i] = str_iple_join(env->key, "=", env->value);
+			shell->envp[i] = protected_str_iple_join(env->key, "=", env->value);
 		}
 		env = env->next;
 		i++;
@@ -108,37 +108,3 @@ void	find_env_var(char *key, t_shell *shell)
 	if (list)
 		remove_node_and_remake_env(list, shell);
 } //wanted to finish but was getting too late, this could be 1 fun w the 1 above
-
-int	unset(t_argument *args, t_shell *shell)
-{
-	t_env_list	*node;
-	bool		err_occured;
-
-	err_occured = false;
-	while (args)
-	{
-		node = shell->environment;
-		if (!str_is_fully_alnum(args->content))
-		{
-			dprintf(2, "you" C_RED "set" C_RESET "yourself up for failure\n\
-					%s is not a valid identifier\n", args->content);
-			err_occured = true;
-		}
-		else
-		{
-			while (node)
-			{
-				if (!ft_strcmp(args->content, node->key))
-				{
-					remove_node_and_remake_env(node, shell);
-					break ; //could remove for more readablity but less performance
-				}
-				node = node->next;
-			}
-		}
-		args = args->next;
-	}
-	if (err_occured)
-		return (1);
-	return (0);
-}
