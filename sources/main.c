@@ -27,6 +27,7 @@ t_shell	*initialize_shell_struct(char **envp)
 	t_shell	*shell;
 
 	shell = safe_alloc(1, sizeof(t_shell));
+	shell->cwd = safe_alloc(1, PATH_MAX);
 	shell->return_value = 0;
 	shell->environment = parse_envp(envp);
 	shell->envp = envp;

@@ -22,37 +22,28 @@ cd? more like c deez error messages haHA\x1b[0m"
 // 3/4 update.. yeah I might refactor this cause I can just call getcwd
 int	pwd(t_argument *args, t_shell *shell)
 {
-	char	current_dir[PATH_MAX];
-	char	*cwd_check;
-
 	(void) args;
-	(void) shell;
-	cwd_check = getcwd(current_dir, PATH_MAX);
-	if (!cwd_check)
+	if (!getcwd(shell->cwd, PATH_MAX))
 	{
 		perror("can't get working dir");
 		return (1);
 	}
-	printf("%s\n", current_dir);
+	printf("%s\n", shell->cwd);
 	return (0);
 }
-// so.. yeah getcwd seems to make this basicly a freebie?
-// Idk if there's edgecases that im not thinking of
 
 int	cd(t_argument *args, t_shell *shell)
 {
-	char	current_dir[PATH_MAX];
 	char	*new_dir;
 
 	new_dir = NULL;
-	if (!getcwd(current_dir, PATH_MAX) || access(current_dir, F_OK) != 0)
+	if (!getcwd(shell->cwd, PATH_MAX) || access(shell->cwd, F_OK) != 0)
 	{
 		perror(C_RED "current dir destroyed, I'm going HOME >:c\n" C_RESET);
 		args = NULL;
 	}
 	if (!args)
-		new_dir = get_env_var_value("HOME", shell->environment); //should be new alloc
-	//other arguments just get ignored by bash :)
+		new_dir = get_env_var_value("HOME", shell->environment);
 	else if (args->content && args->content[0] == '-' && !args->content[1])
 		new_dir = get_env_var_value("OLDPWD", shell->environment);
 	if (!new_dir || !*new_dir)
@@ -60,12 +51,9 @@ int	cd(t_argument *args, t_shell *shell)
 				\n" C_RESET);
 	if (chdir(new_dir) == -1)
 		perror(CHDIR_ERROR);
-	//set new PWD and old PWD
+	// Change PWD and OLDPWD
 	return (0);
 }
 // EDGECASE deleting current dir and then cding
 // solve by access checking first->if false cd OLDPWD if false cd HOME if false
 // then cmon bro then your minishell wouldnt even be there anymore
-
-
-

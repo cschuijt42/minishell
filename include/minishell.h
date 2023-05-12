@@ -92,6 +92,7 @@ typedef struct s_shell
 	t_env_list	*environment;
 	t_lexnode	*lexer_output;
 	t_command	*command_tree;
+	char		*cwd;
 	char		**envp;
 	char		**split_path;
 	int			return_value;
