@@ -42,7 +42,7 @@ void	add_node_to_lexer_output(char *content, int token_type, t_shell *shell)
 	t_lexnode	*new_node;
 	t_lexnode	*last_node;
 
-	new_node = ft_calloc(1, sizeof(t_lexnode));
+	new_node = safe_alloc(1, sizeof(t_lexnode));
 	new_node->token_type = token_type;
 	new_node->value = content;
 	if (!(shell->lexer_output))
@@ -62,7 +62,7 @@ void	add_nested_node_to_lexer_output(char *content, int token_type, \
 	t_lexnode	*new_node;
 	t_lexnode	*last_node;
 
-	new_node = ft_calloc(1, sizeof(t_lexnode));
+	new_node = safe_alloc(1, sizeof(t_lexnode));
 	new_node->token_type = token_type;
 	new_node->value = content;
 	last_node = shell->lexer_output;

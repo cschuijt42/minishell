@@ -48,7 +48,7 @@ t_env_list	*env_line_to_node(char *env_line)
 		key_length++;
 	node->key = ft_substr(env_line, 0, key_length);
 	if (!node->key)
-		error_exit("malloc error", 1);
+		print_error_message_exit("malloc error", 1);
 	if (!env_line[key_length])
 		node->value = NULL;
 	else

@@ -57,7 +57,7 @@ void	add_env_var(char *key, char *value, t_shell *shell)
 	node->key = ft_strdup(key);
 	node->value = ft_strdup(value);
 	if ((key && !node->key) || (value && !node->value))
-		error_exit("malloc failure\n", 2);
+		print_error_message_exit("malloc failure", 2);
 	last = shell->env_list;
 	while (last->next)
 		last = last->next;

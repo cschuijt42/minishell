@@ -59,7 +59,7 @@ t_command	*build_command_node(t_lexnode **input, t_shell *shell)
 	t_command	*command_node;
 	int			loose_text_nodes;
 
-	command_node = ft_calloc(1, sizeof(t_command));
+	command_node = safe_alloc(1, sizeof(t_command));
 	loose_text_nodes = 0;
 	while (*input && (*input)->token_type != token_pipe)
 	{
@@ -106,7 +106,7 @@ void	add_argument_to_command_node(t_lexnode *lexnode, t_command *command)
 	t_argument	*last_arg;
 	t_argument	*new_arg;
 
-	new_arg = ft_calloc(1, sizeof(t_argument));
+	new_arg = safe_alloc(1, sizeof(t_argument));
 	new_arg->content = ft_strdup(lexnode->value);
 	if (!(new_arg->content))
 		print_error_message_exit("malloc error", 1);
@@ -136,7 +136,7 @@ void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command, \
 		shell->error_value = error_loose_redirect_token;
 		return ;
 	}
-	new_redirect = ft_calloc(1, sizeof(t_redirect));
+	new_redirect = safe_alloc(1, sizeof(t_redirect));
 	new_redirect->type = (*lexnode)->token_type;
 	new_redirect->target = ft_strdup((*lexnode)->next->value);
 	if (!new_redirect->target)
