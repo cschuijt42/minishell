@@ -46,7 +46,9 @@ t_env_list	*env_line_to_node(char *env_line)
 	node = safe_alloc(sizeof(t_env_list), 1);
 	while (env_line[key_length] && env_line[key_length] != '=')
 		key_length++;
-	node->key = ft_substr(env_line, 0, key_length); //= substr exit, make diff version
+	node->key = ft_substr(env_line, 0, key_length);
+	if (!node->key)
+		error_exit("malloc error", 1);
 	if (!env_line[key_length])
 		node->value = NULL;
 	else
