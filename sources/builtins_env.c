@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-#define UNSET_ERR "\x1b[38;2;255;0;0myou've\x1b[38;2;255;128;0m\x1b[1m set \
-\x1b[0m\x1b[38;2;255;0;0myourself up for failure \x1b[38;2;255;255;0m\n\"%s\"\
-\x1b[38;2;255;0;0m is not a valid identifier\n\x1b[0m"
-
 void	print_2d_array_alphabetically(char **envp)
 {
 	int		i;
@@ -101,7 +97,7 @@ int	unset(t_argument *args, t_shell *shell)
 	{
 		if (!str_is_fully_alnum(args->content))
 		{
-			dprintf(2, UNSET_ERR, args->content);
+			print_error_message_export(args->content);
 			err_occured = true;
 		}
 		else
@@ -116,11 +112,3 @@ int	unset(t_argument *args, t_shell *shell)
 		return (1);
 	return (0);
 }
-
-//ok so, cd both starting with dir names and ./dirname should function the same
-// ./../ is possible though!
-
-// bash cd doesnt go into hidden directories nice
-// cd blank space/with no args goes to home folder??
-
-// https://man7.org/linux/man-pages/man1/cd.1p.html
