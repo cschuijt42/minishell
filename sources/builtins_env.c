@@ -43,8 +43,8 @@ void	print_2d_array_alphabetically(char **envp)
 
 int	env(t_argument *args, t_shell *shell)
 {
-	(void)args;
 	t_env_list	*node;
+	(void)args;
 
 	node = shell->env_list;
 	while (node)

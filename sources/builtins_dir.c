@@ -38,7 +38,8 @@ int	cd(t_argument *args, t_shell *shell)
 {
 	char	*new_dir;
 
-	if (!getcwd(shell->cwd, PATH_MAX) || access(shell->cwd, F_OK) != 0)
+	if (args && args->content[0] != '/' && \
+		(!getcwd(shell->cwd, PATH_MAX) || access(shell->cwd, F_OK) != 0))
 	{
 		print_error_message_return("current directory no longer exists", 0);
 		args = NULL;
