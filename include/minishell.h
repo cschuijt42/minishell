@@ -142,4 +142,9 @@ void		print_error_message_exit(char *message, int return_value);
 int			print_error_message_return(char *message, int return_value);
 int			print_error_message_perror(char *message, int return_value);
 
+int			clean_up_shell_struct(t_shell *shell);
+void		clean_up_lexer_output(t_shell *shell);
+void		clean_up_command_tree(t_shell *shell);
+void		clean_up_env_list(t_shell *shell);
+
 #endif

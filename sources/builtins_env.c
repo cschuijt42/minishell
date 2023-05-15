@@ -23,12 +23,12 @@ void	print_2d_array_alphabetically(char **envp)
 	char	**copy;
 
 	i = 0;
-	arrlen = ptrarr_len((void **)envp);
+	arrlen = ptrarr_len((void **)envp) + 1;
 	copy = safe_alloc(sizeof(char *), arrlen);
 	ft_memcpy(copy, envp, sizeof(char *) * arrlen);
 	while (arrlen)
 	{
-		while (copy[i + 1] && i + 1 < arrlen)
+		while (i + 1 < arrlen && copy[i + 1])
 		{
 			if (ft_strcmp(copy[i], copy[i + 1]) > 0)
 				str_switch(&copy[i], &copy[i + 1]);
@@ -44,8 +44,8 @@ void	print_2d_array_alphabetically(char **envp)
 int	env(t_argument *args, t_shell *shell)
 {
 	t_env_list	*node;
-	(void)args;
 
+	(void) args;
 	node = shell->env_list;
 	while (node)
 	{

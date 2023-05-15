@@ -73,3 +73,17 @@ void	free_node(t_env_list *node)
 	free(node->key);
 	free(node);
 }
+
+void	clean_up_env_list(t_shell *shell)
+{
+	t_env_list	*current;
+	t_env_list	*next;
+
+	current = shell->env_list;
+	while (current)
+	{
+		next = current->next;
+		free_node(current);
+		current = next;
+	}
+}

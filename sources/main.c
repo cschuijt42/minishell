@@ -36,6 +36,21 @@ t_shell	*initialize_shell_struct(char **envp)
 	return (shell);
 }
 
+int	clean_up_shell_struct(t_shell *shell)
+{
+	int	return_value;
+
+	return_value = shell->return_value;
+	clean_up_lexer_output(shell);
+	clean_up_command_tree(shell);
+	clean_up_env_list(shell);
+	free_array((void **) shell->envp);
+	free_array((void **) shell->split_path);
+	free(shell->cwd);
+	free(shell);
+	return (return_value);
+}
+
 int	run_interactive_mode(t_shell *shell)
 {
 	char	*input;
@@ -99,6 +114,5 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 	rl_clear_history();
-	// Clean up other variables/shell struct here
-	return (shell->return_value);
+	return (clean_up_shell_struct(shell));
 }
