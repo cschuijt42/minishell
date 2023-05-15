@@ -11,9 +11,9 @@ else
 	READLINEFLAGS := -lreadline
 endif
 ifeq ($(UNAME_S), Darwin)
-	LINKFLAGS 		?= -I include -I LIBFT/include -I $(shell brew --prefix readline)/include -g
+	LINKFLAGS 		?= -I include -I LIBFT/include -I $(shell brew --prefix readline)/include
 else
-	LINKFLAGS 		?= -I include -I LIBFT/include -g
+	LINKFLAGS 		?= -I include -I LIBFT/include
 endif
 
 #sources and objects -------------
