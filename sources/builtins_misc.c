@@ -14,11 +14,22 @@
 
 int	builtin_exit(t_argument *args, t_shell *shell)
 {
-	(void)shell; //do we have to free before exiting?
+	int	exit_val;
+
+	(void)shell;
+	exit_val = 0;
 	printf("exit\n");
 	if (args && args->content)
-		exit(ft_atoi(args->content)); //custom atoi that protects against >230 overflow?
-	exit(0);
+	{
+		if (!is_valid_nbr_str(args->content))
+		{
+			dprintf(2, "%s: You can only exit with numbers >:(", args->content);
+			exit_val = 255;
+		}
+		else
+			exit_val = ft_atoi(args->content);
+	}
+	exit(exit_val);
 }
 
 int	echo(t_argument *args, t_shell *shell)
@@ -46,4 +57,3 @@ int	echo(t_argument *args, t_shell *shell)
 		printf("\n");
 	return (0);
 }
-

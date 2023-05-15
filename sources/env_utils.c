@@ -31,7 +31,6 @@ char	**env_list_to_arr(t_env_list *list)
 	return (ret);
 }
 
-
 char	*get_env_var_value(char *key, t_env_list *list)
 {
 	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
@@ -64,4 +63,11 @@ void	add_env_var(char *key, char *value, t_shell *shell)
 	last->next = node;
 	free_array((void **)shell->envp);
 	shell->envp = env_list_to_arr(shell->env_list);
+}
+
+void	free_node(t_env_list *node)
+{
+	free(node->key);
+	free(node->value);
+	free(node);
 }

@@ -43,7 +43,8 @@ STRING 	:=	ft_split.c \
 			ft_isdigit.c \
 			ft_isprint.c \
 			str_reverse.c \
-			str_switch.c
+			str_switch.c \
+			ft_is_valid_nbr_str.c
 
 GNL			:=	get_next_line.c \
 				get_next_line_utils.c

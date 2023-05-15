@@ -106,7 +106,11 @@ typedef struct s_shell
 t_env_list	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_list *list);
 char		**env_list_to_arr(t_env_list *list);
-void		add_env_var(char *str, t_shell *shell);
+void		add_env_var(char *key, char *value, t_shell *shell);
+t_env_list	*find_env_var(char *key, t_shell *shell);
+t_env_list	*env_line_to_node(char *env_line);
+void		free_node(t_env_list *node);
+void		remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell);
 
 // ----------------- utils ----------------
 

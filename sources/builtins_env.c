@@ -43,6 +43,7 @@ void	print_2d_array_alphabetically(char **envp)
 
 int	env(t_argument *args, t_shell *shell)
 {
+	(void)args;
 	t_env_list	*node;
 
 	node = shell->env_list;
@@ -55,30 +56,39 @@ int	env(t_argument *args, t_shell *shell)
 	return (0);
 }
 
+void	print_error_message_export(char *identifier)
+{
+	dprintf(2, "%sError:\n'%s' is not a valid identifier%s\n", \
+			C_RED, identifier, C_RESET);
+}
+
 int	export(t_argument *args, t_shell *shell)
 {
-	int	ret_val;
-	int	i;
+	int			ret_val;
+	t_env_list	*node;
+	char		*env_str;
 
 	ret_val = 0;
-	i = 0;
 	if (!args)
-	{
 		print_2d_array_alphabetically(shell->envp);
-		return (ret_val);
-	}
 	while (args)
 	{
-		while (args->content[i] && args->content[i])
+		env_str = args->content;
+		while (*env_str && *env_str != '=' && ft_isalnum(*env_str))
+			env_str++;
+		if (*env_str && *env_str != '=')
 		{
-
+			print_error_message_export(args->content);
+			ret_val = 1;
+			args = args->next;
+			continue ;
 		}
-		if (!ft_strchr(args->content, (int) '='))
-		{
-		}
+		node = env_line_to_node(args->content);
+		add_env_var(node->key, node->value, shell);
+		free_node(node);
 		args = args->next;
 	}
-	return (0);
+	return (ret_val);
 }
 
 int	unset(t_argument *args, t_shell *shell)
