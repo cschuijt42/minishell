@@ -91,7 +91,8 @@ void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
 	else
 		shell->env_list = remove_me->next;
 	free(remove_me->key);
-	free(remove_me->value);
+	if (remove_me->value)
+		free(remove_me->value);
 	free(remove_me);
 	free_array((void **)shell->envp);
 	shell->envp = env_list_to_arr(shell->env_list);

@@ -24,7 +24,7 @@ bool	str_is_fully_alnum(char *str)
 {
 	while (*str)
 	{
-		if (!ft_isdigit(*str) || !ft_isalpha(*str))
+		if (!ft_isdigit(*str) && !ft_isalpha(*str))
 			return (false);
 		str++;
 	}

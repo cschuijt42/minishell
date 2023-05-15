@@ -126,6 +126,9 @@ $(OBJ_DIR)%.o : $(SRC_DIR)*/*/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
+objects:
+	@mkdir $(OBJ_DIR)
+
 print:
 	@printf "$(OBJ_DIR)"
 
