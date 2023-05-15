@@ -51,10 +51,10 @@ int	cd(t_argument *args, t_shell *shell)
 		args = NULL;
 	}
 	if (!args)
-		new_dir = get_env_var_value("HOME", shell->environment); //should be new alloc
+		new_dir = get_env_var_value("HOME", shell->env_list); //should be new alloc
 	//other arguments just get ignored by bash :)
 	else if (args->content && args->content[0] == '-' && !args->content[1])
-		new_dir = get_env_var_value("OLDPWD", shell->environment);
+		new_dir = get_env_var_value("OLDPWD", shell->env_list);
 	if (!new_dir || !*new_dir)
 		dprintf(2, C_RED " you can't cd to your HOME or OLDPWD if its not set silly! \
 				\n" C_RESET);

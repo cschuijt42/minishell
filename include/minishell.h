@@ -89,7 +89,7 @@ typedef struct s_env_list
 
 typedef struct s_shell
 {
-	t_env_list	*environment;
+	t_env_list	*env_list;
 	t_lexnode	*lexer_output;
 	t_command	*command_tree;
 	char		**envp;
@@ -105,6 +105,7 @@ typedef struct s_shell
 t_env_list	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_list *list);
 char		**env_list_to_arr(t_env_list *list);
+void		add_env_var(char *str, t_shell *shell);
 
 // ----------------- utils ----------------
 

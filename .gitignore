@@ -9,3 +9,5 @@ minishell
 *.dSYM
 shell-experiments/*
 valgrind-out.txt
+misc/*
+misc/deprecated_functions.c
