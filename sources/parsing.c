@@ -123,8 +123,6 @@ void	add_argument_to_command_node(t_lexnode *lexnode, t_command *command)
 
 // Adds a redirect to the list of redirects of the given command node,
 // duplicating the contents of the next (text) node in the lexer chain.
-// If the next node is not text, an error is thrown
-// TODO: clean up tree on error
 void	add_redirect_to_command_node(t_lexnode **lexnode, t_command *command, \
 										t_shell *shell)
 {

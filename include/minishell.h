@@ -17,7 +17,7 @@
 # include <errno.h>
 # include "h_colors.h"
 # include <limits.h>
-# include <stdio.h> //for puts testing
+# include <stdio.h>
 
 extern int	g_interrupted;
 
@@ -128,19 +128,25 @@ int			env(t_argument *args, t_shell *shell);
 int			builtin_exit(t_argument *args, t_shell *shell);
 int			unset(t_argument *args, t_shell *shell);
 
-// --------------------------------- temp --------------------------------
+// --------------------------------- execution --------------------------------
 
 void		executor(t_shell *shell);
 void		setup_all_heredocs(t_shell *shell);
+
+// --------------------------------- signals --------------------------------
 
 void		sigint_handler_generic(int signum);
 void		sigint_handler_interactive(int signum);
 void		sigint_handler_heredoc(int signum);
 
+// ----------------------------- error handling -----------------------------
+
 void		print_error_value(int error_value);
 void		print_error_message_exit(char *message, int return_value);
 int			print_error_message_return(char *message, int return_value);
 int			print_error_message_perror(char *message, int return_value);
+
+// --------------------------------- cleanup --------------------------------
 
 int			clean_up_shell_struct(t_shell *shell);
 void		clean_up_lexer_output(t_shell *shell);

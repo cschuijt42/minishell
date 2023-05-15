@@ -26,7 +26,6 @@ void	setup_input_redirect(t_redirect *redirect)
 	close(fd);
 }
 
-// do we want protection on our dups and closes?
 void	setup_output_redirect(t_redirect *redirect)
 {
 	int		fd;
