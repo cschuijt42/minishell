@@ -106,12 +106,13 @@ typedef struct s_shell
 t_env_list	*parse_envp(char **envp);
 char		*get_env_var_value(char *key, t_env_list *list);
 char		**env_list_to_arr(t_env_list *list);
-void		add_env_var(char *str, t_shell *shell);
+void		add_env_var(char *key, char *value, t_shell *shell);
 
 // ----------------- utils ----------------
 
 void		clean_up_execution(t_shell *shell);
 void		regenerate_path_array(t_shell *shell);
+t_env_list	*find_env_var(char *key, t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 
