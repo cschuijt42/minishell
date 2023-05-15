@@ -116,6 +116,7 @@ void		remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell);
 
 void		clean_up_execution(t_shell *shell);
 void		regenerate_path_array(t_shell *shell);
+t_env_list	*find_env_var(char *key, t_shell *shell);
 
 // --------------------------------- builtins --------------------------------
 

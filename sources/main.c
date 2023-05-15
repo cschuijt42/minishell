@@ -31,7 +31,7 @@ t_shell	*initialize_shell_struct(char **envp)
 	getcwd(shell->cwd, PATH_MAX);
 	shell->return_value = 0;
 	shell->env_list = parse_envp(envp);
-	shell->envp = envp;
+	shell->envp = env_list_to_arr(shell->env_list);
 	regenerate_path_array(shell);
 	return (shell);
 }

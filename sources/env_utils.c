@@ -18,7 +18,7 @@ char	**env_list_to_arr(t_env_list *list)
 	char		**ret;
 	int			i;
 
-	list_size = ft_lstsize((t_list *)list); //test
+	list_size = ft_lstsize((t_list *)list);
 	ret = safe_alloc(sizeof(char *), list_size + 1);
 	i = 0;
 	while (i < list_size)
@@ -33,7 +33,7 @@ char	**env_list_to_arr(t_env_list *list)
 
 char	*get_env_var_value(char *key, t_env_list *list)
 {
-	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
+	while (list && ft_strncmp(key, list->key, ft_strlen(key) + 1))
 		list = list->next;
 	if (!list)
 		return (NULL);
@@ -48,7 +48,8 @@ void	add_env_var(char *key, char *value, t_shell *shell)
 	node = find_env_var(key, shell);
 	if (node)
 	{
-		free(node->value);
+		if (node->value)
+			free(node->value);
 		node->value = ft_strdup(value);
 		return ;
 	}
@@ -67,7 +68,8 @@ void	add_env_var(char *key, char *value, t_shell *shell)
 
 void	free_node(t_env_list *node)
 {
+	if (node->value)
+		free(node->value);
 	free(node->key);
-	free(node->value);
 	free(node);
 }

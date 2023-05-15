@@ -13,19 +13,24 @@
 #include "minishell.h"
 #include <stdio.h>
 
-//changed from void to char * ret so it can be used internally, if u dont like
-// it this way I can also just make 1 only for printing and put the instructions
-// in cd
-// 3/4 update.. yeah I might refactor this cause I can just call getcwd
 int	pwd(t_argument *args, t_shell *shell)
 {
 	(void) args;
 	if (!getcwd(shell->cwd, PATH_MAX))
 	{
-		perror("can't get working dir");
-		return (1);
+		return (print_error_message_perror("can't get working directory", 1));
 	}
 	printf("%s\n", shell->cwd);
+	return (0);
+}
+
+int	change_directory(char *new_dir, t_shell *shell)
+{
+	if (chdir(new_dir) == -1)
+		return (print_error_message_perror("can't change directory", 1));
+	add_env_var("OLDPWD", get_env_var_value("PWD", shell->env_list), shell);
+	getcwd(shell->cwd, PATH_MAX);
+	add_env_var("PWD", shell->cwd, shell);
 	return (0);
 }
 
@@ -35,7 +40,7 @@ int	cd(t_argument *args, t_shell *shell)
 
 	if (!getcwd(shell->cwd, PATH_MAX) || access(shell->cwd, F_OK) != 0)
 	{
-		perror(C_RED "current dir destroyed, I'm going HOME >:c\n" C_RESET);
+		print_error_message_return("current directory no longer exists", 0);
 		args = NULL;
 	}
 	if (!args)
@@ -50,9 +55,7 @@ int	cd(t_argument *args, t_shell *shell)
 		if (!new_dir)
 			return (print_error_message_return("OLDPWD unset", 2));
 	}
-	new_dir = args->content;
-	if (chdir(new_dir) == -1)
-		return (print_error_message_perror("can't change directory", 1));
-	// Change PWD and OLDPWD
-	return (0);
+	else
+		new_dir = args->content;
+	return (change_directory(new_dir, shell));
 }
