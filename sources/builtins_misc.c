@@ -16,8 +16,7 @@ int	builtin_exit(t_argument *args, t_shell *shell)
 {
 	int	exit_val;
 
-	(void)shell;
-	exit_val = 0;
+	exit_val = shell->return_value;
 	printf("exit\n");
 	if (args && args->content)
 	{
