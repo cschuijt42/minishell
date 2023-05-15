@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "h_colors.h"
 
 void	print_message_for_error(int error_value)
@@ -40,4 +41,16 @@ void	print_error_message_exit(char *message, int return_value)
 {
 	dprintf(2, "%sError:\n%s%s\n", C_RED, message, C_RESET);
 	exit(return_value);
+}
+
+int	print_error_message_return(char *message, int return_value)
+{
+	dprintf(2, "%sError:\n%s%s\n", C_RED, message, C_RESET);
+	return (return_value);
+}
+
+int	print_error_message_perror(char *message, int return_value)
+{
+	dprintf(2, "%sError: %s\n%s%s\n", C_RED, message, strerror(errno), C_RESET);
+	return (return_value);
 }

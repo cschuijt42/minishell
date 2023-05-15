@@ -133,5 +133,7 @@ void		sigint_handler_heredoc(int signum);
 
 void		print_error_value(int error_value);
 void		print_error_message_exit(char *message, int return_value);
+int			print_error_message_return(char *message, int return_value);
+int			print_error_message_perror(char *message, int return_value);
 
 #endif
