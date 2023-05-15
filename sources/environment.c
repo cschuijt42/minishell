@@ -19,7 +19,7 @@ void	set_value(char *key, char *value, t_shell *shell)
 	t_env_list	*env;
 	size_t		i;
 
-	env = shell->environment;
+	env = shell->env_list;
 	i = 0;
 	while (env)
 	{
@@ -81,7 +81,7 @@ void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
 {
 	t_env_list	*current;
 
-	current = shell->environment;
+	current = shell->env_list;
 	if (current != remove_me)
 	{
 		while (current->next != remove_me)
@@ -89,22 +89,22 @@ void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
 		current->next = current->next->next;
 	}
 	else
-		shell->environment = remove_me->next;
+		shell->env_list = remove_me->next;
 	free(remove_me->key);
 	free(remove_me->value);
 	free(remove_me);
 	free_array((void **)shell->envp);
-	shell->envp = env_list_to_arr(shell->environment);
+	shell->envp = env_list_to_arr(shell->env_list);
 }
 
-void	find_env_var(char *key, t_shell *shell)
+t_env_list	*find_env_var(char *key, t_shell *shell)
 {
-
 	t_env_list	*list;
 
-	list = shell->environment;
-	while (list && ft_strncmp(key, list->key, ft_strlen(key)))
+	list = shell->env_list;
+	while (list && ft_strcmp(key, list->key))
 		list = list->next;
 	if (list)
-		remove_node_and_remake_env(list, shell);
-} //wanted to finish but was getting too late, this could be 1 fun w the 1 above
+		return (list);
+	return (NULL);
+}

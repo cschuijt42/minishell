@@ -40,3 +40,28 @@ char	*get_env_var_value(char *key, t_env_list *list)
 		return (NULL);
 	return (list->value);
 }
+
+void	add_env_var(char *key, char *value, t_shell *shell)
+{
+	t_env_list	*node;
+	t_env_list	*last;
+
+	node = find_env_var(key, shell);
+	if (node)
+	{
+		free(node->value);
+		node->value = ft_strdup(value);
+		return ;
+	}
+	node = safe_alloc(sizeof(t_env_list), 1);
+	node->key = ft_strdup(key);
+	node->value = ft_strdup(value);
+	if ((key && !node->key) || (value && !node->value))
+		error_exit("malloc failure\n", 2);
+	last = shell->env_list;
+	while (last->next)
+		last = last->next;
+	last->next = node;
+	free_array((void **)shell->envp);
+	shell->envp = env_list_to_arr(shell->env_list);
+}

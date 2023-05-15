@@ -40,13 +40,13 @@ int	cd(t_argument *args, t_shell *shell)
 	}
 	if (!args)
 	{
-		new_dir = get_env_var_value("HOME", shell->environment);
+		new_dir = get_env_var_value("HOME", shell->env_list);
 		if (!new_dir)
 			return (print_error_message_return("HOME unset", 2));
 	}
 	else if (args->content && args->content[0] == '-' && !args->content[1])
 	{
-		new_dir = get_env_var_value("OLDPWD", shell->environment);
+		new_dir = get_env_var_value("OLDPWD", shell->env_list);
 		if (!new_dir)
 			return (print_error_message_return("OLDPWD unset", 2));
 	}

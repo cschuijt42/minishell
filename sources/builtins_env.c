@@ -16,7 +16,7 @@
 \x1b[0m\x1b[38;2;255;0;0myourself up for failure \x1b[38;2;255;255;0m\n\"%s\"\
 \x1b[38;2;255;0;0m is not a valid identifier\n\x1b[0m"
 
-void	print_alphabet(char **envp)
+void	print_2d_array_alphabetically(char **envp)
 {
 	int		i;
 	int		arrlen;
@@ -41,22 +41,43 @@ void	print_alphabet(char **envp)
 	free(copy);
 }
 
-int	export(t_argument *args, t_shell *shell)
+int	env(t_argument *args, t_shell *shell)
 {
-	if (!args)
-		print_alphabet(shell->envp); //sort alphabetically?
-	else if (!ft_strchr(args->content, (int) '='))
+	t_env_list	*node;
+
+	node = shell->env_list;
+	while (node)
 	{
-		puts("placeholder"); //can put
+		if (node->value)
+			printf("%s = %s\n", node->key, node->value);
+		node = node->next;
 	}
 	return (0);
 }
 
-int	env(t_argument *args, t_shell *shell)
+int	export(t_argument *args, t_shell *shell)
 {
-	(void)args;
-	(void)shell;
-	print_2d_charray(shell->envp);
+	int	ret_val;
+	int	i;
+
+	ret_val = 0;
+	i = 0;
+	if (!args)
+	{
+		print_2d_array_alphabetically(shell->envp);
+		return (ret_val);
+	}
+	while (args)
+	{
+		while (args->content[i] && args->content[i])
+		{
+
+		}
+		if (!ft_strchr(args->content, (int) '='))
+		{
+		}
+		args = args->next;
+	}
 	return (0);
 }
 
@@ -68,7 +89,6 @@ int	unset(t_argument *args, t_shell *shell)
 	err_occured = false;
 	while (args)
 	{
-		node = shell->environment;
 		if (!str_is_fully_alnum(args->content))
 		{
 			dprintf(2, UNSET_ERR, args->content);
@@ -76,15 +96,9 @@ int	unset(t_argument *args, t_shell *shell)
 		}
 		else
 		{
-			while (node)
-			{
-				if (!ft_strcmp(args->content, node->key))
-				{
-					remove_node_and_remake_env(node, shell);
-					break ; //could remove for more readablity but less performance
-				}
-				node = node->next;
-			}
+			node = find_env_var(args->content, shell);
+			if (node)
+				remove_node_and_remake_env(node, shell);
 		}
 		args = args->next;
 	}
