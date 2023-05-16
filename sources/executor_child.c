@@ -102,7 +102,7 @@ int	setup_child_process(t_shell *shell, t_command *command)
 	if (command->pid == -1)
 		return (print_error_message_perror("fork error", 1));
 	if (command->pid)
-		return(0);
+		return (0);
 	setup_command_pipes(command);
 	setup_command_redirects(command);
 	clean_up_heredocs(command);

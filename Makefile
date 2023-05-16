@@ -39,6 +39,7 @@ SOURCEFILES	:=	builtin_execution.c \
 								parsing.c \
 								path.c \
 								redirects.c \
+								shell_struct.c \
 								signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
