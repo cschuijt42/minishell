@@ -22,7 +22,7 @@ int	builtin_exit(t_argument *args, t_shell *shell)
 	{
 		if (!is_valid_nbr_str(args->content))
 		{
-			dprintf(2, "%s: You can only exit with numbers >:(", args->content);
+			print_error_message_return("You can only exit with numbers >:(", 0);
 			exit_val = 255;
 		}
 		else
