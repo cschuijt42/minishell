@@ -46,7 +46,8 @@ void	build_command_tree(t_shell *shell)
 		if (!(current_node->arguments) && !(current_node->target) && \
 			!(current_node->redirects))
 		{
-			shell->error_value = error_empty_command_node;
+			if (shell->error_value == error_continue)
+				shell->error_value = error_empty_command_node;
 			return ;
 		}
 	}
