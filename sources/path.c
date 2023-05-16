@@ -26,5 +26,5 @@ void	regenerate_path_array(t_shell *shell)
 	else
 		shell->split_path = ft_split(path_variable->value, ':');
 	if (!shell->split_path)
-		print_error_message_exit("malloc error", 1);
+		exit(print_error_message_perror("malloc error", 1));
 }

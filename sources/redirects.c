@@ -18,10 +18,10 @@ void	setup_input_redirect(t_redirect *redirect)
 	int	fd;
 
 	if (access(redirect->target, F_OK) == -1)
-		print_error_message_exit("infile doesn't exist", errno);
+		exit(print_error_message_perror("infile doesn't exist", 1));
 	fd = open(redirect->target, O_RDONLY);
 	if (fd == -1)
-		print_error_message_exit("can't open infile", errno);
+		exit(print_error_message_perror("can't open infile", 1));
 	dup2(fd, 0);
 	close(fd);
 }
@@ -35,7 +35,7 @@ void	setup_output_redirect(t_redirect *redirect)
 	else
 		fd = open(redirect->target, O_CREAT | O_WRONLY, 0644);
 	if (fd == -1)
-		print_error_message_exit("can't open outfile", errno);
+		exit(print_error_message_perror("can't open outfile", 1));
 	dup2(fd, 1);
 	close(fd);
 }

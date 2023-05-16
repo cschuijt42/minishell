@@ -100,7 +100,7 @@ void	setup_child_process(t_shell *shell, t_command *command)
 {
 	command->pid = fork();
 	if (command->pid == -1)
-		print_error_message_exit("fork error", 1);
+		exit(print_error_message_perror("fork error", 1));
 	if (command->pid)
 		return ;
 	setup_command_pipes(command);
@@ -115,5 +115,5 @@ void	setup_child_process(t_shell *shell, t_command *command)
 		exit(130);
 	signal(SIGQUIT, SIG_DFL);
 	execve(command->target_expanded, command->arg_array, shell->envp);
-	print_error_message_exit("exec fail", 127);
+	exit(print_error_message_perror("exec fail", 127));
 }
