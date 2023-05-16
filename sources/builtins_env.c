@@ -52,10 +52,11 @@ int	env(t_argument *args, t_shell *shell)
 	return (0);
 }
 
-void	print_error_message_export(char *identifier)
+int	print_error_message_export(char *identifier, int return_value)
 {
 	dprintf(2, "%sError:\n'%s' is not a valid identifier%s\n", \
 			C_RED, identifier, C_RESET);
+	return (return_value);
 }
 
 int	export(t_argument *args, t_shell *shell)
@@ -74,8 +75,7 @@ int	export(t_argument *args, t_shell *shell)
 			env_str++;
 		if (*env_str && *env_str != '=')
 		{
-			print_error_message_export(args->content);
-			ret_val = 1;
+			ret_val = print_error_message_export(args->content, 1);
 			args = args->next;
 			continue ;
 		}
@@ -84,6 +84,7 @@ int	export(t_argument *args, t_shell *shell)
 		free_node(node);
 		args = args->next;
 	}
+	regenerate_env_array(shell);
 	return (ret_val);
 }
 
@@ -97,7 +98,7 @@ int	unset(t_argument *args, t_shell *shell)
 	{
 		if (!str_is_fully_alnum(args->content))
 		{
-			print_error_message_export(args->content);
+			print_error_message_export(args->content, 1);
 			err_occured = true;
 		}
 		else

@@ -96,6 +96,8 @@ void	clean_up_execution(t_shell *shell)
 {
 	clean_up_lexer_output(shell);
 	clean_up_command_tree(shell);
+	if (g_interrupted)
+		shell->return_value = 130;
 	g_interrupted = 0;
 	shell->error_value = error_continue;
 }

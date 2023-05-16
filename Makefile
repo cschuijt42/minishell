@@ -24,6 +24,7 @@ SOURCEFILES	:=	builtin_execution.c \
 								builtins_misc.c \
 								cleanup.c \
 								environment.c \
+								env_recreation.c \
 								env_utils.c \
 								error_handling.c \
 								execution_helpers.c \
