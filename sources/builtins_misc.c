@@ -28,6 +28,7 @@ int	builtin_exit(t_argument *args, t_shell *shell)
 		else
 			exit_val = ft_atoi(args->content);
 	}
+	clean_up_shell_struct(shell);
 	exit(exit_val);
 }
 
