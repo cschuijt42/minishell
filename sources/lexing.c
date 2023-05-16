@@ -116,9 +116,11 @@ int	read_var_mode(char *str, int i, t_shell *shell, int in_quotes)
 	if (in_quotes)
 	{
 		expand_variable_in_quotes(var_name, shell);
+		free(var_name);
 		return (read_quote_mode(str, '"', i, shell));
 	}
 	expand_variable(var_name, shell, 0);
+	free(var_name);
 	return (read_text_mode(str, i, shell, 1));
 }
 
