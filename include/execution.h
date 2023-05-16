@@ -19,7 +19,7 @@ typedef int	(*t_builtin_ptr)(t_argument *, t_shell *);
 void	clean_up_heredocs(t_command *command);
 void	setup_arg_array(t_command *command);
 
-void	setup_child_process(t_shell *shell, t_command *command);
+int		setup_child_process(t_shell *shell, t_command *command);
 
 void	setup_command_redirects(t_command *command);
 

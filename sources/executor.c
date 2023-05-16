@@ -24,16 +24,18 @@
 void	execute_commands(t_shell *shell)
 {
 	t_command	*command;
+	int			fork_failed;
 
 	command = shell->command_tree;
-	while (command)
+	fork_failed = 0;
+	while (command && !fork_failed)
 	{
 		if (command->next)
 		{
 			if (pipe(command->pipe_out))
 				exit(print_error_message_perror("pipe failure", 1));
 		}
-		setup_child_process(shell, command);
+		fork_failed = setup_child_process(shell, command);
 		if (command->heredoc_pipe[0])
 		{
 			close(command->heredoc_pipe[0]);

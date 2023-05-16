@@ -96,13 +96,13 @@ void	setup_command_pipes(t_command *command)
 // - Expand the command name to a full path if necessary.
 // - Set up an array of arguments with the original program name (TODO)
 // - Execve time!
-void	setup_child_process(t_shell *shell, t_command *command)
+int	setup_child_process(t_shell *shell, t_command *command)
 {
 	command->pid = fork();
 	if (command->pid == -1)
-		exit(print_error_message_perror("fork error", 1));
+		return (print_error_message_perror("fork error", 1));
 	if (command->pid)
-		return ;
+		return(0);
 	setup_command_pipes(command);
 	setup_command_redirects(command);
 	clean_up_heredocs(command);
@@ -116,4 +116,5 @@ void	setup_child_process(t_shell *shell, t_command *command)
 	signal(SIGQUIT, SIG_DFL);
 	execve(command->target_expanded, command->arg_array, shell->envp);
 	exit(print_error_message_perror("exec fail", 127));
+	return (0);
 }
