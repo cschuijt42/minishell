@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_print_map.c                                     :+:    :+:            */
+/*   str_switch.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/13 14:00:51 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2022/10/14 22:57:16 by mde-cloe      ########   odam.nl         */
+/*   Created: 2023/05/03 18:13:49 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2023/05/03 18:13:49 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_print_map(char **map)
+void	str_switch(char **str1, char **str2)
 {
-	int	i;
+	char	*tmp;
 
-	i = 0;
-	while (map[i])
-	{
-		ft_printf("%s\n", map[i]);
-		i++;
-	}
+	tmp = *str1;
+	*str1 = *str2;
+	*str2 = tmp;
 }

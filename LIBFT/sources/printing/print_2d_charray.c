@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_calloc.c                                        :+:    :+:            */
+/*   print_2d_charray.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mde-cloe <mde-cloe@student.42.fr>            +#+                     */
+/*   By: mde-cloe <mde-cloe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/13 18:00:40 by mde-cloe      #+#    #+#                 */
-/*   Updated: 2021/12/13 18:03:36 by mde-cloe      ########   odam.nl         */
+/*   Created: 2022/10/13 14:00:51 by mde-cloe      #+#    #+#                 */
+/*   Updated: 2022/10/14 22:57:16 by mde-cloe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t	count, size_t	size)
+void	print_2d_charray(char **map)
 {
-	void	*ptr;
-	size_t	storage;
+	int	i;
 
-	storage = count * size;
-	ptr = malloc(storage);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, storage);
-	return (ptr);
+	i = 0;
+	while (map[i])
+	{
+		ft_printf("%s\n", map[i]);
+		i++;
+	}
 }

@@ -44,4 +44,5 @@ void	condense_token(t_lexnode *token)
 		free(current_nested);
 		current_nested = next_nested;
 	}
+	token->tree_next = NULL;
 }

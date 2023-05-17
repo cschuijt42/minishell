@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "minishell.h"
 
 // Function to close the current and future commands' heredocs, to
 // prevent them from hanging with other child processes.

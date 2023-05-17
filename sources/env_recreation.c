@@ -1,39 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   actual_main.c                                      :+:    :+:            */
+/*   env_recreation.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cschuijt <cschuijt@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/28 20:09:42 by cschuijt      #+#    #+#                 */
-/*   Updated: 2023/02/28 20:09:42 by cschuijt      ########   odam.nl         */
+/*   Created: 2023/05/16 16:50:40 by cschuijt      #+#    #+#                 */
+/*   Updated: 2023/05/16 16:50:40 by cschuijt      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
-int	main(void)
+void	regenerate_env_array(t_shell *shell)
 {
-	char	*input;
-
-	using_history();
-	while (1)
-	{
-		input = readline(SHELL_PROMPT);
-		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		// Lexer, parser, executor
-		if (ft_strlen(input) && input[0] != ' ')
-			add_history(input);
-		free(input);
-	}
-	rl_clear_history();
-	// Replace with return value later
-	return (0);
+	if (shell->envp)
+		free_array((void **)shell->envp);
+	shell->envp = env_list_to_arr(shell->env_list);
 }

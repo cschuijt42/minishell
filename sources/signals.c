@@ -1,19 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parsing.h                                          :+:    :+:            */
+/*   signals.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cschuijt <cschuijt@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/02/26 22:43:08 by cschuijt      #+#    #+#                 */
-/*   Updated: 2023/02/26 22:43:08 by cschuijt      ########   odam.nl         */
+/*   Created: 2023/04/30 19:01:09 by cschuijt      #+#    #+#                 */
+/*   Updated: 2023/04/30 19:01:09 by cschuijt      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
-# include "minishell.h"
+#include "minishell.h"
+#include <stdio.h>
+#include <readline/readline.h>
 
-void	build_command_tree(t_shell *shell);
+void	sigint_handler_generic(int signum)
+{
+	(void) signum;
+	g_interrupted = 1;
+}
 
-#endif
+void	sigint_handler_interactive(int signum)
+{
+	(void) signum;
+	ft_putchar_fd('\n', 2);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	sigint_handler_heredoc(int signum)
+{
+	(void) signum;
+	g_interrupted = 1;
+	rl_done = 1;
+}

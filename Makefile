@@ -1,33 +1,45 @@
 #General----------
-
+#O3
 NAME 			    := minishell
-CC				    := gcc
-COMPIL_FLAGS	?= #-Wall -Wextra -Werror
+CC				    := cc
+COMPIL_FLAGS	?= -Wall -Wextra -Werror
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	READLINEFLAGS := -lreadline -I $(shell brew --prefix readline)/include -L $(shell brew --prefix readline)/lib
+	READLINEFLAGS := -lreadline -L $(shell brew --prefix readline)/lib
 else
 	READLINEFLAGS := -lreadline
 endif
-LINKFLAGS 		?= -I include -I LIBFT/include -g
+ifeq ($(UNAME_S), Darwin)
+	LINKFLAGS 		?= -I include -I LIBFT/include -I $(shell brew --prefix readline)/include
+else
+	LINKFLAGS 		?= -I include -I LIBFT/include
+endif
 
 #sources and objects -------------
 
-SOURCEFILES	:=	main.c \
+SOURCEFILES	:=	builtin_execution.c \
+								builtins_dir.c \
+								builtins_env.c \
+								builtins_misc.c \
+								cleanup.c \
 								environment.c \
+								env_recreation.c \
+								env_utils.c \
+								error_handling.c \
+								execution_helpers.c \
+								executor_child.c \
+								executor.c \
+								heredoc.c \
 								lexing.c \
-								lexing_utils.c \
 								lexing_condensing.c \
 								lexing_expanding.c \
+								lexing_utils.c \
+	              main.c \
 								parsing.c \
-								dir_builtins.c \
-								executor.c \
-								execution_helpers.c \
-								redirects.c \
-								cleanup.c \
 								path.c \
-								heredoc.c
+								redirects.c \
+								signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
 SRC_DIR	:=	sources/

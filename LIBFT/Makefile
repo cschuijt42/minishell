@@ -20,70 +20,72 @@ INCLUDE_FLAGS 	?= -I include
 #----cfiles-----
 
 STRING 	:=	ft_split.c \
-						ft_strchr.c \
-						ft_strdup.c \
-						ft_strjoin.c \
-						ft_strlcat.c \
-						ft_strlcpy.c \
-						ft_strlen.c \
-						ft_strncmp.c \
-						ft_strcmp.c \
-						ft_strnstr.c \
-						ft_strrchr.c \
-						ft_strtrim.c \
-						ft_substr.c \
-						ft_tolower.c \
-						ft_toupper.c \
-						ft_strmapi.c \
-						ft_striteri.c \
-						ft_strrcmp.c \
-						ft_isalpha.c \
-						ft_isalnum.c \
-						ft_isascii.c \
-						ft_isdigit.c \
-						ft_isprint.c \
-						str_reverse.c \
+			ft_strchr.c \
+			ft_strdup.c \
+			ft_strjoin.c \
+			ft_strlcat.c \
+			ft_strlcpy.c \
+			ft_strlen.c \
+			ft_strncmp.c \
+			ft_strcmp.c \
+			ft_strnstr.c \
+			ft_strrchr.c \
+			ft_strtrim.c \
+			ft_substr.c \
+			ft_tolower.c \
+			ft_toupper.c \
+			ft_strmapi.c \
+			ft_striteri.c \
+			ft_strrcmp.c \
+			ft_isalpha.c \
+			ft_isalnum.c \
+			ft_isascii.c \
+			ft_isdigit.c \
+			ft_isprint.c \
+			str_reverse.c \
+			str_switch.c \
+			ft_is_valid_nbr_str.c
 
 GNL			:=	get_next_line.c \
-						get_next_line_utils.c \
+				get_next_line_utils.c
 
 LIST  	:=	ft_lstnew_bonus.c \
-						ft_lstadd_front_bonus.c \
-						ft_lstsize_bonus.c \
-						ft_lstlast_bonus.c \
-						ft_lstadd_back_bonus.c \
-						ft_lstdelone_bonus.c \
-						ft_lstclear_bonus.c \
-						ft_lstiter_bonus.c \
-						ft_lstmap_bonus.c
+			ft_lstadd_front_bonus.c \
+			ft_lstsize_bonus.c \
+			ft_lstlast_bonus.c \
+			ft_lstadd_back_bonus.c \
+			ft_lstdelone_bonus.c \
+			ft_lstclear_bonus.c \
+			ft_lstiter_bonus.c \
+			ft_lstmap_bonus.c
 
 CONVERT	:=	ft_atoi.c \
-						ft_itoa.c
+			ft_itoa.c
 
 MEM 		:=	ft_memchr.c \
-						ft_memcmp.c \
-						ft_memcpy.c \
-						ft_memmove.c \
-						ft_memset.c \
-						ft_bzero.c \
-						ft_calloc.c \
-						ptrarr_len.c \
-						safe_alloc.c
+				ft_memcmp.c \
+				ft_memcpy.c \
+				ft_memmove.c \
+				ft_memset.c \
+				ft_bzero.c \
+				ft_calloc.c \
+				ptrarr_len.c \
+				safe_alloc.c
 
 PRINT 	:=	ft_putchar_fd.c \
-						ft_putstr_fd.c \
-						ft_putendl_fd.c \
-						ft_putnbr_fd.c \
-						ft_print_map.c
+			ft_putstr_fd.c \
+			ft_putendl_fd.c \
+			ft_putnbr_fd.c \
+			print_2d_charray.c
 
 PRINTF	 :=	ft_printf.c \
-						char_printers.c \
-						hex_printers.c \
-						nbr_printers.c \
+			char_printers.c \
+			hex_printers.c \
+			nbr_printers.c \
 
 MISC :=		free_map.c \
-					error_exit.c \
-					free_array.c
+			error_exit.c \
+			free_array.c
 
 GNLPATH = $(addprefix gnl/, $(GNL))
 PRINTFPATH = $(addprefix printf/, $(PRINTF))
@@ -123,6 +125,9 @@ $(OBJ_DIR)%.o : $(SRC_DIR)*/*/%.c | $(OBJ_DIR)
 	@$(CC) -c $< -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS) && printf "$(BLUE) $(notdir $@) $(GREEN) (DONE) $(BLUE)$(C_RESET)\n"
 
 $(OBJ_DIR):
+	@mkdir $(OBJ_DIR)
+
+objects:
 	@mkdir $(OBJ_DIR)
 
 print:

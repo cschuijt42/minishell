@@ -14,16 +14,17 @@
 
 void	regenerate_path_array(t_shell *shell)
 {
-	t_env_var	*path_variable;
+	t_env_list	*path_variable;
 
-	path_variable = shell->environment;
+	path_variable = shell->env_list;
 	while (path_variable && ft_strncmp("PATH", path_variable->key, 5))
 		path_variable = path_variable->next;
-	free_array((void **) shell->split_path);
+	if (shell->split_path)
+		free_array((void **) shell->split_path);
 	if (!path_variable)
 		shell->split_path = safe_alloc(sizeof(char *), 1);
 	else
 		shell->split_path = ft_split(path_variable->value, ':');
 	if (!shell->split_path)
-		error_exit("Malloc error", 1);
+		exit(print_error_message_perror("malloc error", 1));
 }
