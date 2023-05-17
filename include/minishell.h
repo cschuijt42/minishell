@@ -112,6 +112,7 @@ t_env_list	*env_line_to_node(char *env_line);
 void		free_node(t_env_list *node);
 void		remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell);
 void		regenerate_env_array(t_shell *shell);
+void		update_shell_level(t_shell *shell);
 
 // ----------------- utils ----------------
 

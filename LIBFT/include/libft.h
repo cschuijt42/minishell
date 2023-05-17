@@ -70,6 +70,7 @@ int			ft_strcmp(const char *s1, const char *s2);
 bool		str_is_fully_alnum(char *str);
 void		str_switch(char **str1, char **str2);
 bool		is_valid_nbr_str(char *str);
+bool		ft_isdigit_str(char *s);
 
 typedef struct s_list
 {
