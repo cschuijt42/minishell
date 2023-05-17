@@ -129,6 +129,8 @@ int			env(t_argument *args, t_shell *shell);
 int			builtin_exit(t_argument *args, t_shell *shell);
 int			unset(t_argument *args, t_shell *shell);
 
+void		print_2d_array_alphabetically(char **envp);
+
 // --------------------------------- execution --------------------------------
 
 void		executor(t_shell *shell);

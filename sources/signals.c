@@ -23,15 +23,13 @@ void	sigint_handler_generic(int signum)
 void	sigint_handler_interactive(int signum)
 {
 	(void) signum;
-	ft_putchar_fd('\n', 2);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	g_interrupted = 1;
 }
 
 void	sigint_handler_heredoc(int signum)
 {
 	(void) signum;
 	g_interrupted = 1;
+	ft_putchar_fd('\n', 1);
 	rl_done = 1;
 }

@@ -24,6 +24,7 @@ SOURCEFILES	:=	builtin_execution.c \
 								builtins_misc.c \
 								cleanup.c \
 								environment.c \
+								env_printing.c \
 								env_recreation.c \
 								env_utils.c \
 								error_handling.c \
@@ -39,6 +40,7 @@ SOURCEFILES	:=	builtin_execution.c \
 								parsing.c \
 								path.c \
 								redirects.c \
+								shell_struct.c \
 								signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
