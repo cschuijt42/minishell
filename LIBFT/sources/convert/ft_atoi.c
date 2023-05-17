@@ -45,7 +45,7 @@ int	ft_atoi(const char	*str)
 	{
 		result = result * 10 + str[i] - '0';
 		if (result > INT_MAX || result < INT_MIN)
-			return (-1);
+			return (0);
 		i++;
 	}
 	return (result * isneg);
