@@ -158,8 +158,3 @@ void	executor(t_shell *shell)
 	g_return_value = WEXITSTATUS(wstatus);
 	printf("\nReturn value: %d\n", g_return_value);
 }
-
-// todo
-// 1redirect
-// 2 path splitting (casper)
-// 3 path + arg checking
