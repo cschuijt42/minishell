@@ -30,6 +30,5 @@ void	sigint_handler_heredoc(int signum)
 {
 	(void) signum;
 	g_interrupted = 1;
-	ft_putchar_fd('\n', 1);
 	rl_done = 1;
 }
