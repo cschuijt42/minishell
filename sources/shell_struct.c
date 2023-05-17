@@ -23,6 +23,7 @@ t_shell	*initialize_shell_struct(char **envp)
 	shell->env_list = parse_envp(envp);
 	shell->envp = env_list_to_arr(shell->env_list);
 	regenerate_path_array(shell);
+	update_shell_level(shell);
 	return (shell);
 }
 
