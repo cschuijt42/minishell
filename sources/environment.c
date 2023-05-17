@@ -14,27 +14,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	set_value(char *key, char *value, t_shell *shell)
-{
-	t_env_list	*env;
-	size_t		i;
-
-	env = shell->env_list;
-	i = 0;
-	while (env)
-	{
-		if (ft_strcmp(key, env->key) == 0)
-		{
-			free(env->value);
-			env->value = value;
-			free(shell->envp[i]);
-			shell->envp[i] = protected_str_iple_join(env->key, "=", env->value);
-		}
-		env = env->next;
-		i++;
-	}
-}
-
 t_env_list	*env_line_to_node(char *env_line)
 {
 	int			key_length;

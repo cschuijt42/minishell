@@ -51,17 +51,19 @@ void	add_env_var(char *key, char *value, t_shell *shell)
 		if (node->value)
 			free(node->value);
 		node->value = ft_strdup(value);
-		return ;
 	}
-	node = safe_alloc(sizeof(t_env_list), 1);
-	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
-	if ((key && !node->key) || (value && !node->value))
-		exit(print_error_message_perror("malloc failure", 2));
-	last = shell->env_list;
-	while (last->next)
-		last = last->next;
-	last->next = node;
+	else
+	{
+		node = safe_alloc(sizeof(t_env_list), 1);
+		node->key = ft_strdup(key);
+		node->value = ft_strdup(value);
+		if ((key && !node->key) || (value && !node->value))
+			exit(print_error_message_perror("malloc failure", 2));
+		last = shell->env_list;
+		while (last->next)
+			last = last->next;
+		last->next = node;
+	}
 	free_array((void **)shell->envp);
 	shell->envp = env_list_to_arr(shell->env_list);
 }
