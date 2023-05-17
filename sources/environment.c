@@ -33,6 +33,8 @@ void	set_value(char *key, char *value, t_shell *shell)
 		env = env->next;
 		i++;
 	}
+	if (ft_strcmp(key, "PATH") == 0)
+		regenerate_path_array(shell);
 }
 
 t_env_list	*env_line_to_node(char *env_line)
@@ -95,6 +97,7 @@ void	remove_node_and_remake_env(t_env_list *remove_me, t_shell *shell)
 	free_node(remove_me);
 	free_array((void **)shell->envp);
 	shell->envp = env_list_to_arr(shell->env_list);
+	regenerate_path_array(shell);
 }
 
 t_env_list	*find_env_var(char *key, t_shell *shell)

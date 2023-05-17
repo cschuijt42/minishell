@@ -21,7 +21,7 @@ void	regenerate_path_array(t_shell *shell)
 		path_variable = path_variable->next;
 	if (shell->split_path)
 		free_array((void **) shell->split_path);
-	if (!path_variable)
+	if (!path_variable || !path_variable->value)
 		shell->split_path = safe_alloc(sizeof(char *), 1);
 	else
 		shell->split_path = ft_split(path_variable->value, ':');

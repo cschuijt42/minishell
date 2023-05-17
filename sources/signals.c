@@ -23,7 +23,6 @@ void	sigint_handler_generic(int signum)
 void	sigint_handler_interactive(int signum)
 {
 	(void) signum;
-	ft_putchar_fd('\n', 1);
 	g_interrupted = 1;
 }
 
