@@ -34,24 +34,27 @@ int	print_error_message_export(char *identifier, int return_value)
 	return (return_value);
 }
 
-int	parse_export_node(t_shell *shell, t_argument *arg, int ret_val)
+static int	parse_export_node(t_shell *shell, t_argument *arg)
 {
-	char		*env_str;
+	char		*envstr;
 	t_env_list	*node;
 
-	env_str = arg->content;
-	while (*env_str && *env_str != '=' && ft_isalnum(*env_str))
-		env_str++;
-	if (*env_str && *env_str != '=')
-	{
+	envstr = arg->content;
+	if (!ft_isalpha(*envstr) && *envstr != '_')
 		return (print_error_message_export(arg->content, 1));
-	}
+	while (*envstr && *envstr != '=' && (ft_isalnum(*envstr) || *envstr == '_'))
+		envstr++;
+	if (*envstr && *envstr != '=')
+		return (print_error_message_export(arg->content, 1));
 	node = env_line_to_node(arg->content);
-	add_env_var(node->key, node->value, shell);
-	if (ft_strcmp(node->key, "PATH") == 0)
-		regenerate_path_array(shell);
+	if (node->value || !find_env_var(node->key, shell))
+	{
+		add_env_var(node->key, node->value, shell);
+		if (ft_strcmp(node->key, "PATH") == 0)
+			regenerate_path_array(shell);
+	}
 	free_node(node);
-	return (ret_val);
+	return (0);
 }
 
 int	export(t_argument *args, t_shell *shell)
@@ -63,7 +66,7 @@ int	export(t_argument *args, t_shell *shell)
 		print_2d_array_alphabetically(shell->envp);
 	while (args)
 	{
-		ret_val = parse_export_node(shell, args, ret_val);
+		ret_val = parse_export_node(shell, args);
 		args = args->next;
 	}
 	regenerate_env_array(shell);
