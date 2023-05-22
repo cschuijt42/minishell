@@ -26,7 +26,7 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 	if (builtin_index == -1)
 		return (false);
 	backup_stdin_out(temp_inout);
-	setup_command_redirects(cmd);
+	setup_command_redirects_child(cmd);
 	shell->return_value = builtins[builtin_index](cmd->arguments, shell);
 	restore_stdin_out(temp_inout);
 	if (cmd->heredoc_pipe[0])
