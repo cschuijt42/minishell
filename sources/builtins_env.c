@@ -36,16 +36,16 @@ int	print_error_message_export(char *identifier, int return_value)
 
 int	parse_export_node(t_shell *shell, t_argument *arg, int ret_val)
 {
-	char		*env_str;
+	char		*envstr;
 	t_env_list	*node;
 
-	env_str = arg->content;
-	while (*env_str && *env_str != '=' && ft_isalnum(*env_str))
-		env_str++;
-	if (*env_str && *env_str != '=')
-	{
+	envstr = arg->content;
+	if (!ft_isalpha(*envstr) && *envstr != '_')
 		return (print_error_message_export(arg->content, 1));
-	}
+	while (*envstr && *envstr != '=' && (ft_isalnum(*envstr) || *envstr == '_'))
+		envstr++;
+	if (*envstr && *envstr != '=')
+		return (print_error_message_export(arg->content, 1));
 	node = env_line_to_node(arg->content);
 	add_env_var(node->key, node->value, shell);
 	if (ft_strcmp(node->key, "PATH") == 0)
