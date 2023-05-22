@@ -99,7 +99,7 @@ typedef struct s_shell
 	int			error_value;
 }	t_shell;
 
-# define SHELL_PROMPT "\x1b[38;2;0;255;0mFROGGYSHELL\x1b[0m: "
+# define SHELL_PROMPT "FROGGYSHELL: "
 
 //  ----------------- enviroment ----------------
 

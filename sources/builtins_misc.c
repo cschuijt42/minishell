@@ -40,12 +40,12 @@ int	echo(t_argument *args, t_shell *shell)
 	(void)shell;
 	if (args && args->content)
 	{
-		if (!ft_strcmp(args->content, "-n"))
+		while (args && !ft_strcmp(args->content, "-n"))
 		{
 			print_nl = false;
 			args = args->next;
 		}
-		while (args->next)
+		while (args && args->next)
 		{
 			printf("%s ", args->content);
 			args = args->next;
