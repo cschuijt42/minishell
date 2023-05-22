@@ -13,20 +13,26 @@
 #include "execution.h"
 #include <fcntl.h>
 
-void	setup_input_redirect(t_redirect *redirect)
+int	setup_input_redirect(t_redirect *redirect)
 {
 	int	fd;
 
 	if (access(redirect->target, F_OK) == -1)
-		exit(print_error_message_perror("infile doesn't exist", 1));
+		return (error_cant_access_infile);
 	fd = open(redirect->target, O_RDONLY);
 	if (fd == -1)
-		exit(print_error_message_perror("can't open infile", 1));
-	dup2(fd, 0);
+		return (error_cant_open_infile);
+	if (dup2(fd, 0) == -1)
+	{
+		close(fd);
+		return (error_cant_dup_fd);
+	}
 	close(fd);
+	return (error_continue);
+
 }
 
-void	setup_output_redirect(t_redirect *redirect)
+int	setup_output_redirect(t_redirect *redirect)
 {
 	int		fd;
 
@@ -35,12 +41,19 @@ void	setup_output_redirect(t_redirect *redirect)
 	else
 		fd = open(redirect->target, O_CREAT | O_WRONLY, 0644);
 	if (fd == -1)
-		exit(print_error_message_perror("can't open outfile", 1));
-	dup2(fd, 1);
+		return (error_cant_access_outfile);
+	if (dup2(fd, 1) == -1)
+	{
+		close(fd);
+		return (error_cant_dup_fd);
+	}
 	close(fd);
+	return (error_continue);
 }
 
-void	setup_heredoc_redirect(t_command *command)
+int	setup_heredoc_redirect(t_command *command)
 {
-	dup2(command->heredoc_pipe[0], 0);
+	if (dup2(command->heredoc_pipe[0], 0) == -1)
+		return (error_cant_dup_fd);
+	return (error_continue);
 }

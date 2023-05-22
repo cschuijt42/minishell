@@ -27,7 +27,11 @@ typedef enum e_error_types
 	error_unclosed_quote,
 	error_loose_pipe,
 	error_loose_redirect_token,
-	error_empty_command_node
+	error_empty_command_node,
+	error_cant_access_infile,
+	error_cant_open_infile,
+	error_cant_access_outfile,
+	error_cant_dup_fd
 }	t_error_types;
 
 typedef enum tokentypes

@@ -19,6 +19,7 @@ endif
 #sources and objects -------------
 
 SOURCEFILES	:=	builtin_execution.c \
+				builtin_redirects.c \
 				builtins_dir.c \
 				builtins_env.c \
 				builtins_misc.c \

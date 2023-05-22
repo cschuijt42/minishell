@@ -18,21 +18,31 @@
 // Loop over redirects in order of appearance, setting them up one by one.
 // It is okay if one overrides another, as long as that results in all
 // relevant file descriptors being closed.
-void	setup_command_redirects(t_command *command)
+void	setup_command_redirects_child(t_command *command)
 {
 	t_redirect	*redirect;
+	int			return_value;
 
 	redirect = command->redirects;
+	return_value = error_continue;
 	while (redirect)
 	{
 		if (redirect->type == redirect_input)
-			setup_input_redirect(redirect);
+			return_value = setup_input_redirect(redirect);
 		else if (redirect->type == redirect_output || \
 					redirect->type == redirect_output_append)
-			setup_output_redirect(redirect);
+			return_value = setup_output_redirect(redirect);
 		else
-			setup_heredoc_redirect(command);
+			return_value = setup_heredoc_redirect(command);
 		redirect = redirect->next;
+		if (return_value == error_cant_access_infile)
+			exit(print_error_message_perror("can't access infile", 1));
+		else if (return_value == error_cant_open_infile)
+			exit(print_error_message_perror("can't open infile", 1));
+		else if (return_value == error_cant_access_outfile)
+			exit(print_error_message_perror("can't access outfile", 1));
+		else if (return_value == error_cant_dup_fd)
+			exit(print_error_message_perror(ERROR_MESSAGE_FD, 1));
 	}
 }
 
@@ -104,7 +114,7 @@ int	setup_child_process(t_shell *shell, t_command *command)
 	if (command->pid)
 		return (0);
 	setup_command_pipes(command);
-	setup_command_redirects(command);
+	setup_command_redirects_child(command);
 	clean_up_heredocs(command);
 	if (!command->target)
 		exit(0);
