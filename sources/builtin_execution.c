@@ -20,6 +20,8 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 	int					temp_inout[2];
 	int					builtin_index;
 
+	if (!cmd->target)
+		return (false);
 	builtin_index = find_builtin_index(cmd->target);
 	if (builtin_index == -1)
 		return (false);
