@@ -25,10 +25,13 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 	builtin_index = find_builtin_index(cmd->target);
 	if (builtin_index == -1)
 		return (false);
-	backup_stdin_out(temp_inout);
-	setup_command_redirects_child(cmd);
-	shell->return_value = builtins[builtin_index](cmd->arguments, shell);
-	restore_stdin_out(temp_inout);
+	if (backup_stdin_out(temp_inout))
+	{
+		if (setup_command_redirects_builtin(cmd))
+			shell->return_value = \
+							builtins[builtin_index](cmd->arguments, shell);
+		restore_stdin_out(temp_inout);
+	}
 	if (cmd->heredoc_pipe[0])
 		close(cmd->heredoc_pipe[0]);
 	return (true);
@@ -44,20 +47,6 @@ void	exec_if_builtin(t_command *cmd, t_shell *shell)
 	if (i == -1)
 		return ;
 	exit(builtins[i](cmd->arguments, shell));
-}
-
-void	backup_stdin_out(int *temp_inout)
-{
-	temp_inout[0] = dup(0);
-	temp_inout[1] = dup(1);
-}
-
-void	restore_stdin_out(int *temp_std_fd)
-{
-	dup2(temp_std_fd[0], 0);
-	dup2(temp_std_fd[1], 1);
-	close(temp_std_fd[0]);
-	close(temp_std_fd[1]);
 }
 
 int	find_builtin_index(char *cmd)

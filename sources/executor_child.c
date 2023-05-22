@@ -42,7 +42,7 @@ void	setup_command_redirects_child(t_command *command)
 		else if (return_value == error_cant_access_outfile)
 			exit(print_error_message_perror("can't access outfile", 1));
 		else if (return_value == error_cant_dup_fd)
-			exit(print_error_message_perror("cannot open file descriptor", 1));
+			exit(print_error_message_perror(ERROR_MESSAGE_FD, 1));
 	}
 }
 
