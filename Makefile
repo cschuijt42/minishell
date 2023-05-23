@@ -2,7 +2,7 @@
 #O3
 NAME 			    := minishell
 CC				    := cc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror -g
+COMPIL_FLAGS	?= -Wall -Wextra -Werror
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
