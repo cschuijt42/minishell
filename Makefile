@@ -2,7 +2,7 @@
 #O3
 NAME 			    := minishell
 CC				    := cc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror
+COMPIL_FLAGS	?= -Wall -Wextra -Werror -g
 DEBUG_FLAGS		?= -g
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
@@ -32,6 +32,7 @@ SOURCEFILES	:=	builtin_execution.c \
 				execution_helpers.c \
 				executor_child.c \
 				executor.c \
+				heredoc_expansion.c \
 				heredoc.c \
 				lexing.c \
 				lexing_condensing.c \

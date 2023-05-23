@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <signal.h>
 
+void	expand_heredoc_variables(char **input, t_shell *shell);
+
 void	cycle_heredoc_pipe(t_command *command)
 {
 	if (command->heredoc_pipe[0])
@@ -24,7 +26,8 @@ void	cycle_heredoc_pipe(t_command *command)
 		exit(print_error_message_perror("pipe error", 1));
 }
 
-void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
+void	setup_heredoc(t_shell *shell, t_command *command, \
+						t_redirect *heredoc, int i)
 {
 	char	*input;
 	char	*prompt;
@@ -37,11 +40,11 @@ void	setup_heredoc(t_command *command, t_redirect *heredoc, int i)
 	while (1)
 	{
 		input = readline(prompt);
-		if (!input)
-			break ;
-		if (!ft_strcmp(input, heredoc->target))
+		expand_heredoc_variables(&input, shell);
+		if (!input || !ft_strcmp(input, heredoc->target))
 		{
-			free(input);
+			if (input)
+				free(input);
 			break ;
 		}
 		ft_putendl_fd(input, command->heredoc_pipe[1]);
@@ -69,7 +72,7 @@ void	setup_all_heredocs(t_shell *shell)
 		{
 			if (current_redirect->type == redirect_heredoc)
 			{
-				setup_heredoc(current_command, current_redirect, i);
+				setup_heredoc(shell, current_command, current_redirect, i);
 				i++;
 			}
 			current_redirect = current_redirect->next;
