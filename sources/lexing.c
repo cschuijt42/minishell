@@ -58,7 +58,7 @@ int	read_text_mode(char *str, int i, t_shell *shell, int nested)
 		return (i);
 	else if (is_text_mode_change(str[i]) == 2)
 		return (read_quote_mode(str, str[i], i + 1, shell));
-	else if (!ft_isalnum(str[i + 1]) && str[i + 1] != '_' && str[i + 1] != '?')
+	else if (!ft_isalpha(str[i + 1]) && str[i + 1] != '_' && str[i + 1] != '?')
 	{
 		add_nested_node_to_lexer_output(ft_strdup("$"), \
 										token_plain_text, shell);
