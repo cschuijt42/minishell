@@ -29,7 +29,6 @@ int	setup_input_redirect(t_redirect *redirect)
 	}
 	close(fd);
 	return (error_continue);
-
 }
 
 int	setup_output_redirect(t_redirect *redirect)
