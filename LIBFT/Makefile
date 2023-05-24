@@ -124,14 +124,8 @@ $(OBJ_DIR)%.o : $(SRC_DIR)*/%.c include/libft.h | $(OBJ_DIR)
 $(OBJ_DIR)%.o : $(SRC_DIR)*/*/%.c | $(OBJ_DIR)
 	@$(CC) -c $< -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS) && printf "$(BLUE) $(notdir $@) $(GREEN) (DONE) $(BLUE)$(C_RESET)\n"
 
-$(OBJ_DIR):
-	@mkdir $(OBJ_DIR)
-
 objects:
 	@mkdir $(OBJ_DIR)
-
-print:
-	@printf "$(OBJ_DIR)"
 
 #-----extra-----------
 
