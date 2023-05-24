@@ -27,7 +27,7 @@ bool	single_builtin_executor(t_command *cmd, t_shell *shell)
 		return (false);
 	if (backup_stdin_out(temp_inout))
 	{
-		if (setup_command_redirects_builtin(cmd))
+		if (!g_interrupted && setup_command_redirects_builtin(cmd))
 			shell->return_value = \
 							builtins[builtin_index](cmd->arguments, shell);
 		restore_stdin_out(temp_inout);

@@ -114,7 +114,8 @@ int	setup_child_process(t_shell *shell, t_command *command)
 	if (command->pid)
 		return (0);
 	setup_command_pipes(command);
-	setup_command_redirects_child(command);
+	if (!g_interrupted)
+		setup_command_redirects_child(command);
 	clean_up_heredocs(command);
 	if (!command->target)
 		exit(0);
