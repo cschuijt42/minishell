@@ -2,8 +2,7 @@
 #O3
 NAME 			    := minishell
 CC				    := cc
-COMPIL_FLAGS	?= -Wall -Wextra -Werror
-DEBUG_FLAGS		?= -g
+COMPIL_FLAGS		?= -Wall -Wextra -Werror
 UNAME_S       := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
 	READLINEFLAGS := -lreadline -L $(shell brew --prefix readline)/lib
@@ -65,12 +64,12 @@ all : $(NAME)
 
 $(NAME) : $(LIBFT_A) $(OBJS)
 	@printf "$(COMP_HEADER)$(C_LGREEN)$@$(COMP_AFTER)"
-	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A) -g
+	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A)
 	@printf "$(COMP_DONE)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
 	@printf "$(COMP_HEADER)$(notdir $<)$(COMP_AFTER)"
-	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $^ -g
+	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $^
 	@printf "$(COMP_DONE)"
 
 objects :
