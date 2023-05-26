@@ -27,11 +27,15 @@ int	env(t_argument *args, t_shell *shell)
 	return (0);
 }
 
-int	print_error_message_export(char *identifier, int return_value)
+static bool	is_valid_export_unset_input(char *str)
 {
-	dprintf(2, "%sError:\n'%s' is not a valid identifier%s\n", \
-			C_RED, identifier, C_RESET);
-	return (return_value);
+	if (!str || (!ft_isalpha(*str) && *str != '_'))
+		return (false);
+	while (*str && *str != '=' && (ft_isalnum(*str) || *str == '_'))
+		str++;
+	if (*str && *str != '=')
+		return (false);
+	return (true);
 }
 
 static int	parse_export_node(t_shell *shell, t_argument *arg)
@@ -40,11 +44,7 @@ static int	parse_export_node(t_shell *shell, t_argument *arg)
 	t_env_list	*node;
 
 	envstr = arg->content;
-	if (!ft_isalpha(*envstr) && *envstr != '_')
-		return (print_error_message_export(arg->content, 1));
-	while (*envstr && *envstr != '=' && (ft_isalnum(*envstr) || *envstr == '_'))
-		envstr++;
-	if (*envstr && *envstr != '=')
+	if (!is_valid_export_unset_input(arg->content))
 		return (print_error_message_export(arg->content, 1));
 	node = env_line_to_node(arg->content);
 	if (node->value || !find_env_var(node->key, shell))
@@ -81,7 +81,7 @@ int	unset(t_argument *args, t_shell *shell)
 	err_occured = false;
 	while (args)
 	{
-		if (!str_is_fully_alnum(args->content))
+		if (!is_valid_export_unset_input(args->content))
 		{
 			print_error_message_export(args->content, 1);
 			err_occured = true;

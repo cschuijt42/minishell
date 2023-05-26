@@ -36,3 +36,10 @@ void	print_2d_array_alphabetically(char **envp)
 	print_2d_charray(copy);
 	free(copy);
 }
+
+int	print_error_message_export(char *identifier, int return_value)
+{
+	dprintf(2, "%sError:\n'%s' is not a valid identifier%s\n", \
+			C_RED, identifier, C_RESET);
+	return (return_value);
+}
