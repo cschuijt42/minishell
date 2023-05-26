@@ -46,21 +46,11 @@ void	setup_command_redirects_child(t_command *command)
 	}
 }
 
-// Program name expander, should loop over all PATH locations until we
-// find a valid executable to run. If the target contains a slash character,
-// we know the we're dealing with an absolute/relative path and can just
-// copy that to command->target_expanded instead.
-// When executing, we always use command->target_expanded.
-void	expand_command_target(t_shell *shell, t_command *command)
+int	expand_through_split_path(t_shell *shell, t_command *command)
 {
-	char	*path_match;
 	size_t	i;
+	char	*path_match;
 
-	if (ft_strchr(command->target, '/'))
-	{
-		command->target_expanded = command->target;
-		return ;
-	}
 	i = 0;
 	while (shell->split_path[i])
 	{
@@ -69,16 +59,36 @@ void	expand_command_target(t_shell *shell, t_command *command)
 		if (access(path_match, F_OK | X_OK) == 0)
 		{
 			command->target_expanded = path_match;
-			return ;
+			return (1);
 		}
 		free(path_match);
 		i++;
 	}
+	return (0);
+}
+
+// Program name expander, should loop over all PATH locations until we
+// find a valid executable to run. If the target contains a slash character,
+// we know the we're dealing with an absolute/relative path and can just
+// copy that to command->target_expanded instead.
+// When executing, we always use command->target_expanded.
+void	expand_command_target(t_shell *shell, t_command *command)
+{
+	if (ft_strchr(command->target, '/'))
+	{
+		command->target_expanded = command->target;
+		return ;
+	}
+	if (shell->split_path[0] == NULL)
+	{
+		command->target_expanded = protected_str_iple_join(shell->cwd, \
+														"/", command->target);
+		return ;
+	}
+	if (expand_through_split_path(shell, command))
+		return ;
 	print_error_message_exit("no executable found", 127);
 }
-	// PATH matching until we find the right executable
-	// Save eventual absolute path in command->target_expanded
-	// Error out if we can't find a match?
 
 void	setup_command_pipes(t_command *command)
 {
