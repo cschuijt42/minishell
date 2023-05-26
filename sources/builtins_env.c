@@ -21,7 +21,7 @@ int	env(t_argument *args, t_shell *shell)
 	while (node)
 	{
 		if (node->value)
-			printf("%s = %s\n", node->key, node->value);
+			printf("%s=%s\n", node->key, node->value);
 		node = node->next;
 	}
 	return (0);
@@ -63,7 +63,7 @@ int	export(t_argument *args, t_shell *shell)
 
 	ret_val = 0;
 	if (!args)
-		print_2d_array_alphabetically(shell->envp);
+		export_print_mode(shell->env_list);
 	while (args)
 	{
 		ret_val = parse_export_node(shell, args);

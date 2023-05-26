@@ -134,7 +134,7 @@ int			env(t_argument *args, t_shell *shell);
 int			builtin_exit(t_argument *args, t_shell *shell);
 int			unset(t_argument *args, t_shell *shell);
 int			print_error_message_export(char *identifier, int return_value);
-void		print_2d_array_alphabetically(char **envp);
+void		export_print_mode(t_env_list *list);
 
 // --------------------------------- execution --------------------------------
 
