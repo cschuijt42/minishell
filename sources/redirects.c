@@ -38,7 +38,7 @@ int	setup_output_redirect(t_redirect *redirect)
 	if (redirect->type == redirect_output_append)
 		fd = open(redirect->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
-		fd = open(redirect->target, O_CREAT | O_WRONLY, 0644);
+		fd = open(redirect->target, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (error_cant_access_outfile);
 	if (dup2(fd, 1) == -1)
