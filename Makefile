@@ -45,10 +45,10 @@ SOURCEFILES	:=	builtin_execution.c \
 				signals.c
 
 OFILES	:=	$(SOURCEFILES:.c=.o)
-SRC_DIR	:=	sources/
-OBJ_DIR	:=	objects/
-SOURCES	:=	$(addprefix $(SRC_DIR), $(SOURCEFILES))
-OBJS	  :=	$(addprefix $(OBJ_DIR), $(OFILES))
+SRC_DIR	:=	sources
+OBJ_DIR	:=	objects
+SOURCES	:=	$(addprefix $(addprefix $(SRC_DIR), /), $(SOURCEFILES))
+OBJS	:=	$(addprefix $(addprefix $(OBJ_DIR), /), $(OFILES))
 LIBFT_A :=  ./LIBFT/libft.a
 LIBFT_H :=  ./LIBFT/include/libft.h
 
@@ -67,12 +67,12 @@ $(NAME) : $(LIBFT_A) $(OBJS)
 	@$(CC) $(OBJS) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) $(READLINEFLAGS) $(LIBFT_A)
 	@printf "$(COMP_DONE)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@printf "$(COMP_HEADER)$(notdir $<)$(COMP_AFTER)"
 	@$(CC) $(COMPIL_FLAGS) -o $@ $(LINKFLAGS) -c $^
 	@printf "$(COMP_DONE)"
 
-objects :
+$(OBJ_DIR) :
 	@mkdir $(OBJ_DIR)
 
 $(LIBFT_A) : $(LIBFT_H)
