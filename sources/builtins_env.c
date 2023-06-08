@@ -40,10 +40,8 @@ static bool	is_valid_export_unset_input(char *str)
 
 static int	parse_export_node(t_shell *shell, t_argument *arg)
 {
-	char		*envstr;
 	t_env_list	*node;
 
-	envstr = arg->content;
 	if (!is_valid_export_unset_input(arg->content))
 		return (print_error_message_export(arg->content, 1));
 	node = env_line_to_node(arg->content);
