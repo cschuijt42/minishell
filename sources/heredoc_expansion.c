@@ -85,7 +85,7 @@ void	expand_heredoc_variables(char **input, t_shell *shell)
 	int		position;
 	char	*expanded_str;
 
-	if (!*input)
+	if (!*input || !ft_strlen(*input))
 		return ;
 	position = 0;
 	expanded_str = NULL;
