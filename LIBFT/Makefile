@@ -99,13 +99,13 @@ LISTPATH := $(addprefix list/, $(LIST))
 
 #----other variables----
 
-SRC_DIR := ./sources/
-OBJ_DIR := objects/
+SRC_DIR := sources
+OBJ_DIR := objects
 
-SRC :=	$(addprefix $(SRC_DIR), $(MISCPATH) $(PRINTPATH) $(CONVERTPATH) \
-$(MEMPATH) $(LISTPATH) $(STRINGPATH))
+SRC :=	$(addprefix $(SRC_DIR), $(addprefix /, $(MISCPATH)) $(addprefix /, $(PRINTPATH)) $(addprefix /, $(CONVERTPATH)) \
+$(addprefix /, $(MEMPATH)) $(addprefix /, $(LISTPATH)) $(addprefix /, $(STRINGPATH)))
 
-OBJ :=	$(addprefix $(OBJ_DIR), $(notdir $(SRC:.c=.o)))
+OBJ :=	$(addprefix $(OBJ_DIR), $(addprefix /, $(notdir $(SRC:.c=.o))))
 
 
 #-----------------targets---------------
@@ -117,11 +117,11 @@ $(NAME): $(OBJ) | $(OBJ_DIR)
 	@ar -rcs $@ $^
 	@printf "$(YELLOW) $@ $(GREEN)(DONE)$(C_RESET) \n"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)*/%.c include/libft.h | $(OBJ_DIR)
+$(OBJ_DIR)/%.o : $(SRC_DIR)/*/%.c include/libft.h | $(OBJ_DIR)
 	@$(CC) -c $<  -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS)
 	@printf "$(BLUE) $(notdir $@) $(GREEN) (DONE) $(BLUE)$(C_RESET)\n"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)*/*/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o : $(SRC_DIR)/*/*/%.c | $(OBJ_DIR)
 	@$(CC) -c $< -o $@ $(WARN_FLAGS) $(INCLUDE_FLAGS) && printf "$(BLUE) $(notdir $@) $(GREEN) (DONE) $(BLUE)$(C_RESET)\n"
 
 objects:
